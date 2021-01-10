@@ -2,7 +2,7 @@ package com.alibaba.otter.canal.parse.inbound.mysql.tsdb;
 
 /**
  * tableMeta构造器,允许重载实现
- * 
+ *
  * @author agapple 2018年8月8日 上午11:01:08
  * @since 1.0.26
  */

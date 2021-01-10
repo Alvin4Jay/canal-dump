@@ -28,21 +28,21 @@ import com.google.common.collect.MigrateMap;
  */
 public class ManagerInstanceConfigMonitor extends AbstractCanalLifeCycle implements InstanceConfigMonitor, CanalLifeCycle {
 
-    private static final Logger         logger               = LoggerFactory.getLogger(ManagerInstanceConfigMonitor.class);
-    private long                        scanIntervalInSecond = 5;
-    private InstanceAction              defaultAction        = null;
-    private Map<String, InstanceAction> actions              = new MapMaker().makeMap();
-    private Map<String, PlainCanal>     configs              = MigrateMap.makeComputingMap(new Function<String, PlainCanal>() {
+    private static final Logger logger = LoggerFactory.getLogger(ManagerInstanceConfigMonitor.class);
+    private long scanIntervalInSecond = 5;
+    private InstanceAction defaultAction = null;
+    private Map<String, InstanceAction> actions = new MapMaker().makeMap();
+    private Map<String, PlainCanal> configs = MigrateMap.makeComputingMap(new Function<String, PlainCanal>() {
 
-                                                                 public PlainCanal apply(String destination) {
-                                                                     return new PlainCanal();
-                                                                 }
-                                                             });
-    private ScheduledExecutorService    executor             = Executors.newScheduledThreadPool(1,
-                                                                 new NamedThreadFactory("canal-instance-scan"));
+        public PlainCanal apply(String destination) {
+            return new PlainCanal();
+        }
+    });
+    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1,
+            new NamedThreadFactory("canal-instance-scan"));
 
-    private volatile boolean            isFirst              = true;
-    private PlainCanalConfigClient      configClient;
+    private volatile boolean isFirst = true;
+    private PlainCanalConfigClient configClient;
 
     public void start() {
         super.start();

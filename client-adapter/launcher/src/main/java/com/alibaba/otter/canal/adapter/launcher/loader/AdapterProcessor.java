@@ -25,33 +25,33 @@ import com.alibaba.otter.canal.connector.core.spi.ExtensionLoader;
 
 /**
  * 适配处理器
- * 
+ *
  * @author rewerma 2020-02-01
  * @version 1.0.0
  */
 public class AdapterProcessor {
 
-    private static final Logger             logger                    = LoggerFactory.getLogger(AdapterProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(AdapterProcessor.class);
 
-    private static final String             CONNECTOR_SPI_DIR         = "/plugin";
-    private static final String             CONNECTOR_STANDBY_SPI_DIR = "/canal-adapter/plugin";
+    private static final String CONNECTOR_SPI_DIR = "/plugin";
+    private static final String CONNECTOR_STANDBY_SPI_DIR = "/canal-adapter/plugin";
 
-    private CanalMsgConsumer                canalMsgConsumer;
+    private CanalMsgConsumer canalMsgConsumer;
 
-    private String                          canalDestination;                                                           // canal实例
-    private String                          groupId                   = null;                                           // groupId
-    private List<List<OuterAdapter>>        canalOuterAdapters;                                                         // 外部适配器
-    private CanalClientConfig               canalClientConfig;                                                          // 配置
-    private ExecutorService                 groupInnerExecutorService;                                                  // 组内工作线程池
-    private volatile boolean                running                   = false;                                          // 是否运行中
-    private Thread                          thread                    = null;
-    private Thread.UncaughtExceptionHandler handler                   = (t, e) -> logger
-        .error("parse events has an error", e);
+    private String canalDestination;                                                           // canal实例
+    private String groupId = null;                                           // groupId
+    private List<List<OuterAdapter>> canalOuterAdapters;                                                         // 外部适配器
+    private CanalClientConfig canalClientConfig;                                                          // 配置
+    private ExecutorService groupInnerExecutorService;                                                  // 组内工作线程池
+    private volatile boolean running = false;                                          // 是否运行中
+    private Thread thread = null;
+    private Thread.UncaughtExceptionHandler handler = (t, e) -> logger
+            .error("parse events has an error", e);
 
-    private SyncSwitch                      syncSwitch;
+    private SyncSwitch syncSwitch;
 
     public AdapterProcessor(CanalClientConfig canalClientConfig, String destination, String groupId,
-                            List<List<OuterAdapter>> canalOuterAdapters){
+                            List<List<OuterAdapter>> canalOuterAdapters) {
         this.canalClientConfig = canalClientConfig;
         this.canalDestination = destination;
         this.groupId = groupId;
@@ -63,7 +63,7 @@ public class AdapterProcessor {
         // load connector consumer
         ExtensionLoader<CanalMsgConsumer> loader = new ExtensionLoader<>(CanalMsgConsumer.class);
         canalMsgConsumer = loader
-            .getExtension(canalClientConfig.getMode().toLowerCase(), CONNECTOR_SPI_DIR, CONNECTOR_STANDBY_SPI_DIR);
+                .getExtension(canalClientConfig.getMode().toLowerCase(), CONNECTOR_SPI_DIR, CONNECTOR_STANDBY_SPI_DIR);
 
         Properties properties = canalClientConfig.getConsumerProperties();
         properties.put(CanalConstants.CANAL_MQ_FLAT_MESSAGE, canalClientConfig.getFlatMessage());
@@ -98,8 +98,8 @@ public class AdapterProcessor {
 
                         if (logger.isDebugEnabled()) {
                             logger.debug("{} elapsed time: {}",
-                                adapter.getClass().getName(),
-                                (System.currentTimeMillis() - begin));
+                                    adapter.getClass().getName(),
+                                    (System.currentTimeMillis() - begin));
                         }
                     });
                     return true;
@@ -170,7 +170,7 @@ public class AdapterProcessor {
         }
 
         int retry = canalClientConfig.getRetries() == null
-                    || canalClientConfig.getRetries() == 0 ? 1 : canalClientConfig.getRetries();
+                || canalClientConfig.getRetries() == 0 ? 1 : canalClientConfig.getRetries();
         if (retry == -1) {
             // 重试次数-1代表异常时一直阻塞重试
             retry = Integer.MAX_VALUE;
@@ -203,13 +203,13 @@ public class AdapterProcessor {
                             }
                             long begin = System.currentTimeMillis();
                             List<CommonMessage> commonMessages = canalMsgConsumer
-                                .getMessage(this.canalClientConfig.getTimeout(), TimeUnit.MILLISECONDS);
+                                    .getMessage(this.canalClientConfig.getTimeout(), TimeUnit.MILLISECONDS);
                             writeOut(commonMessages);
                             canalMsgConsumer.ack();
                             if (logger.isDebugEnabled()) {
                                 logger.debug("destination: {} elapsed time: {} ms",
-                                    canalDestination,
-                                    System.currentTimeMillis() - begin);
+                                        canalDestination,
+                                        System.currentTimeMillis() - begin);
                             }
                         } catch (Exception e) {
                             if (i != retry - 1) {

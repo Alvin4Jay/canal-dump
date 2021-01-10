@@ -19,10 +19,10 @@ public class RestHighLevelClientExt {
                                                  GetMappingsRequest getMappingsRequest,
                                                  RequestOptions options) throws IOException {
         return restHighLevelClient.performRequestAndParseEntity(getMappingsRequest,
-            RequestConvertersExt::getMappings,
-            options,
-            GetMappingsResponse::fromXContent,
-            emptySet());
+                RequestConvertersExt::getMappings,
+                options,
+                GetMappingsResponse::fromXContent,
+                emptySet());
 
     }
 

@@ -59,10 +59,10 @@ public class SyncUtil {
     /**
      * 设置 preparedStatement
      *
-     * @param type sqlType
+     * @param type  sqlType
      * @param pstmt 需要设置的preparedStatement
      * @param value 值
-     * @param i 索引号
+     * @param i     索引号
      */
     public static void setPStmt(int type, PreparedStatement pstmt, Object value, int i) throws SQLException {
         switch (type) {

@@ -9,8 +9,8 @@ package com.alibaba.otter.canal.admin.model;
 public class BaseModel<T> {
 
     private Integer code = 20000;
-    private String  message;
-    private T       data;
+    private String message;
+    private T data;
 
     public Integer getCode() {
         return code;

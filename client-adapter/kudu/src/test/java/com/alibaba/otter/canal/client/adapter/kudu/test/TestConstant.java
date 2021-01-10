@@ -6,9 +6,9 @@ import com.alibaba.druid.pool.DruidDataSource;
 
 public class TestConstant {
 
-    public final static String          jdbcUrl      = "jdbc:mysql://10.0.9.5:3306/canal_manager?useUnicode=true";
-    public final static String          jdbcUser     = "axtest";
-    public final static String          jdbcPassword = "axtest123";
+    public final static String jdbcUrl = "jdbc:mysql://10.0.9.5:3306/canal_manager?useUnicode=true";
+    public final static String jdbcUser = "axtest";
+    public final static String jdbcPassword = "axtest123";
 
     public final static DruidDataSource dataSource;
 

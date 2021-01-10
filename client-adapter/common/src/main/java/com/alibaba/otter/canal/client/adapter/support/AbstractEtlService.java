@@ -16,13 +16,13 @@ import com.google.common.base.Joiner;
 
 public abstract class AbstractEtlService {
 
-    protected Logger      logger       = LoggerFactory.getLogger(this.getClass());
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private String        type;
+    private String type;
     private AdapterConfig config;
-    private final long    CNT_PER_TASK = 10000L;
+    private final long CNT_PER_TASK = 10000L;
 
-    public AbstractEtlService(String type, AdapterConfig config){
+    public AbstractEtlService(String type, AdapterConfig config) {
         this.type = type;
         this.config = config;
     }
@@ -89,11 +89,11 @@ public abstract class AbstractEtlService {
                     offset = size * i;
                     String sqlFinal = sql + " LIMIT " + offset + "," + size;
                     Future<Boolean> future = executor.submit(() -> executeSqlImport(dataSource,
-                        sqlFinal,
-                        values,
-                        config.getMapping(),
-                        impCount,
-                        errMsg));
+                            sqlFinal,
+                            values,
+                            config.getMapping(),
+                            impCount,
+                            errMsg));
                     futures.add(future);
                 }
 

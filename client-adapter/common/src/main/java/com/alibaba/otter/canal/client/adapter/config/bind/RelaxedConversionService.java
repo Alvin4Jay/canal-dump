@@ -23,7 +23,7 @@ import org.springframework.util.Assert;
  */
 class RelaxedConversionService implements ConversionService {
 
-    private final ConversionService        conversionService;
+    private final ConversionService conversionService;
 
     private final GenericConversionService additionalConverters;
 
@@ -32,25 +32,25 @@ class RelaxedConversionService implements ConversionService {
      *
      * @param conversionService and option root conversion service
      */
-    RelaxedConversionService(ConversionService conversionService){
+    RelaxedConversionService(ConversionService conversionService) {
         this.conversionService = conversionService;
         this.additionalConverters = new GenericConversionService();
         DefaultConversionService.addCollectionConverters(this.additionalConverters);
         this.additionalConverters
-            .addConverterFactory(new RelaxedConversionService.StringToEnumIgnoringCaseConverterFactory());
+                .addConverterFactory(new RelaxedConversionService.StringToEnumIgnoringCaseConverterFactory());
         this.additionalConverters.addConverter(new StringToCharArrayConverter());
     }
 
     @Override
     public boolean canConvert(Class<?> sourceType, Class<?> targetType) {
         return (this.conversionService != null && this.conversionService.canConvert(sourceType, targetType))
-               || this.additionalConverters.canConvert(sourceType, targetType);
+                || this.additionalConverters.canConvert(sourceType, targetType);
     }
 
     @Override
     public boolean canConvert(TypeDescriptor sourceType, TypeDescriptor targetType) {
         return (this.conversionService != null && this.conversionService.canConvert(sourceType, targetType))
-               || this.additionalConverters.canConvert(sourceType, targetType);
+                || this.additionalConverters.canConvert(sourceType, targetType);
     }
 
     @Override
@@ -76,7 +76,7 @@ class RelaxedConversionService implements ConversionService {
      * Clone of Spring's package private StringToEnumConverterFactory, but ignoring
      * the case of the source.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private static class StringToEnumIgnoringCaseConverterFactory implements ConverterFactory<String, Enum> {
 
         @Override
@@ -93,7 +93,7 @@ class RelaxedConversionService implements ConversionService {
 
             private final Class<T> enumType;
 
-            StringToEnum(Class<T> enumType){
+            StringToEnum(Class<T> enumType) {
                 this.enumType = enumType;
             }
 
@@ -106,7 +106,7 @@ class RelaxedConversionService implements ConversionService {
                 source = source.trim();
                 for (T candidate : (Set<T>) EnumSet.allOf(this.enumType)) {
                     RelaxedNames names = new RelaxedNames(
-                        candidate.name().replace('_', '-').toLowerCase(Locale.ENGLISH));
+                            candidate.name().replace('_', '-').toLowerCase(Locale.ENGLISH));
                     for (String name : names) {
                         if (name.equals(source)) {
                             return candidate;
@@ -117,7 +117,7 @@ class RelaxedConversionService implements ConversionService {
                     }
                 }
                 throw new IllegalArgumentException(
-                    "No enum constant " + this.enumType.getCanonicalName() + "." + source);
+                        "No enum constant " + this.enumType.getCanonicalName() + "." + source);
             }
 
         }

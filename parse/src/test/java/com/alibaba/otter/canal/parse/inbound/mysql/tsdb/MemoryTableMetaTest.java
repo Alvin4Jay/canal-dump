@@ -19,7 +19,7 @@ import com.alibaba.otter.canal.parse.inbound.TableMeta;
  * @author agapple 2017年8月1日 下午7:15:54
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/tsdb/mysql-tsdb.xml" })
+@ContextConfiguration(locations = {"/tsdb/mysql-tsdb.xml"})
 @Ignore
 public class MemoryTableMetaTest {
 

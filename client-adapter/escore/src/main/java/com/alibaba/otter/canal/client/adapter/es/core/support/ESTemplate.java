@@ -12,8 +12,8 @@ public interface ESTemplate {
     /**
      * 插入数据
      *
-     * @param mapping 配置对象
-     * @param pkVal 主键值
+     * @param mapping     配置对象
+     * @param pkVal       主键值
      * @param esFieldData 数据Map
      */
     void insert(ESMapping mapping, Object pkVal, Map<String, Object> esFieldData);
@@ -21,8 +21,8 @@ public interface ESTemplate {
     /**
      * 根据主键更新数据
      *
-     * @param mapping 配置对象
-     * @param pkVal 主键值
+     * @param mapping     配置对象
+     * @param pkVal       主键值
      * @param esFieldData 数据Map
      */
     void update(ESMapping mapping, Object pkVal, Map<String, Object> esFieldData);
@@ -30,8 +30,8 @@ public interface ESTemplate {
     /**
      * update by query
      *
-     * @param config 配置对象
-     * @param paramsTmp sql查询条件
+     * @param config      配置对象
+     * @param paramsTmp   sql查询条件
      * @param esFieldData 数据Map
      */
     void updateByQuery(ESSyncConfig config, Map<String, Object> paramsTmp, Map<String, Object> esFieldData);
@@ -39,8 +39,8 @@ public interface ESTemplate {
     /**
      * 通过主键删除数据
      *
-     * @param mapping 配置对象
-     * @param pkVal 主键值
+     * @param mapping     配置对象
+     * @param pkVal       主键值
      * @param esFieldData 数据Map
      */
     void delete(ESMapping mapping, Object pkVal, Map<String, Object> esFieldData);

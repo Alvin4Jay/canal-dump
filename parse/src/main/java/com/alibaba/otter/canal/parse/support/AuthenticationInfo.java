@@ -15,29 +15,28 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class AuthenticationInfo {
 
 
-
     private InetSocketAddress address;            // 主库信息
-    private String            username;           // 帐号
-    private String            password;           // 密码
-    private String            defaultDatabaseName;// 默认链接的数据库
-    private String            pwdPublicKey;       //公钥
-    private boolean           enableDruid;        //是否使用druid加密解密数据库密码
+    private String username;           // 帐号
+    private String password;           // 密码
+    private String defaultDatabaseName;// 默认链接的数据库
+    private String pwdPublicKey;       //公钥
+    private boolean enableDruid;        //是否使用druid加密解密数据库密码
 
-    public void initPwd() throws Exception{
+    public void initPwd() throws Exception {
         if (enableDruid) {
             this.password = ConfigTools.decrypt(pwdPublicKey, password);
         }
     }
 
-    public AuthenticationInfo(){
+    public AuthenticationInfo() {
         super();
     }
 
-    public AuthenticationInfo(InetSocketAddress address, String username, String password){
+    public AuthenticationInfo(InetSocketAddress address, String username, String password) {
         this(address, username, password, "");
     }
 
-    public AuthenticationInfo(InetSocketAddress address, String username, String password, String defaultDatabaseName){
+    public AuthenticationInfo(InetSocketAddress address, String username, String password, String defaultDatabaseName) {
         this.address = address;
         this.username = username;
         this.password = password;

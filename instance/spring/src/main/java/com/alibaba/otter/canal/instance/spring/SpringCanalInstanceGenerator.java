@@ -16,10 +16,10 @@ import com.alibaba.otter.canal.instance.core.CanalInstanceGenerator;
  */
 public class SpringCanalInstanceGenerator implements CanalInstanceGenerator {
 
-    private static final Logger logger      = LoggerFactory.getLogger(SpringCanalInstanceGenerator.class);
-    private String              springXml;
-    private String              defaultName = "instance";
-    private BeanFactory         beanFactory;
+    private static final Logger logger = LoggerFactory.getLogger(SpringCanalInstanceGenerator.class);
+    private String springXml;
+    private String defaultName = "instance";
+    private BeanFactory beanFactory;
 
     public CanalInstance generate(String destination) {
         synchronized (CanalInstanceGenerator.class) {

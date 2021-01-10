@@ -8,8 +8,8 @@ import com.alibaba.otter.canal.server.netty.listener.ChannelFutureAggregator.Cli
  */
 public class CanalServerWithNettyProfiler {
 
-    public static final ClientInstanceProfiler NOP               = new DefaultClientInstanceProfiler();
-    private ClientInstanceProfiler             instanceProfiler;
+    public static final ClientInstanceProfiler NOP = new DefaultClientInstanceProfiler();
+    private ClientInstanceProfiler instanceProfiler;
 
     private static class SingletonHolder {
         private static CanalServerWithNettyProfiler SINGLETON = new CanalServerWithNettyProfiler();
@@ -33,7 +33,8 @@ public class CanalServerWithNettyProfiler {
 
     private static class DefaultClientInstanceProfiler extends AbstractCanalLifeCycle implements ClientInstanceProfiler {
         @Override
-        public void profiling(ClientRequestResult result) {}
+        public void profiling(ClientRequestResult result) {
+        }
     }
 
 }

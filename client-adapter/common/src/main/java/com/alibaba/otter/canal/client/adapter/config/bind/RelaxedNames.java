@@ -18,21 +18,21 @@ import org.springframework.util.StringUtils;
  */
 public final class RelaxedNames implements Iterable<String> {
 
-    private static final Pattern CAMEL_CASE_PATTERN              = Pattern.compile("([^A-Z-])([A-Z])");
+    private static final Pattern CAMEL_CASE_PATTERN = Pattern.compile("([^A-Z-])([A-Z])");
 
     private static final Pattern SEPARATED_TO_CAMEL_CASE_PATTERN = Pattern.compile("[_\\-.]");
 
-    private final String         name;
+    private final String name;
 
-    private final Set<String>    values                          = new LinkedHashSet<String>();
+    private final Set<String> values = new LinkedHashSet<String>();
 
     /**
      * Create a new {@link RelaxedNames} instance.
      *
      * @param name the source name. For the maximum number of variations specify the
-     *     name using dashed notation (e.g. {@literal my-property-name}
+     *             name using dashed notation (e.g. {@literal my-property-name}
      */
-    public RelaxedNames(String name){
+    public RelaxedNames(String name) {
         this.name = (name != null ? name : "");
         initialize(RelaxedNames.this.name, this.values);
     }
@@ -62,32 +62,29 @@ public final class RelaxedNames implements Iterable<String> {
      */
     enum Variation {
 
-                    NONE {
+        NONE {
+            @Override
+            public String apply(String value) {
+                return value;
+            }
 
-                        @Override
-                        public String apply(String value) {
-                            return value;
-                        }
+        },
 
-                    },
+        LOWERCASE {
+            @Override
+            public String apply(String value) {
+                return (value.isEmpty() ? value : value.toLowerCase(Locale.ENGLISH));
+            }
 
-                    LOWERCASE {
+        },
 
-                        @Override
-                        public String apply(String value) {
-                            return (value.isEmpty() ? value : value.toLowerCase(Locale.ENGLISH));
-                        }
+        UPPERCASE {
+            @Override
+            public String apply(String value) {
+                return (value.isEmpty() ? value : value.toUpperCase(Locale.ENGLISH));
+            }
 
-                    },
-
-                    UPPERCASE {
-
-                        @Override
-                        public String apply(String value) {
-                            return (value.isEmpty() ? value : value.toUpperCase(Locale.ENGLISH));
-                        }
-
-                    };
+        };
 
         public abstract String apply(String value);
 
@@ -98,107 +95,99 @@ public final class RelaxedNames implements Iterable<String> {
      */
     enum Manipulation {
 
-                       NONE {
+        NONE {
+            @Override
+            public String apply(String value) {
+                return value;
+            }
 
-                           @Override
-                           public String apply(String value) {
-                               return value;
-                           }
+        },
 
-                       },
+        HYPHEN_TO_UNDERSCORE {
+            @Override
+            public String apply(String value) {
+                return (value.indexOf('-') != -1 ? value.replace('-', '_') : value);
+            }
 
-                       HYPHEN_TO_UNDERSCORE {
+        },
 
-                           @Override
-                           public String apply(String value) {
-                               return (value.indexOf('-') != -1 ? value.replace('-', '_') : value);
-                           }
+        UNDERSCORE_TO_PERIOD {
+            @Override
+            public String apply(String value) {
+                return (value.indexOf('_') != -1 ? value.replace('_', '.') : value);
+            }
 
-                       },
+        },
 
-                       UNDERSCORE_TO_PERIOD {
+        PERIOD_TO_UNDERSCORE {
+            @Override
+            public String apply(String value) {
+                return (value.indexOf('.') != -1 ? value.replace('.', '_') : value);
+            }
 
-                           @Override
-                           public String apply(String value) {
-                               return (value.indexOf('_') != -1 ? value.replace('_', '.') : value);
-                           }
+        },
 
-                       },
+        CAMELCASE_TO_UNDERSCORE {
+            @Override
+            public String apply(String value) {
+                if (value.isEmpty()) {
+                    return value;
+                }
+                Matcher matcher = CAMEL_CASE_PATTERN.matcher(value);
+                if (!matcher.find()) {
+                    return value;
+                }
+                matcher = matcher.reset();
+                StringBuffer result = new StringBuffer();
+                while (matcher.find()) {
+                    matcher.appendReplacement(result,
+                            matcher.group(1) + '_' + StringUtils.uncapitalize(matcher.group(2)));
+                }
+                matcher.appendTail(result);
+                return result.toString();
+            }
 
-                       PERIOD_TO_UNDERSCORE {
+        },
 
-                           @Override
-                           public String apply(String value) {
-                               return (value.indexOf('.') != -1 ? value.replace('.', '_') : value);
-                           }
+        CAMELCASE_TO_HYPHEN {
+            @Override
+            public String apply(String value) {
+                if (value.isEmpty()) {
+                    return value;
+                }
+                Matcher matcher = CAMEL_CASE_PATTERN.matcher(value);
+                if (!matcher.find()) {
+                    return value;
+                }
+                matcher = matcher.reset();
+                StringBuffer result = new StringBuffer();
+                while (matcher.find()) {
+                    matcher.appendReplacement(result,
+                            matcher.group(1) + '-' + StringUtils.uncapitalize(matcher.group(2)));
+                }
+                matcher.appendTail(result);
+                return result.toString();
+            }
 
-                       },
+        },
 
-                       CAMELCASE_TO_UNDERSCORE {
+        SEPARATED_TO_CAMELCASE {
+            @Override
+            public String apply(String value) {
+                return separatedToCamelCase(value, false);
+            }
 
-                           @Override
-                           public String apply(String value) {
-                               if (value.isEmpty()) {
-                                   return value;
-                               }
-                               Matcher matcher = CAMEL_CASE_PATTERN.matcher(value);
-                               if (!matcher.find()) {
-                                   return value;
-                               }
-                               matcher = matcher.reset();
-                               StringBuffer result = new StringBuffer();
-                               while (matcher.find()) {
-                                   matcher.appendReplacement(result,
-                                       matcher.group(1) + '_' + StringUtils.uncapitalize(matcher.group(2)));
-                               }
-                               matcher.appendTail(result);
-                               return result.toString();
-                           }
+        },
 
-                       },
+        CASE_INSENSITIVE_SEPARATED_TO_CAMELCASE {
+            @Override
+            public String apply(String value) {
+                return separatedToCamelCase(value, true);
+            }
 
-                       CAMELCASE_TO_HYPHEN {
+        };
 
-                           @Override
-                           public String apply(String value) {
-                               if (value.isEmpty()) {
-                                   return value;
-                               }
-                               Matcher matcher = CAMEL_CASE_PATTERN.matcher(value);
-                               if (!matcher.find()) {
-                                   return value;
-                               }
-                               matcher = matcher.reset();
-                               StringBuffer result = new StringBuffer();
-                               while (matcher.find()) {
-                                   matcher.appendReplacement(result,
-                                       matcher.group(1) + '-' + StringUtils.uncapitalize(matcher.group(2)));
-                               }
-                               matcher.appendTail(result);
-                               return result.toString();
-                           }
-
-                       },
-
-                       SEPARATED_TO_CAMELCASE {
-
-                           @Override
-                           public String apply(String value) {
-                               return separatedToCamelCase(value, false);
-                           }
-
-                       },
-
-                       CASE_INSENSITIVE_SEPARATED_TO_CAMELCASE {
-
-                           @Override
-                           public String apply(String value) {
-                               return separatedToCamelCase(value, true);
-                           }
-
-                       };
-
-        private static final char[] SUFFIXES = new char[] { '_', '-', '.' };
+        private static final char[] SUFFIXES = new char[]{'_', '-', '.'};
 
         public abstract String apply(String value);
 
@@ -233,7 +222,7 @@ public final class RelaxedNames implements Iterable<String> {
         StringBuilder result = new StringBuilder();
         for (char c : name.toCharArray()) {
             result.append(Character.isUpperCase(c) && result.length() > 0
-                          && result.charAt(result.length() - 1) != '-' ? "-" + Character.toLowerCase(c) : c);
+                    && result.charAt(result.length() - 1) != '-' ? "-" + Character.toLowerCase(c) : c);
         }
         return new RelaxedNames(result.toString());
     }

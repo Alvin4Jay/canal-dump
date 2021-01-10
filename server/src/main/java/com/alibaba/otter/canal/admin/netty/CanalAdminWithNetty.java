@@ -22,28 +22,28 @@ import com.alibaba.otter.canal.server.netty.handler.FixedHeaderFrameDecoder;
 
 /**
  * 基于netty网络服务的server实现
- * 
+ *
  * @author jianghang 2012-7-12 下午01:34:49
  * @version 1.0.0
  */
 public class CanalAdminWithNetty extends AbstractCanalLifeCycle {
 
-    private String          ip;
-    private int             port;
-    private Channel         serverChannel = null;
-    private ServerBootstrap bootstrap     = null;
-    private ChannelGroup    childGroups   = null; // socket channel
-                                                  // container, used to
-                                                  // close sockets
-                                                  // explicitly.
-    private CanalAdmin      canalAdmin;
+    private String ip;
+    private int port;
+    private Channel serverChannel = null;
+    private ServerBootstrap bootstrap = null;
+    private ChannelGroup childGroups = null; // socket channel
+    // container, used to
+    // close sockets
+    // explicitly.
+    private CanalAdmin canalAdmin;
 
     private static class SingletonHolder {
 
         private static final CanalAdminWithNetty CANAL_ADMIN_WITH_NETTY = new CanalAdminWithNetty();
     }
 
-    private CanalAdminWithNetty(){
+    private CanalAdminWithNetty() {
         this.childGroups = new DefaultChannelGroup();
     }
 
@@ -55,7 +55,7 @@ public class CanalAdminWithNetty extends AbstractCanalLifeCycle {
         super.start();
 
         this.bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(),
-            Executors.newCachedThreadPool()));
+                Executors.newCachedThreadPool()));
         /*
          * enable keep-alive mechanism, handle abnormal network connection
          * scenarios on OS level. the threshold parameters are depended on OS.
@@ -76,9 +76,9 @@ public class CanalAdminWithNetty extends AbstractCanalLifeCycle {
                 pipelines.addLast(FixedHeaderFrameDecoder.class.getName(), new FixedHeaderFrameDecoder());
                 // support to maintain child socket channel.
                 pipelines.addLast(HandshakeInitializationHandler.class.getName(),
-                    new HandshakeInitializationHandler(childGroups));
+                        new HandshakeInitializationHandler(childGroups));
                 pipelines.addLast(ClientAuthenticationHandler.class.getName(),
-                    new ClientAuthenticationHandler(canalAdmin));
+                        new ClientAuthenticationHandler(canalAdmin));
 
                 SessionHandler sessionHandler = new SessionHandler(canalAdmin);
                 pipelines.addLast(SessionHandler.class.getName(), sessionHandler);

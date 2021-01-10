@@ -8,17 +8,17 @@ package com.alibaba.otter.canal.connector.core.config;
  */
 public class MQProperties {
 
-    private boolean flatMessage            = true;
-    private boolean databaseHash           = true;
+    private boolean flatMessage = true;
+    private boolean databaseHash = true;
     private boolean filterTransactionEntry = true;
-    private Integer parallelThreadSize     = 8;
-    private Integer fetchTimeout           = 100;
-    private Integer batchSize              = 50;
-    private String  accessChannel          = "local";
+    private Integer parallelThreadSize = 8;
+    private Integer fetchTimeout = 100;
+    private Integer batchSize = 50;
+    private String accessChannel = "local";
 
-    private String  aliyunAccessKey        = "";
-    private String  aliyunSecretKey        = "";
-    private int     aliyunUid              = 0;
+    private String aliyunAccessKey = "";
+    private String aliyunSecretKey = "";
+    private int aliyunUid = 0;
 
     public boolean isFlatMessage() {
         return flatMessage;

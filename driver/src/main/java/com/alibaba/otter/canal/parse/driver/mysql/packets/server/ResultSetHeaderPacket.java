@@ -11,18 +11,18 @@ import com.alibaba.otter.canal.parse.driver.mysql.utils.ByteHelper;
  * ---------------------------------------------------------------------------
  * Result Set Packet           1-250 (first byte of Length-Coded Binary)
  * </pre>
- * 
+ * <p>
  * The sequence of result set packet:
- * 
+ *
  * <pre>
  *   (Result Set Header Packet)  the number of columns
  *   (Field Packets)             column descriptors
  *   (EOF Packet)                marker: end of Field Packets
  *   (Row Data Packets)          row contents
  * (EOF Packet)                marker: end of Data Packets
- * 
+ *
  * <pre>
- * 
+ *
  * @author fujohnwang
  */
 public class ResultSetHeaderPacket extends PacketWithHeaderPacket {

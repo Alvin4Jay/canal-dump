@@ -37,14 +37,14 @@ public abstract class ByteHelper {
 
     /**
      * Read 4 bytes in Little-endian byte order.
-     * 
-     * @param data, the original byte array
+     *
+     * @param data,  the original byte array
      * @param index, start to read from.
      * @return
      */
     public static long readUnsignedIntLittleEndian(byte[] data, int index) {
         long result = (long) (data[index] & 0xFF) | (long) ((data[index + 1] & 0xFF) << 8)
-                      | (long) ((data[index + 2] & 0xFF) << 16) | (long) ((data[index + 3] & 0xFF) << 24);
+                | (long) ((data[index + 2] & 0xFF) << 16) | (long) ((data[index + 3] & 0xFF) << 24);
         return result;
     }
 

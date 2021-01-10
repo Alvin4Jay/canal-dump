@@ -32,16 +32,16 @@ import org.slf4j.LoggerFactory;
  */
 public class KuduTemplate {
 
-    private Logger           logger          = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private KuduClient       kuduClient;
-    private String           masters;
+    private KuduClient kuduClient;
+    private String masters;
 
     private final static int OPERATION_BATCH = 500;
 
-    private SimpleDateFormat sdf             = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public KuduTemplate(String master_str){
+    public KuduTemplate(String master_str) {
         this.masters = master_str;
         checkClient();
     }
@@ -54,9 +54,9 @@ public class KuduTemplate {
             // kudu master 以逗号分隔
             List<String> masterList = Arrays.asList(masters.split(","));
             kuduClient = new KuduClient.KuduClientBuilder(masterList).defaultOperationTimeoutMs(60000)
-                .defaultSocketReadTimeoutMs(60000)
-                .defaultAdminOperationTimeoutMs(60000)
-                .build();
+                    .defaultSocketReadTimeoutMs(60000)
+                    .defaultAdminOperationTimeoutMs(60000)
+                    .build();
         }
     }
 
@@ -221,7 +221,7 @@ public class KuduTemplate {
         KuduSession session = kuduClient.newSession(); // 创建写session,kudu必须通过session写入
         try {
             session.setFlushMode(SessionConfiguration.FlushMode.MANUAL_FLUSH); // 采取Flush方式
-                                                                               // 手动刷新
+            // 手动刷新
             session.setMutationBufferSpace(OPERATION_BATCH);
             // 获取元数据结构
             Map<String, Type> metaMap = new HashMap<>();

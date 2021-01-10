@@ -16,19 +16,21 @@ import com.alibaba.otter.canal.parse.CanalHASwitchable;
 import com.alibaba.otter.canal.protocol.ClientIdentity;
 import com.alibaba.otter.canal.protocol.Message;
 import com.alibaba.otter.canal.server.embedded.CanalServerWithEmbedded;
+
 @Ignore
 public abstract class BaseCanalServerWithEmbededTest {
 
-    protected static final String   cluster1       = "127.0.0.1:2188";
-    protected static final String   DESTINATION    = "example";
-    protected static final String   DETECTING_SQL  = "insert into retl.xdual values(1,now()) on duplicate key update x=now()";
-    protected static final String   MYSQL_ADDRESS  = "127.0.0.1";
-    protected static final String   USERNAME       = "canal";
-    protected static final String   PASSWORD       = "canal";
-    protected static final String   FILTER         = ".*\\\\..*";
+    protected static final String cluster1 = "127.0.0.1:2188";
+    protected static final String DESTINATION = "example";
+    protected static final String DETECTING_SQL = "insert into retl.xdual values(1,now()) on duplicate key update x=now()";
+    protected static final String MYSQL_ADDRESS = "127.0.0.1";
+    protected static final String USERNAME = "canal";
+    protected static final String PASSWORD = "canal";
+    protected static final String FILTER = ".*\\\\..*";
 
     private CanalServerWithEmbedded server;
-    private ClientIdentity          clientIdentity = new ClientIdentity(DESTINATION, (short) 1);                               ;
+    private ClientIdentity clientIdentity = new ClientIdentity(DESTINATION, (short) 1);
+    ;
 
     @Before
     public void setUp() {

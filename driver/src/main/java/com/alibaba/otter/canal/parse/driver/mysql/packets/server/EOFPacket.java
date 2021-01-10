@@ -9,8 +9,8 @@ import com.alibaba.otter.canal.parse.driver.mysql.utils.ByteHelper;
 public class EOFPacket extends PacketWithHeaderPacket {
 
     public byte fieldCount;
-    public int  warningCount;
-    public int  statusFlag;
+    public int warningCount;
+    public int statusFlag;
 
     /**
      * <pre>

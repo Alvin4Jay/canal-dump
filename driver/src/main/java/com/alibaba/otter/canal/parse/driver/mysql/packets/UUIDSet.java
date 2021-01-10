@@ -15,7 +15,7 @@ import com.alibaba.otter.canal.parse.driver.mysql.utils.ByteHelper;
  */
 public class UUIDSet {
 
-    public UUID           SID;
+    public UUID SID;
     public List<Interval> intervals;
 
     public byte[] encode() throws IOException {

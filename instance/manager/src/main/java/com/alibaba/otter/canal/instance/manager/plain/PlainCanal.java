@@ -12,13 +12,13 @@ import java.util.Properties;
 public class PlainCanal {
 
     private Properties properties;
-    private String     md5;
-    private String     status;
+    private String md5;
+    private String status;
 
-    public PlainCanal(){
+    public PlainCanal() {
     }
 
-    public PlainCanal(Properties properties, String status, String md5){
+    public PlainCanal(Properties properties, String status, String md5) {
         this.properties = properties;
         this.md5 = md5;
         this.status = status;

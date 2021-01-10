@@ -6,7 +6,7 @@ import com.google.common.collect.Maps;
 
 /**
  * canal数据的存储
- * 
+ *
  * @author wanshao 2017年7月27日 下午10:51:55
  * @since 3.2.5
  */

@@ -61,9 +61,9 @@ public class UserSyncJoinOneTest {
         esAdapter.getEsSyncService().sync(esSyncConfigs.values(), dml);
 
         GetResponse response = esAdapter.getEsConnection()
-            .getTransportClient()
-            .prepareGet("mytest_user", "_doc", "1")
-            .get();
+                .getTransportClient()
+                .prepareGet("mytest_user", "_doc", "1")
+                .get();
         Assert.assertEquals("Eric_", response.getSource().get("_name"));
     }
 
@@ -100,9 +100,9 @@ public class UserSyncJoinOneTest {
         esAdapter.getEsSyncService().sync(esSyncConfigs.values(), dml);
 
         GetResponse response = esAdapter.getEsConnection()
-            .getTransportClient()
-            .prepareGet("mytest_user", "_doc", "1")
-            .get();
+                .getTransportClient()
+                .prepareGet("mytest_user", "_doc", "1")
+                .get();
         Assert.assertEquals("Eric2_", response.getSource().get("_name"));
     }
 }

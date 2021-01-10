@@ -23,7 +23,7 @@ public class CanalMessageDeserializer {
                 switch (p.getType()) {
                     case MESSAGES: {
                         if (!p.getCompression().equals(Compression.NONE)
-                            && !p.getCompression().equals(Compression.COMPRESSIONCOMPATIBLEPROTO2)) {
+                                && !p.getCompression().equals(Compression.COMPRESSIONCOMPATIBLEPROTO2)) {
                             throw new CanalClientException("compression is not supported in this connector");
                         }
 

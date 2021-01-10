@@ -9,7 +9,7 @@ import com.alibaba.otter.canal.store.model.Event;
 
 /**
  * 处理一下一下heartbeat数据
- * 
+ *
  * @author jianghang 2013-10-8 下午6:03:53
  * @since 1.0.12
  */

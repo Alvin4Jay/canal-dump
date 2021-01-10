@@ -21,21 +21,21 @@ import com.alibaba.otter.canal.server.CanalMQStarter;
  */
 public class CanalStarter {
 
-    private static final Logger logger                    = LoggerFactory.getLogger(CanalStarter.class);
+    private static final Logger logger = LoggerFactory.getLogger(CanalStarter.class);
 
-    private static final String CONNECTOR_SPI_DIR         = "/plugin";
+    private static final String CONNECTOR_SPI_DIR = "/plugin";
     private static final String CONNECTOR_STANDBY_SPI_DIR = "/canal/plugin";
 
-    private CanalController     controller                = null;
-    private CanalMQProducer     canalMQProducer           = null;
-    private Thread              shutdownThread            = null;
-    private CanalMQStarter      canalMQStarter            = null;
+    private CanalController controller = null;
+    private CanalMQProducer canalMQProducer = null;
+    private Thread shutdownThread = null;
+    private CanalMQStarter canalMQStarter = null;
     private volatile Properties properties;
-    private volatile boolean    running                   = false;
+    private volatile boolean running = false;
 
     private CanalAdminWithNetty canalAdmin;
 
-    public CanalStarter(Properties properties){
+    public CanalStarter(Properties properties) {
         this.properties = properties;
     }
 
@@ -65,7 +65,7 @@ public class CanalStarter {
         if (!"tcp".equalsIgnoreCase(serverMode)) {
             ExtensionLoader<CanalMQProducer> loader = ExtensionLoader.getExtensionLoader(CanalMQProducer.class);
             canalMQProducer = loader
-                .getExtension(serverMode.toLowerCase(), CONNECTOR_SPI_DIR, CONNECTOR_STANDBY_SPI_DIR);
+                    .getExtension(serverMode.toLowerCase(), CONNECTOR_SPI_DIR, CONNECTOR_STANDBY_SPI_DIR);
             if (canalMQProducer != null) {
                 ClassLoader cl = Thread.currentThread().getContextClassLoader();
                 Thread.currentThread().setContextClassLoader(canalMQProducer.getClass().getClassLoader());
@@ -124,10 +124,10 @@ public class CanalStarter {
             String ip = CanalController.getProperty(properties, CanalConstants.CANAL_IP);
 
             logger.debug("canal admin port:{}, canal admin user:{}, canal admin password: {}, canal ip:{}",
-                port,
-                user,
-                passwd,
-                ip);
+                    port,
+                    user,
+                    passwd,
+                    ip);
 
             CanalAdminWithNetty canalAdminWithNetty = CanalAdminWithNetty.instance();
             canalAdminWithNetty.setCanalAdmin(canalAdmin);

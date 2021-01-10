@@ -12,11 +12,11 @@ import com.taobao.tddl.dbsync.binlog.JsonConversion.Json_enum_type;
 public class JsonConversion_Json_ValueTest {
 
     @Rule
-    public final ExpectedException thrown        = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     @SuppressWarnings("deprecation")
     @Rule
-    public final Timeout           globalTimeout = new Timeout(10000);
+    public final Timeout globalTimeout = new Timeout(10000);
 
     /* testedClasses: JsonConversion_Json_Value */
     // Test written by Diffblue Cover.

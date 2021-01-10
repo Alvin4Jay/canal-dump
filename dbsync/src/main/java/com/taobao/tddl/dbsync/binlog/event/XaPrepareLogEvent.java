@@ -11,12 +11,12 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
 public class XaPrepareLogEvent extends LogEvent {
 
     private boolean onePhase;
-    private int     formatId;
-    private int     gtridLength;
-    private int     bqualLength;
-    private byte[]  data;
+    private int formatId;
+    private int gtridLength;
+    private int bqualLength;
+    private byte[] data;
 
-    public XaPrepareLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent){
+    public XaPrepareLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent) {
         super(header);
 
         final int commonHeaderLen = descriptionEvent.getCommonHeaderLen();
@@ -33,7 +33,7 @@ public class XaPrepareLogEvent extends LogEvent {
 
         int MY_XIDDATASIZE = 128;
         if (MY_XIDDATASIZE >= gtridLength + bqualLength && gtridLength >= 0 && gtridLength <= 64 && bqualLength >= 0
-            && bqualLength <= 64) {
+                && bqualLength <= 64) {
             data = buffer.getData(gtridLength + bqualLength);
         } else {
             formatId = -1;

@@ -14,18 +14,18 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
 public class GtidLogEvent extends LogEvent {
 
     // / Length of the commit_flag in event encoding
-    public static final int ENCODED_FLAG_LENGTH         = 1;
+    public static final int ENCODED_FLAG_LENGTH = 1;
     // / Length of SID in event encoding
-    public static final int ENCODED_SID_LENGTH          = 16;
+    public static final int ENCODED_SID_LENGTH = 16;
     public static final int LOGICAL_TIMESTAMP_TYPE_CODE = 2;
 
-    private boolean         commitFlag;
-    private UUID            sid;
-    private long            gno;
-    private Long            lastCommitted;
-    private Long            sequenceNumber;
+    private boolean commitFlag;
+    private UUID sid;
+    private long gno;
+    private Long lastCommitted;
+    private Long sequenceNumber;
 
-    public GtidLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent){
+    public GtidLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent) {
         super(header);
 
         final int commonHeaderLen = descriptionEvent.commonHeaderLen;

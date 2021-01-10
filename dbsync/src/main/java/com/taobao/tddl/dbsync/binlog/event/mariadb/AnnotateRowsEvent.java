@@ -7,7 +7,7 @@ import com.taobao.tddl.dbsync.binlog.event.LogHeader;
 
 /**
  * mariadb的ANNOTATE_ROWS_EVENT类型
- * 
+ *
  * @author jianghang 2014-1-20 下午2:20:35
  * @since 1.0.17
  */
@@ -15,7 +15,7 @@ public class AnnotateRowsEvent extends IgnorableLogEvent {
 
     private String rowsQuery;
 
-    public AnnotateRowsEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent){
+    public AnnotateRowsEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent) {
         super(header, buffer, descriptionEvent);
 
         final int commonHeaderLen = descriptionEvent.getCommonHeaderLen();

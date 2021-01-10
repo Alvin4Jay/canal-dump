@@ -37,11 +37,11 @@ public class RelaxedDataBinder extends DataBinder {
         EXCLUDED_EDITORS = Collections.unmodifiableSet(excluded);
     }
 
-    private static final Object           BLANK       = new Object();
+    private static final Object BLANK = new Object();
 
-    private String                        namePrefix;
+    private String namePrefix;
 
-    private boolean                       ignoreNestedProperties;
+    private boolean ignoreNestedProperties;
 
     private MultiValueMap<String, String> nameAliases = new LinkedMultiValueMap<String, String>();
 
@@ -50,17 +50,17 @@ public class RelaxedDataBinder extends DataBinder {
      *
      * @param target the target into which properties are bound
      */
-    public RelaxedDataBinder(Object target){
+    public RelaxedDataBinder(Object target) {
         super(wrapTarget(target));
     }
 
     /**
      * Create a new {@link RelaxedDataBinder} instance.
      *
-     * @param target the target into which properties are bound
+     * @param target     the target into which properties are bound
      * @param namePrefix An optional prefix to be used when reading properties
      */
-    public RelaxedDataBinder(Object target, String namePrefix){
+    public RelaxedDataBinder(Object target, String namePrefix) {
         super(wrapTarget(target), (StringUtils.hasLength(namePrefix) ? namePrefix : DEFAULT_OBJECT_NAME));
         this.namePrefix = cleanNamePrefix(namePrefix);
     }
@@ -95,7 +95,7 @@ public class RelaxedDataBinder extends DataBinder {
     /**
      * Add aliases to the {@link DataBinder}.
      *
-     * @param name the property name to alias
+     * @param name  the property name to alias
      * @param alias aliases for the property names
      * @return this instance
      */
@@ -118,7 +118,7 @@ public class RelaxedDataBinder extends DataBinder {
      * dereferencing is also accepted.
      *
      * @param propertyValues the property values
-     * @param target the target object
+     * @param target         the target object
      * @return modified property values
      */
     private MutablePropertyValues modifyProperties(MutablePropertyValues propertyValues, Object target) {
@@ -191,14 +191,14 @@ public class RelaxedDataBinder extends DataBinder {
         for (PropertyValue value : propertyValues.getPropertyValues()) {
             String name = value.getName();
             for (String prefix : new RelaxedNames(stripLastDot(this.namePrefix))) {
-                for (String separator : new String[] { ".", "_" }) {
+                for (String separator : new String[]{".", "_"}) {
                     String candidate = (StringUtils.hasLength(prefix) ? prefix + separator : prefix);
                     if (name.startsWith(candidate)) {
                         name = name.substring(candidate.length());
                         if (!(this.ignoreNestedProperties && name.contains("."))) {
                             PropertyOrigin propertyOrigin = OriginCapablePropertyValue.getOrigin(value);
                             rtn.addPropertyValue(
-                                new OriginCapablePropertyValue(name, value.getValue(), propertyOrigin));
+                                    new OriginCapablePropertyValue(name, value.getValue(), propertyOrigin));
                         }
                     }
                 }
@@ -233,7 +233,7 @@ public class RelaxedDataBinder extends DataBinder {
      * </ul>
      *
      * @param wrapper a bean wrapper for the object to bind
-     * @param path the bean path to bind
+     * @param path    the bean path to bind
      * @return a transformed path with correct bean wrapper syntax
      */
     protected String normalizePath(BeanWrapper wrapper, String path) {
@@ -243,10 +243,10 @@ public class RelaxedDataBinder extends DataBinder {
     @Override
     protected AbstractPropertyBindingResult createBeanPropertyBindingResult() {
         return new RelaxedDataBinder.RelaxedBeanPropertyBindingResult(getTarget(),
-            getObjectName(),
-            isAutoGrowNestedPaths(),
-            getAutoGrowCollectionLimit(),
-            getConversionService());
+                getObjectName(),
+                isAutoGrowNestedPaths(),
+                getAutoGrowCollectionLimit(),
+                getConversionService());
     }
 
     private String initializePath(BeanWrapper wrapper, RelaxedDataBinder.BeanPath path, int index) {
@@ -314,7 +314,7 @@ public class RelaxedDataBinder extends DataBinder {
         String name = path.prefix(index);
         TypeDescriptor elementDescriptor = wrapper.getPropertyTypeDescriptor(name).getElementTypeDescriptor();
         if (!elementDescriptor.isMap() && !elementDescriptor.isCollection()
-            && !elementDescriptor.getType().equals(Object.class)) {
+                && !elementDescriptor.getType().equals(Object.class)) {
             return;
         }
         Object extend = new LinkedHashMap<String, Object>();
@@ -341,7 +341,7 @@ public class RelaxedDataBinder extends DataBinder {
         if (wrapper.isReadableProperty(extensionName)) {
             Object currentValue = wrapper.getPropertyValue(extensionName);
             if ((descriptor.isCollection() && currentValue instanceof Collection)
-                || (!descriptor.isCollection() && currentValue instanceof Map)) {
+                    || (!descriptor.isCollection() && currentValue instanceof Map)) {
                 return;
             }
         }
@@ -376,8 +376,8 @@ public class RelaxedDataBinder extends DataBinder {
                     return nested + "[" + name.substring(candidate.length() + 1) + "]";
                 }
                 String propertyName = resolvePropertyName(target,
-                    joinString(prefix, nested),
-                    name.substring(candidate.length() + 1));
+                        joinString(prefix, nested),
+                        name.substring(candidate.length() + 1));
                 if (propertyName != null) {
                     return joinString(nested, propertyName);
                 }
@@ -447,7 +447,7 @@ public class RelaxedDataBinder extends DataBinder {
 
         private Map<String, Object> map;
 
-        MapHolder(Map<String, Object> map){
+        MapHolder(Map<String, Object> map) {
             this.map = map;
         }
 
@@ -468,7 +468,7 @@ public class RelaxedDataBinder extends DataBinder {
 
         private List<PathNode> nodes;
 
-        BeanPath(String path){
+        BeanPath(String path) {
             this.nodes = splitPath(path);
         }
 
@@ -585,7 +585,7 @@ public class RelaxedDataBinder extends DataBinder {
 
             protected String name;
 
-            PathNode(String name){
+            PathNode(String name) {
                 this.name = name;
             }
 
@@ -593,7 +593,7 @@ public class RelaxedDataBinder extends DataBinder {
 
         private static class ArrayIndexNode extends RelaxedDataBinder.BeanPath.PathNode {
 
-            ArrayIndexNode(String name){
+            ArrayIndexNode(String name) {
                 super(name);
             }
 
@@ -606,7 +606,7 @@ public class RelaxedDataBinder extends DataBinder {
 
         private static class MapIndexNode extends RelaxedDataBinder.BeanPath.PathNode {
 
-            MapIndexNode(String name){
+            MapIndexNode(String name) {
                 super(name);
             }
 
@@ -619,7 +619,7 @@ public class RelaxedDataBinder extends DataBinder {
 
         private static class PropertyNode extends RelaxedDataBinder.BeanPath.PathNode {
 
-            PropertyNode(String name){
+            PropertyNode(String name) {
                 super(name);
             }
 
@@ -645,7 +645,7 @@ public class RelaxedDataBinder extends DataBinder {
         private RelaxedConversionService conversionService;
 
         RelaxedBeanPropertyBindingResult(Object target, String objectName, boolean autoGrowNestedPaths,
-                                         int autoGrowCollectionLimit, ConversionService conversionService){
+                                         int autoGrowCollectionLimit, ConversionService conversionService) {
             super(target, objectName, autoGrowNestedPaths, autoGrowCollectionLimit);
             this.conversionService = new RelaxedConversionService(conversionService);
         }
@@ -674,7 +674,7 @@ public class RelaxedDataBinder extends DataBinder {
             BENIGN_PROPERTY_SOURCE_NAMES = Collections.unmodifiableSet(names);
         }
 
-        RelaxedBeanWrapper(Object target){
+        RelaxedBeanWrapper(Object target) {
             super(target);
         }
 
@@ -704,16 +704,16 @@ public class RelaxedDataBinder extends DataBinder {
 
     public static class RelaxedBindingNotWritablePropertyException extends NotWritablePropertyException {
 
-        private final String         message;
+        private final String message;
 
         private final PropertyOrigin propertyOrigin;
 
-        RelaxedBindingNotWritablePropertyException(NotWritablePropertyException ex, PropertyOrigin propertyOrigin){
+        RelaxedBindingNotWritablePropertyException(NotWritablePropertyException ex, PropertyOrigin propertyOrigin) {
             super(ex.getBeanClass(), ex.getPropertyName());
             this.propertyOrigin = propertyOrigin;
             this.message = "Failed to bind '" + propertyOrigin.getName() + "' from '"
-                           + propertyOrigin.getSource().getName() + "' to '" + ex.getPropertyName() + "' property on '"
-                           + ex.getBeanClass().getName() + "'";
+                    + propertyOrigin.getSource().getName() + "' to '" + ex.getPropertyName() + "' property on '"
+                    + ex.getBeanClass().getName() + "'";
         }
 
         @Override

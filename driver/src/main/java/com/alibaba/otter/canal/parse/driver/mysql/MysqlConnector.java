@@ -26,36 +26,36 @@ import com.alibaba.otter.canal.parse.driver.mysql.utils.PacketManager;
 
 /**
  * 基于mysql socket协议的链接实现
- * 
+ *
  * @author jianghang 2013-2-18 下午09:22:30
  * @version 1.0.1
  */
 public class MysqlConnector {
 
-    private static final Logger logger            = LoggerFactory.getLogger(MysqlConnector.class);
-    private InetSocketAddress   address;
-    private String              username;
-    private String              password;
+    private static final Logger logger = LoggerFactory.getLogger(MysqlConnector.class);
+    private InetSocketAddress address;
+    private String username;
+    private String password;
 
-    private byte                charsetNumber     = 33;
-    private String              defaultSchema;
-    private int                 soTimeout         = 30 * 1000;
-    private int                 connTimeout       = 5 * 1000;
-    private int                 receiveBufferSize = 16 * 1024;
-    private int                 sendBufferSize    = 16 * 1024;
+    private byte charsetNumber = 33;
+    private String defaultSchema;
+    private int soTimeout = 30 * 1000;
+    private int connTimeout = 5 * 1000;
+    private int receiveBufferSize = 16 * 1024;
+    private int sendBufferSize = 16 * 1024;
 
-    private SocketChannel       channel;
-    private volatile boolean    dumping           = false;
+    private SocketChannel channel;
+    private volatile boolean dumping = false;
     // mysql connectinnId
-    private long                connectionId      = -1;
-    private AtomicBoolean       connected         = new AtomicBoolean(false);
+    private long connectionId = -1;
+    private AtomicBoolean connected = new AtomicBoolean(false);
 
-    public static final int     timeout           = 5 * 1000;                                     // 5s
+    public static final int timeout = 5 * 1000;                                     // 5s
 
-    public MysqlConnector(){
+    public MysqlConnector() {
     }
 
-    public MysqlConnector(InetSocketAddress address, String username, String password){
+    public MysqlConnector(InetSocketAddress address, String username, String password) {
         String addr = address.getHostString();
         int port = address.getPort();
         this.address = new InetSocketAddress(addr, port);
@@ -65,7 +65,7 @@ public class MysqlConnector {
     }
 
     public MysqlConnector(InetSocketAddress address, String username, String password, byte charsetNumber,
-                          String defaultSchema){
+                          String defaultSchema) {
         this(address, username, password);
 
         this.charsetNumber = charsetNumber;
@@ -309,10 +309,10 @@ public class MysqlConnector {
         byte[] dest = new byte[handshakePacket.seed.length + handshakePacket.restOfScrambleBuff.length];
         System.arraycopy(handshakePacket.seed, 0, dest, 0, handshakePacket.seed.length);
         System.arraycopy(handshakePacket.restOfScrambleBuff,
-            0,
-            dest,
-            handshakePacket.seed.length,
-            handshakePacket.restOfScrambleBuff.length);
+                0,
+                dest,
+                handshakePacket.seed.length,
+                handshakePacket.restOfScrambleBuff.length);
         return dest;
     }
 

@@ -22,12 +22,12 @@ import org.springframework.core.env.PropertySource;
  */
 public class PropertiesPropertySource extends MapPropertySource {
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public PropertiesPropertySource(String name, Properties source){
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public PropertiesPropertySource(String name, Properties source) {
         super(name, (Map) source);
     }
 
-    protected PropertiesPropertySource(String name, Map<String, Object> source){
+    protected PropertiesPropertySource(String name, Map<String, Object> source) {
         super(name, source);
     }
 

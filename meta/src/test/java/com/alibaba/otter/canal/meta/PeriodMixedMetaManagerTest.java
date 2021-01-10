@@ -14,6 +14,7 @@ import com.alibaba.otter.canal.common.zookeeper.ZookeeperPathUtils;
 import com.alibaba.otter.canal.protocol.ClientIdentity;
 import com.alibaba.otter.canal.protocol.position.Position;
 import com.alibaba.otter.canal.protocol.position.PositionRange;
+
 @Ignore
 public class PeriodMixedMetaManagerTest extends AbstractMetaManagerTest {
 

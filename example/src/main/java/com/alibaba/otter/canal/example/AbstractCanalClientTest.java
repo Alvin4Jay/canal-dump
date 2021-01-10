@@ -1,36 +1,30 @@
 package com.alibaba.otter.canal.example;
 
+import com.alibaba.otter.canal.client.CanalConnector;
+import com.alibaba.otter.canal.protocol.Message;
 import org.slf4j.MDC;
 import org.springframework.util.Assert;
 
-import com.alibaba.otter.canal.client.CanalConnector;
-import com.alibaba.otter.canal.protocol.Message;
-
 /**
  * 测试基类
- * 
+ *
  * @author jianghang 2013-4-15 下午04:17:12
  * @version 1.0.4
  */
 public class AbstractCanalClientTest extends BaseCanalClientTest {
 
-    public AbstractCanalClientTest(String destination){
+    public AbstractCanalClientTest(String destination) {
         this(destination, null);
     }
 
-    public AbstractCanalClientTest(String destination, CanalConnector connector){
+    public AbstractCanalClientTest(String destination, CanalConnector connector) {
         this.destination = destination;
         this.connector = connector;
     }
 
     protected void start() {
         Assert.notNull(connector, "connector is null");
-        thread = new Thread(new Runnable() {
-
-            public void run() {
-                process();
-            }
-        });
+        thread = new Thread(this::process);
 
         thread.setUncaughtExceptionHandler(handler);
         running = true;
@@ -44,6 +38,7 @@ public class AbstractCanalClientTest extends BaseCanalClientTest {
         running = false;
         if (thread != null) {
             try {
+                // 等待线程终止
                 thread.join();
             } catch (InterruptedException e) {
                 // ignore
@@ -61,7 +56,8 @@ public class AbstractCanalClientTest extends BaseCanalClientTest {
                 connector.connect();
                 connector.subscribe();
                 while (running) {
-                    Message message = connector.getWithoutAck(batchSize); // 获取指定数量的数据
+                    // 获取指定数量的数据
+                    Message message = connector.getWithoutAck(batchSize);
                     long batchId = message.getId();
                     int size = message.getEntries().size();
                     if (batchId == -1 || size == 0) {

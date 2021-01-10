@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class HaAuthenticationInfo {
 
-    private AuthenticationInfo       master;
+    private AuthenticationInfo master;
     private List<AuthenticationInfo> slavers = new ArrayList<AuthenticationInfo>();
 
     public AuthenticationInfo getMaster() {

@@ -52,7 +52,7 @@ public class MutliAviaterFilterTest {
 
     private void doRegexTest() {
         AviaterRegexFilter filter3 = new AviaterRegexFilter("otter2.otter_stability1|otter1.otter_stability1|"
-                                                            + RandomStringUtils.randomAlphabetic(200));
+                + RandomStringUtils.randomAlphabetic(200));
         boolean result = filter3.filter("otter1.otter_stability1");
         Assert.assertEquals(true, result);
         result = filter3.filter("otter2.otter_stability1");

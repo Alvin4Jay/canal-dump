@@ -2,8 +2,10 @@ package com.alibaba.otter.canal.example.rocketmq;
 
 import com.alibaba.otter.canal.client.rocketmq.RocketMQCanalConnector;
 import com.alibaba.otter.canal.protocol.Message;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -16,42 +18,42 @@ import org.springframework.util.Assert;
  */
 public class CanalRocketMQClientExample extends AbstractRocektMQTest {
 
-    protected final static Logger           logger  = LoggerFactory.getLogger(CanalRocketMQClientExample.class);
+    protected final static Logger logger = LoggerFactory.getLogger(CanalRocketMQClientExample.class);
 
-    private RocketMQCanalConnector          connector;
+    private RocketMQCanalConnector connector;
 
-    private static volatile boolean         running = false;
+    private static volatile boolean running = false;
 
-    private Thread                          thread  = null;
+    private Thread thread = null;
 
     private Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler() {
 
-                                                        public void uncaughtException(Thread t, Throwable e) {
-                                                            logger.error("parse events has an error", e);
-                                                        }
-                                                    };
+        public void uncaughtException(Thread t, Throwable e) {
+            logger.error("parse events has an error", e);
+        }
+    };
 
     public CanalRocketMQClientExample(String nameServers, String topic, String groupId) {
         connector = new RocketMQCanalConnector(nameServers, topic, groupId, 500, false);
     }
 
     public CanalRocketMQClientExample(String nameServers, String topic, String groupId, boolean enableMessageTrace,
-        String accessKey, String secretKey, String accessChannel, String namespace) {
+                                      String accessKey, String secretKey, String accessChannel, String namespace) {
         connector = new RocketMQCanalConnector(nameServers, topic, groupId, accessKey,
-            secretKey, -1, false, enableMessageTrace,
-            null, accessChannel, namespace);
+                secretKey, -1, false, enableMessageTrace,
+                null, accessChannel, namespace);
     }
 
     public static void main(String[] args) {
         try {
             final CanalRocketMQClientExample rocketMQClientExample = new CanalRocketMQClientExample(nameServers,
-                topic,
-                groupId,
-                enableMessageTrace,
-                accessKey,
-                secretKey,
-                accessChannel,
-                namespace);
+                    topic,
+                    groupId,
+                    enableMessageTrace,
+                    accessKey,
+                    secretKey,
+                    accessChannel,
+                    namespace);
             logger.info("## Start the rocketmq consumer: {}-{}", topic, groupId);
             rocketMQClientExample.start();
             logger.info("## The canal rocketmq consumer is running now ......");

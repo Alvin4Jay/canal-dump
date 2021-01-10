@@ -14,13 +14,13 @@ import java.util.Map;
  */
 public class SchemaItem {
 
-    private Map<String, TableItem>                aliasTableItems = new LinkedHashMap<>(); // 别名对应表名
-    private Map<String, FieldItem>                selectFields    = new LinkedHashMap<>(); // 查询字段
-    private String                                sql;
+    private Map<String, TableItem> aliasTableItems = new LinkedHashMap<>(); // 别名对应表名
+    private Map<String, FieldItem> selectFields = new LinkedHashMap<>(); // 查询字段
+    private String sql;
 
     private volatile Map<String, List<TableItem>> tableItemAliases;
     private volatile Map<String, List<FieldItem>> columnFields;
-    private volatile Boolean                      allFieldsSimple;
+    private volatile Boolean allFieldsSimple;
 
     public void init() {
         this.getTableItemAliases();
@@ -68,7 +68,7 @@ public class SchemaItem {
                     tableItemAliases = new LinkedHashMap<>();
                     aliasTableItems.forEach((alias, tableItem) -> {
                         List<TableItem> aliases = tableItemAliases
-                            .computeIfAbsent(tableItem.getTableName().toLowerCase(), k -> new ArrayList<>());
+                                .computeIfAbsent(tableItem.getTableName().toLowerCase(), k -> new ArrayList<>());
                         aliases.add(tableItem);
                     });
                 }
@@ -83,25 +83,25 @@ public class SchemaItem {
                 if (columnFields == null) {
                     columnFields = new LinkedHashMap<>();
                     getSelectFields()
-                        .forEach((fieldName, fieldItem) -> fieldItem.getColumnItems().forEach(columnItem -> {
-                            // TableItem tableItem = getAliasTableItems().get(columnItem.getOwner());
-                            // if (!tableItem.isSubQuery()) {
-                            //当数据列并非原始列时，columnName是空的，例如concat('px',id)
-                            if(columnItem.getColumnName() != null) {
-                                List<FieldItem> fieldItems = columnFields.computeIfAbsent(
-                                        columnItem.getOwner() + "." + columnItem.getColumnName(),
-                                        k -> new ArrayList<>());
-                                fieldItems.add(fieldItem);
-                            }
-                            // } else {
-                            // tableItem.getSubQueryFields().forEach(subQueryField -> {
-                            // List<FieldItem> fieldItems = columnFields.computeIfAbsent(
-                            // columnItem.getOwner() + "." + subQueryField.getColumn().getColumnName(),
-                            // k -> new ArrayList<>());
-                            // fieldItems.add(fieldItem);
-                            // });
-                            // }
-                        }));
+                            .forEach((fieldName, fieldItem) -> fieldItem.getColumnItems().forEach(columnItem -> {
+                                // TableItem tableItem = getAliasTableItems().get(columnItem.getOwner());
+                                // if (!tableItem.isSubQuery()) {
+                                //当数据列并非原始列时，columnName是空的，例如concat('px',id)
+                                if (columnItem.getColumnName() != null) {
+                                    List<FieldItem> fieldItems = columnFields.computeIfAbsent(
+                                            columnItem.getOwner() + "." + columnItem.getColumnName(),
+                                            k -> new ArrayList<>());
+                                    fieldItems.add(fieldItem);
+                                }
+                                // } else {
+                                // tableItem.getSubQueryFields().forEach(subQueryField -> {
+                                // List<FieldItem> fieldItems = columnFields.computeIfAbsent(
+                                // columnItem.getOwner() + "." + subQueryField.getColumn().getColumnName(),
+                                // k -> new ArrayList<>());
+                                // fieldItems.add(fieldItem);
+                                // });
+                                // }
+                            }));
                 }
             }
         }
@@ -145,22 +145,22 @@ public class SchemaItem {
 
     public static class TableItem {
 
-        private SchemaItem                               schemaItem;
+        private SchemaItem schemaItem;
 
-        private String                                   schema;
-        private String                                   tableName;
-        private String                                   alias;
-        private String                                   subQuerySql;
-        private List<FieldItem>                          subQueryFields = new ArrayList<>();
-        private List<RelationFieldsPair>                 relationFields = new ArrayList<>();
+        private String schema;
+        private String tableName;
+        private String alias;
+        private String subQuerySql;
+        private List<FieldItem> subQueryFields = new ArrayList<>();
+        private List<RelationFieldsPair> relationFields = new ArrayList<>();
 
-        private boolean                                  main;
-        private boolean                                  subQuery;
+        private boolean main;
+        private boolean subQuery;
 
         private volatile Map<FieldItem, List<FieldItem>> relationTableFields;               // 当前表关联条件字段对应主表查询字段
-        private volatile List<FieldItem>                 relationSelectFieldItems;          // 子表所在主表的查询字段
+        private volatile List<FieldItem> relationSelectFieldItems;          // 子表所在主表的查询字段
 
-        public TableItem(SchemaItem schemaItem){
+        public TableItem(SchemaItem schemaItem) {
             this.schemaItem = schemaItem;
         }
 
@@ -254,18 +254,18 @@ public class SchemaItem {
 
                             if (currentTableRelField != null) {
                                 List<FieldItem> selectFieldItem = getSchemaItem().getColumnFields()
-                                    .get(leftFieldItem.getOwner() + "." + leftFieldItem.getColumn().getColumnName());
+                                        .get(leftFieldItem.getOwner() + "." + leftFieldItem.getColumn().getColumnName());
                                 if (selectFieldItem != null && !selectFieldItem.isEmpty()) {
                                     relationTableFields.put(currentTableRelField, selectFieldItem);
                                 } else {
                                     selectFieldItem = getSchemaItem().getColumnFields()
-                                        .get(rightFieldItem.getOwner() + "."
-                                             + rightFieldItem.getColumn().getColumnName());
+                                            .get(rightFieldItem.getOwner() + "."
+                                                    + rightFieldItem.getColumn().getColumnName());
                                     if (selectFieldItem != null && !selectFieldItem.isEmpty()) {
                                         relationTableFields.put(currentTableRelField, selectFieldItem);
                                     } else {
                                         throw new UnsupportedOperationException(
-                                            "Relation condition column must in select columns.");
+                                                "Relation condition column must in select columns.");
                                     }
                                 }
                             }
@@ -299,7 +299,7 @@ public class SchemaItem {
         private FieldItem leftFieldItem;
         private FieldItem rightFieldItem;
 
-        public RelationFieldsPair(FieldItem leftFieldItem, FieldItem rightFieldItem){
+        public RelationFieldsPair(FieldItem leftFieldItem, FieldItem rightFieldItem) {
             this.leftFieldItem = leftFieldItem;
             this.rightFieldItem = rightFieldItem;
         }
@@ -323,13 +323,13 @@ public class SchemaItem {
 
     public static class FieldItem {
 
-        private String           fieldName;
-        private String           expr;
+        private String fieldName;
+        private String expr;
         private List<ColumnItem> columnItems = new ArrayList<>();
-        private List<String>     owners      = new ArrayList<>();
+        private List<String> owners = new ArrayList<>();
 
-        private boolean          method;
-        private boolean          binaryOp;
+        private boolean method;
+        private boolean binaryOp;
 
         public String getFieldName() {
             return fieldName;

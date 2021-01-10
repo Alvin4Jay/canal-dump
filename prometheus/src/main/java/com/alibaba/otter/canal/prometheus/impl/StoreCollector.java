@@ -28,33 +28,34 @@ import static com.alibaba.otter.canal.prometheus.CanalInstanceExports.DEST_LABEL
  */
 public class StoreCollector extends Collector implements InstanceRegistry {
 
-    private static final Logger                             logger           = LoggerFactory.getLogger(SinkCollector.class);
-    private static final String                             PRODUCE          = "canal_instance_store_produce_seq";
-    private static final String                             CONSUME          = "canal_instance_store_consume_seq";
-    private static final String                             STORE            = "canal_instance_store";
-    private static final String                             PRODUCE_MEM      = "canal_instance_store_produce_mem";
-    private static final String                             CONSUME_MEM      = "canal_instance_store_consume_mem";
-    private static final String                             PUT_DELAY        = "canal_instance_put_delay";
-    private static final String                             GET_DELAY        = "canal_instance_get_delay";
-    private static final String                             ACK_DELAY        = "canal_instance_ack_delay";
-    private static final String                             PUT_ROWS         = "canal_instance_put_rows";
-    private static final String                             GET_ROWS         = "canal_instance_get_rows";
-    private static final String                             ACK_ROWS         = "canal_instance_ack_rows";
-    private static final String                             PRODUCE_HELP     = "Produced events counter of canal instance";
-    private static final String                             CONSUME_HELP     = "Consumed events counter of canal instance";
-    private static final String                             STORE_HELP       = "Canal instance info";
-    private static final String                             PRODUCE_MEM_HELP = "Produced mem bytes of canal instance";
-    private static final String                             CONSUME_MEM_HELP = "Consumed mem bytes of canal instance";
-    private static final String                             PUT_DELAY_HELP   = "Traffic delay of canal instance put";
-    private static final String                             GET_DELAY_HELP   = "Traffic delay of canal instance get";
-    private static final String                             ACK_DELAY_HELP   = "Traffic delay of canal instance ack";
-    private static final String                             PUT_ROWS_HELP    = "Put table rows of canal instance";
-    private static final String                             GET_ROWS_HELP    = "Got table rows of canal instance";
-    private static final String                             ACK_ROWS_HELP    = "Acked table rows of canal instance";
-    private final ConcurrentMap<String, StoreMetricsHolder> instances        = new ConcurrentHashMap<String, StoreMetricsHolder>();
-    private final List<String>                              storeLabelsList  = Arrays.asList(DEST, "batchMode", "size");
+    private static final Logger logger = LoggerFactory.getLogger(SinkCollector.class);
+    private static final String PRODUCE = "canal_instance_store_produce_seq";
+    private static final String CONSUME = "canal_instance_store_consume_seq";
+    private static final String STORE = "canal_instance_store";
+    private static final String PRODUCE_MEM = "canal_instance_store_produce_mem";
+    private static final String CONSUME_MEM = "canal_instance_store_consume_mem";
+    private static final String PUT_DELAY = "canal_instance_put_delay";
+    private static final String GET_DELAY = "canal_instance_get_delay";
+    private static final String ACK_DELAY = "canal_instance_ack_delay";
+    private static final String PUT_ROWS = "canal_instance_put_rows";
+    private static final String GET_ROWS = "canal_instance_get_rows";
+    private static final String ACK_ROWS = "canal_instance_ack_rows";
+    private static final String PRODUCE_HELP = "Produced events counter of canal instance";
+    private static final String CONSUME_HELP = "Consumed events counter of canal instance";
+    private static final String STORE_HELP = "Canal instance info";
+    private static final String PRODUCE_MEM_HELP = "Produced mem bytes of canal instance";
+    private static final String CONSUME_MEM_HELP = "Consumed mem bytes of canal instance";
+    private static final String PUT_DELAY_HELP = "Traffic delay of canal instance put";
+    private static final String GET_DELAY_HELP = "Traffic delay of canal instance get";
+    private static final String ACK_DELAY_HELP = "Traffic delay of canal instance ack";
+    private static final String PUT_ROWS_HELP = "Put table rows of canal instance";
+    private static final String GET_ROWS_HELP = "Got table rows of canal instance";
+    private static final String ACK_ROWS_HELP = "Acked table rows of canal instance";
+    private final ConcurrentMap<String, StoreMetricsHolder> instances = new ConcurrentHashMap<String, StoreMetricsHolder>();
+    private final List<String> storeLabelsList = Arrays.asList(DEST, "batchMode", "size");
 
-    private StoreCollector() {}
+    private StoreCollector() {
+    }
 
     private static class SingletonHolder {
         private static final StoreCollector SINGLETON = new StoreCollector();
@@ -175,18 +176,18 @@ public class StoreCollector extends Collector implements InstanceRegistry {
     }
 
     private class StoreMetricsHolder {
-        private AtomicLong   putSeq;
-        private AtomicLong   ackSeq;
-        private BatchMode    batchMode;
-        private AtomicLong   putMemSize;
-        private AtomicLong   ackMemSize;
-        private AtomicLong   putExecTime;
-        private AtomicLong   getExecTime;
-        private AtomicLong   ackExecTime;
-        private AtomicLong   putTableRows;
-        private AtomicLong   getTableRows;
-        private AtomicLong   ackTableRows;
-        private int          size;
+        private AtomicLong putSeq;
+        private AtomicLong ackSeq;
+        private BatchMode batchMode;
+        private AtomicLong putMemSize;
+        private AtomicLong ackMemSize;
+        private AtomicLong putExecTime;
+        private AtomicLong getExecTime;
+        private AtomicLong ackExecTime;
+        private AtomicLong putTableRows;
+        private AtomicLong getTableRows;
+        private AtomicLong ackTableRows;
+        private int size;
         private List<String> destLabelValues;
         private List<String> storeLabelValues;
     }

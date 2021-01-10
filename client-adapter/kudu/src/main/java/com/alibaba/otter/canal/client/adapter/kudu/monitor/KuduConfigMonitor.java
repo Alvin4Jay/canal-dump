@@ -25,13 +25,13 @@ import com.alibaba.otter.canal.client.adapter.support.Util;
  */
 public class KuduConfigMonitor {
 
-    private static final Logger   logger      = LoggerFactory.getLogger(KuduConfigMonitor.class);
+    private static final Logger logger = LoggerFactory.getLogger(KuduConfigMonitor.class);
 
-    private static final String   adapterName = "kudu";
+    private static final String adapterName = "kudu";
 
-    private KuduAdapter           kuduAdapter;
+    private KuduAdapter kuduAdapter;
 
-    private Properties            envProperties;
+    private Properties envProperties;
 
     private FileAlterationMonitor fileMonitor;
 
@@ -41,7 +41,7 @@ public class KuduConfigMonitor {
         File confDir = Util.getConfDirPath(adapterName);
         try {
             FileAlterationObserver observer = new FileAlterationObserver(confDir,
-                FileFilterUtils.and(FileFilterUtils.fileFileFilter(), FileFilterUtils.suffixFileFilter("yml")));
+                    FileFilterUtils.and(FileFilterUtils.fileFileFilter(), FileFilterUtils.suffixFileFilter("yml")));
             FileListener listener = new FileListener();
             observer.addListener(listener);
             fileMonitor = new FileAlterationMonitor(3000, observer);
@@ -75,10 +75,10 @@ public class KuduConfigMonitor {
                 // 加载新增的配置文件
                 String configContent = MappingConfigsLoader.loadConfig(adapterName + File.separator + file.getName());
                 KuduMappingConfig config = YmlConfigBinder.bindYmlToObj(null,
-                    configContent,
-                    KuduMappingConfig.class,
-                    null,
-                    envProperties);
+                        configContent,
+                        KuduMappingConfig.class,
+                        null,
+                        envProperties);
                 if (config == null) {
                     return;
                 }
@@ -99,16 +99,16 @@ public class KuduConfigMonitor {
                 if (kuduAdapter.getKuduMapping().containsKey(file.getName())) {
                     // 加载配置文件
                     String configContent = MappingConfigsLoader.loadConfig(adapterName + File.separator
-                                                                           + file.getName());
+                            + file.getName());
                     if (configContent == null) {
                         onFileDelete(file);
                         return;
                     }
                     KuduMappingConfig config = YmlConfigBinder.bindYmlToObj(null,
-                        configContent,
-                        KuduMappingConfig.class,
-                        null,
-                        envProperties);
+                            configContent,
+                            KuduMappingConfig.class,
+                            null,
+                            envProperties);
                     if (config == null) {
                         return;
                     }
@@ -146,9 +146,9 @@ public class KuduConfigMonitor {
         private void addConfigToCache(File file, KuduMappingConfig config) {
             kuduAdapter.getKuduMapping().put(file.getName(), config);
             Map<String, KuduMappingConfig> configMap = kuduAdapter.getMappingConfigCache()
-                .computeIfAbsent(StringUtils.trimToEmpty(config.getDestination()) + "."
-                                 + config.getKuduMapping().getDatabase() + "." + config.getKuduMapping().getTable(),
-                    k1 -> new HashMap<>());
+                    .computeIfAbsent(StringUtils.trimToEmpty(config.getDestination()) + "."
+                                    + config.getKuduMapping().getDatabase() + "." + config.getKuduMapping().getTable(),
+                            k1 -> new HashMap<>());
             configMap.put(file.getName(), config);
         }
 

@@ -14,21 +14,21 @@ import java.util.Set;
  */
 class DefaultPropertyNamePatternsMatcher implements PropertyNamePatternsMatcher {
 
-    private final char[]   delimiters;
+    private final char[] delimiters;
 
-    private final boolean  ignoreCase;
+    private final boolean ignoreCase;
 
     private final String[] names;
 
-    protected DefaultPropertyNamePatternsMatcher(char[] delimiters, String... names){
+    protected DefaultPropertyNamePatternsMatcher(char[] delimiters, String... names) {
         this(delimiters, false, names);
     }
 
-    protected DefaultPropertyNamePatternsMatcher(char[] delimiters, boolean ignoreCase, String... names){
+    protected DefaultPropertyNamePatternsMatcher(char[] delimiters, boolean ignoreCase, String... names) {
         this(delimiters, ignoreCase, new HashSet<String>(Arrays.asList(names)));
     }
 
-    DefaultPropertyNamePatternsMatcher(char[] delimiters, boolean ignoreCase, Set<String> names){
+    DefaultPropertyNamePatternsMatcher(char[] delimiters, boolean ignoreCase, Set<String> names) {
         this.delimiters = delimiters;
         this.ignoreCase = ignoreCase;
         this.names = names.toArray(new String[names.size()]);

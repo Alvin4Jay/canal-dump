@@ -23,26 +23,26 @@ import com.google.common.collect.MigrateMap;
 
 /**
  * 基于定时刷新的策略的mixed实现
- * 
+ *
  * <pre>
  * 几个优化：
  * 1. 去除batch数据刷新到zk中，切换时batch数据可忽略，重新从头开始获取
  * 2. cursor的更新，启用定时刷新，合并多次请求。如果最近没有变化则不更新
  * </pre>
- * 
+ *
  * @author jianghang 2012-9-11 下午02:41:15
  * @version 1.0.0
  */
 public class PeriodMixedMetaManager extends MemoryMetaManager implements CanalMetaManager {
 
-    private static final Logger      logger     = LoggerFactory.getLogger(PeriodMixedMetaManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(PeriodMixedMetaManager.class);
     private ScheduledExecutorService executor;
-    private ZooKeeperMetaManager     zooKeeperMetaManager;
+    private ZooKeeperMetaManager zooKeeperMetaManager;
     @SuppressWarnings("serial")
-    private final Position           nullCursor = new Position() {
-                                                };
-    private long                     period     = 1000;                                                 // 单位ms
-    private Set<ClientIdentity>      updateCursorTasks;
+    private final Position nullCursor = new Position() {
+    };
+    private long period = 1000;                                                 // 单位ms
+    private Set<ClientIdentity> updateCursorTasks;
 
     public void start() {
         super.start();

@@ -59,9 +59,9 @@ public class RoleSyncJoinOne2Test {
         esAdapter.getEsSyncService().sync(esSyncConfigs.values(), dml);
 
         GetResponse response = esAdapter.getEsConnection()
-            .getTransportClient()
-            .prepareGet("mytest_user", "_doc", "1")
-            .get();
+                .getTransportClient()
+                .prepareGet("mytest_user", "_doc", "1")
+                .get();
         Assert.assertEquals("admin_", response.getSource().get("_role_name"));
     }
 
@@ -99,9 +99,9 @@ public class RoleSyncJoinOne2Test {
         esAdapter.getEsSyncService().sync(esSyncConfigs.values(), dml);
 
         GetResponse response = esAdapter.getEsConnection()
-            .getTransportClient()
-            .prepareGet("mytest_user", "_doc", "1")
-            .get();
+                .getTransportClient()
+                .prepareGet("mytest_user", "_doc", "1")
+                .get();
         Assert.assertEquals("admin3_", response.getSource().get("_role_name"));
     }
 }

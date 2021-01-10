@@ -19,27 +19,27 @@ import com.alibaba.otter.canal.protocol.position.EntryPosition;
 
 public abstract class AbstractMysqlEventParser extends AbstractEventParser {
 
-    protected static final long    BINLOG_START_OFFEST       = 4L;
+    protected static final long BINLOG_START_OFFEST = 4L;
 
-    protected TableMetaTSDBFactory tableMetaTSDBFactory      = new DefaultTableMetaTSDBFactory();
-    protected boolean              enableTsdb                = false;
-    protected int                  tsdbSnapshotInterval      = 24;
-    protected int                  tsdbSnapshotExpire        = 360;
-    protected String               tsdbSpringXml;
-    protected TableMetaTSDB        tableMetaTSDB;
+    protected TableMetaTSDBFactory tableMetaTSDBFactory = new DefaultTableMetaTSDBFactory();
+    protected boolean enableTsdb = false;
+    protected int tsdbSnapshotInterval = 24;
+    protected int tsdbSnapshotExpire = 360;
+    protected String tsdbSpringXml;
+    protected TableMetaTSDB tableMetaTSDB;
 
     // 编码信息
-    protected byte                 connectionCharsetNumber   = (byte) 33;
-    protected Charset              connectionCharset         = Charset.forName("UTF-8");
-    protected boolean              filterQueryDcl            = false;
-    protected boolean              filterQueryDml            = false;
-    protected boolean              filterQueryDdl            = false;
-    protected boolean              filterRows                = false;
-    protected boolean              filterTableError          = false;
-    protected boolean              useDruidDdlFilter         = true;
+    protected byte connectionCharsetNumber = (byte) 33;
+    protected Charset connectionCharset = Charset.forName("UTF-8");
+    protected boolean filterQueryDcl = false;
+    protected boolean filterQueryDml = false;
+    protected boolean filterQueryDdl = false;
+    protected boolean filterRows = false;
+    protected boolean filterTableError = false;
+    protected boolean useDruidDdlFilter = true;
     // instance received binlog bytes
-    protected final AtomicLong     receivedBinlogBytes       = new AtomicLong(0L);
-    private final AtomicLong       eventsPublishBlockingTime = new AtomicLong(0L);
+    protected final AtomicLong receivedBinlogBytes = new AtomicLong(0L);
+    private final AtomicLong eventsPublishBlockingTime = new AtomicLong(0L);
 
     protected BinlogParser buildParser() {
         LogEventConvert convert = new LogEventConvert();
@@ -50,7 +50,7 @@ public abstract class AbstractMysqlEventParser extends AbstractEventParser {
         if (eventBlackFilter != null && eventBlackFilter instanceof AviaterRegexFilter) {
             convert.setNameBlackFilter((AviaterRegexFilter) eventBlackFilter);
         }
-        
+
         convert.setFieldFilterMap(getFieldFilterMap());
         convert.setFieldBlackFilterMap(getFieldBlackFilterMap());
 
@@ -93,13 +93,13 @@ public abstract class AbstractMysqlEventParser extends AbstractEventParser {
             }
         }
     }
-    
+
     @Override
     public void setFieldFilter(String fieldFilter) {
-    	super.setFieldFilter(fieldFilter);
-    	
-    	// 触发一下filter变更
-    	if (binlogParser instanceof LogEventConvert) {
+        super.setFieldFilter(fieldFilter);
+
+        // 触发一下filter变更
+        if (binlogParser instanceof LogEventConvert) {
             ((LogEventConvert) binlogParser).setFieldFilterMap(getFieldFilterMap());
         }
 
@@ -107,13 +107,13 @@ public abstract class AbstractMysqlEventParser extends AbstractEventParser {
             ((DatabaseTableMeta) tableMetaTSDB).setFieldFilterMap(getFieldFilterMap());
         }
     }
-    
+
     @Override
     public void setFieldBlackFilter(String fieldBlackFilter) {
-    	super.setFieldBlackFilter(fieldBlackFilter);
-    	
-    	// 触发一下filter变更
-    	if (binlogParser instanceof LogEventConvert) {
+        super.setFieldBlackFilter(fieldBlackFilter);
+
+        // 触发一下filter变更
+        if (binlogParser instanceof LogEventConvert) {
             ((LogEventConvert) binlogParser).setFieldBlackFilterMap(getFieldBlackFilterMap());
         }
 
@@ -124,7 +124,7 @@ public abstract class AbstractMysqlEventParser extends AbstractEventParser {
 
     /**
      * 回滚到指定位点
-     * 
+     *
      * @param position
      * @return
      */
@@ -170,10 +170,10 @@ public abstract class AbstractMysqlEventParser extends AbstractEventParser {
 
     protected MultiStageCoprocessor buildMultiStageCoprocessor() {
         MysqlMultiStageCoprocessor mysqlMultiStageCoprocessor = new MysqlMultiStageCoprocessor(parallelBufferSize,
-            parallelThreadSize,
-            (LogEventConvert) binlogParser,
-            transactionBuffer,
-            destination);
+                parallelThreadSize,
+                (LogEventConvert) binlogParser,
+                transactionBuffer,
+                destination);
         mysqlMultiStageCoprocessor.setEventsPublishBlockingTime(eventsPublishBlockingTime);
         return mysqlMultiStageCoprocessor;
     }

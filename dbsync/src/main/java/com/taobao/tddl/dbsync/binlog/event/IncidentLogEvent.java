@@ -31,24 +31,28 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
  * <td>The message, if present. Not null terminated.</td>
  * </tr>
  * </table>
- * 
+ *
  * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
  * @version 1.0
  */
 public final class IncidentLogEvent extends LogEvent {
 
-    public static final int INCIDENT_NONE        = 0;
+    public static final int INCIDENT_NONE = 0;
 
-    /** There are possibly lost events in the replication stream */
+    /**
+     * There are possibly lost events in the replication stream
+     */
     public static final int INCIDENT_LOST_EVENTS = 1;
 
-    /** Shall be last event of the enumeration */
-    public static final int INCIDENT_COUNT       = 2;
+    /**
+     * Shall be last event of the enumeration
+     */
+    public static final int INCIDENT_COUNT = 2;
 
-    private final int       incident;
-    private final String    message;
+    private final int incident;
+    private final String message;
 
-    public IncidentLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent){
+    public IncidentLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent) {
         super(header);
 
         final int commonHeaderLen = descriptionEvent.commonHeaderLen;

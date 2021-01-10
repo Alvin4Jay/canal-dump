@@ -10,15 +10,15 @@ import com.alibaba.otter.canal.parse.driver.mysql.utils.ByteHelper;
 
 /**
  * semi ack command
- * 
+ *
  * @author amos_chen
  */
 public class SemiAckCommandPacket extends CommandPacket {
 
-    public long   binlogPosition;
+    public long binlogPosition;
     public String binlogFileName;
 
-    public SemiAckCommandPacket(){
+    public SemiAckCommandPacket() {
 
     }
 
@@ -35,7 +35,7 @@ public class SemiAckCommandPacket extends CommandPacket {
      *  1                            semi mark
      *  8                            binlog position to start at (little endian)
      *  n                            binlog file name
-     * 
+     *
      * </pre>
      */
     public byte[] toBytes() throws IOException {

@@ -50,21 +50,21 @@ import com.alibaba.otter.canal.parse.inbound.mysql.rds.data.BinlogFile;
  */
 public class BinlogDownloadQueue {
 
-    private static final Logger             logger        = LoggerFactory.getLogger(BinlogDownloadQueue.class);
-    private static final int                TIMEOUT       = 10000;
+    private static final Logger logger = LoggerFactory.getLogger(BinlogDownloadQueue.class);
+    private static final int TIMEOUT = 10000;
 
     private LinkedBlockingQueue<BinlogFile> downloadQueue = new LinkedBlockingQueue<BinlogFile>();
-    private LinkedBlockingQueue<Runnable>   taskQueue     = new LinkedBlockingQueue<Runnable>();
-    private LinkedList<BinlogFile>          binlogList;
-    private final int                       batchFileSize;
-    private Thread                          downloadThread;
-    public boolean                          running       = true;
-    private final String                    destDir;
-    private String                          hostId;
-    private int                             currentSize;
-    private String                          lastDownload;
+    private LinkedBlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<Runnable>();
+    private LinkedList<BinlogFile> binlogList;
+    private final int batchFileSize;
+    private Thread downloadThread;
+    public boolean running = true;
+    private final String destDir;
+    private String hostId;
+    private int currentSize;
+    private String lastDownload;
 
-    public BinlogDownloadQueue(List<BinlogFile> downloadQueue, int batchFileSize, String destDir) throws IOException{
+    public BinlogDownloadQueue(List<BinlogFile> downloadQueue, int batchFileSize, String destDir) throws IOException {
         this.binlogList = new LinkedList(downloadQueue);
         this.batchFileSize = batchFileSize;
         this.destDir = destDir;
@@ -196,22 +196,22 @@ public class BinlogDownloadQueue {
             }).build();
 
             httpClient = HttpClientBuilder.create()
-                .setSSLContext(sslContext)
-                .setConnectionManager(new PoolingHttpClientConnectionManager(RegistryBuilder.<ConnectionSocketFactory> create()
-                    .register("http", PlainConnectionSocketFactory.INSTANCE)
-                    .register("https", new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE))
-                    .build()))
-                .build();
+                    .setSSLContext(sslContext)
+                    .setConnectionManager(new PoolingHttpClientConnectionManager(RegistryBuilder.<ConnectionSocketFactory>create()
+                            .register("http", PlainConnectionSocketFactory.INSTANCE)
+                            .register("https", new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE))
+                            .build()))
+                    .build();
         } else {
             httpClient = HttpClientBuilder.create().setMaxConnPerRoute(50).setMaxConnTotal(100).build();
         }
 
         HttpGet httpGet = new HttpGet(downloadLink);
         RequestConfig requestConfig = RequestConfig.custom()
-            .setConnectTimeout(TIMEOUT)
-            .setConnectionRequestTimeout(TIMEOUT)
-            .setSocketTimeout(TIMEOUT)
-            .build();
+                .setConnectTimeout(TIMEOUT)
+                .setConnectionRequestTimeout(TIMEOUT)
+                .setSocketTimeout(TIMEOUT)
+                .build();
         httpGet.setConfig(requestConfig);
         HttpResponse response = httpClient.execute(httpGet);
         int statusCode = response.getStatusLine().getStatusCode();
@@ -279,7 +279,7 @@ public class BinlogDownloadQueue {
                         long progress = copySize * 100 / totalSize;
                         if (progress >= nextPrintProgress) {
                             logger.info("download " + file.getName() + " progress : " + progress
-                                        + "% , download size : " + copySize + ", total size : " + totalSize);
+                                    + "% , download size : " + copySize + ", total size : " + totalSize);
                             nextPrintProgress += 10;
                         }
                     }
@@ -318,7 +318,7 @@ public class BinlogDownloadQueue {
                                     retry = retry + 1;
                                     try {
                                         logger.warn("download failed + " + binlogFile.toString() + "], retry : "
-                                                    + retry, e);
+                                                + retry, e);
                                         // File errorFile = new File(destDir,
                                         // "error.txt");
                                         // FileWriter writer = new

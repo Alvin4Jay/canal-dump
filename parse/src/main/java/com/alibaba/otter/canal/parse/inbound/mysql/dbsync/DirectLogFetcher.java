@@ -13,48 +13,56 @@ import com.taobao.tddl.dbsync.binlog.LogFetcher;
 
 /**
  * 基于socket的logEvent实现
- * 
+ *
  * @author jianghang 2013-1-14 下午07:39:30
  * @version 1.0.0
  */
 public class DirectLogFetcher extends LogFetcher {
 
-    protected static final Logger logger                          = LoggerFactory.getLogger(DirectLogFetcher.class);
+    protected static final Logger logger = LoggerFactory.getLogger(DirectLogFetcher.class);
 
     // Master heartbeat interval
-    public static final int       MASTER_HEARTBEAT_PERIOD_SECONDS = 15;
+    public static final int MASTER_HEARTBEAT_PERIOD_SECONDS = 15;
     // +10s 确保 timeout > heartbeat interval
-    private static final int      READ_TIMEOUT_MILLISECONDS       = (MASTER_HEARTBEAT_PERIOD_SECONDS + 10) * 1000;
+    private static final int READ_TIMEOUT_MILLISECONDS = (MASTER_HEARTBEAT_PERIOD_SECONDS + 10) * 1000;
 
-    /** Command to dump binlog */
-    public static final byte      COM_BINLOG_DUMP                 = 18;
+    /**
+     * Command to dump binlog
+     */
+    public static final byte COM_BINLOG_DUMP = 18;
 
-    /** Packet header sizes */
-    public static final int       NET_HEADER_SIZE                 = 4;
-    public static final int       SQLSTATE_LENGTH                 = 5;
+    /**
+     * Packet header sizes
+     */
+    public static final int NET_HEADER_SIZE = 4;
+    public static final int SQLSTATE_LENGTH = 5;
 
-    /** Packet offsets */
-    public static final int       PACKET_LEN_OFFSET               = 0;
-    public static final int       PACKET_SEQ_OFFSET               = 3;
+    /**
+     * Packet offsets
+     */
+    public static final int PACKET_LEN_OFFSET = 0;
+    public static final int PACKET_SEQ_OFFSET = 3;
 
-    /** Maximum packet length */
-    public static final int       MAX_PACKET_LENGTH               = (256 * 256 * 256 - 1);
+    /**
+     * Maximum packet length
+     */
+    public static final int MAX_PACKET_LENGTH = (256 * 256 * 256 - 1);
 
-    private SocketChannel         channel;
+    private SocketChannel channel;
 
-    private boolean               issemi                          = false;
+    private boolean issemi = false;
 
     // private BufferedInputStream input;
 
-    public DirectLogFetcher(){
+    public DirectLogFetcher() {
         super(DEFAULT_INITIAL_CAPACITY, DEFAULT_GROWTH_FACTOR);
     }
 
-    public DirectLogFetcher(final int initialCapacity){
+    public DirectLogFetcher(final int initialCapacity) {
         super(initialCapacity, DEFAULT_GROWTH_FACTOR);
     }
 
-    public DirectLogFetcher(final int initialCapacity, final float growthFactor){
+    public DirectLogFetcher(final int initialCapacity, final float growthFactor) {
         super(initialCapacity, growthFactor);
     }
 
@@ -68,7 +76,7 @@ public class DirectLogFetcher extends LogFetcher {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see com.taobao.tddl.dbsync.binlog.LogFetcher#fetch()
      */
     public boolean fetch() throws IOException {
@@ -100,17 +108,17 @@ public class DirectLogFetcher extends LogFetcher {
                     String sqlstate = forward(1).getFixString(SQLSTATE_LENGTH);
                     String errmsg = getFixString(limit - position);
                     throw new IOException("Received error packet:" + " errno = " + errno + ", sqlstate = " + sqlstate
-                                          + " errmsg = " + errmsg);
+                            + " errmsg = " + errmsg);
                 } else if (mark == 254) {
                     // Indicates end of stream. It's not clear when this would
                     // be sent.
                     logger.warn("Received EOF packet from server, apparent"
-                                + " master disconnected. It's may be duplicate slaveId , check instance config");
+                            + " master disconnected. It's may be duplicate slaveId , check instance config");
                     return false;
                 } else {
                     // Should not happen.
                     throw new IOException("Unexpected response " + mark + " while fetching binlog: packet #" + netnum
-                                          + ", len = " + netlen);
+                            + ", len = " + netlen);
                 }
             }
 
@@ -180,7 +188,7 @@ public class DirectLogFetcher extends LogFetcher {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see com.taobao.tddl.dbsync.binlog.LogFetcher#close()
      */
     public void close() throws IOException {

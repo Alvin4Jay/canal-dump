@@ -12,10 +12,10 @@ import java.util.Date;
 public class Result implements Serializable {
 
     private static final long serialVersionUID = -3276409502352405716L;
-    private Integer           code             = 20000;
-    private Object            data;
-    private String            message;
-    private Date              sysTime;
+    private Integer code = 20000;
+    private Object data;
+    private String message;
+    private Date sysTime;
 
     public static Result createSuccess(String message) {
         Result result = new Result();

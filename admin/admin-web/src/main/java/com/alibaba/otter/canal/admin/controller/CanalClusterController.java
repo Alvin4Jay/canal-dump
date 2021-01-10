@@ -29,7 +29,7 @@ public class CanalClusterController {
     CanalClusterService canalClusterServic;
 
     @Autowired
-    NodeServerService   nodeServerService;
+    NodeServerService nodeServerService;
 
     @GetMapping(value = "/clusters")
     public BaseModel<List<CanalCluster>> clusters(CanalCluster canalCluster, @PathVariable String env) {

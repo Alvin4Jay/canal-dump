@@ -32,8 +32,8 @@ public class MetaBaseDAO extends SqlMapClientDaoSupport {
                 name = "h2";
             }
             input = Thread.currentThread()
-                .getContextClassLoader()
-                .getResourceAsStream("ddl/" + name + "/" + tableName + ".sql");
+                    .getContextClassLoader()
+                    .getResourceAsStream("ddl/" + name + "/" + tableName + ".sql");
             if (input == null) {
                 return;
             }

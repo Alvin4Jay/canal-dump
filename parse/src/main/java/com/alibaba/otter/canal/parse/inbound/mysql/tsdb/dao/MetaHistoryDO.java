@@ -8,14 +8,14 @@ import java.util.Date;
  */
 public class MetaHistoryDO {
 
-    private Long   id;
-    private Date   gmtCreate;
-    private Date   gmtModified;
+    private Long id;
+    private Date gmtCreate;
+    private Date gmtModified;
     private String destination;
     private String binlogFile;
-    private Long   binlogOffest;
+    private Long binlogOffest;
     private String binlogMasterId;
-    private Long   binlogTimestamp;
+    private Long binlogTimestamp;
     private String useSchema;
     private String sqlSchema;
     private String sqlTable;
@@ -138,10 +138,10 @@ public class MetaHistoryDO {
     @Override
     public String toString() {
         return "MetaHistoryDO [id=" + id + ", gmtCreate=" + gmtCreate + ", gmtModified=" + gmtModified
-               + ", destination=" + destination + ", binlogFile=" + binlogFile + ", binlogOffest=" + binlogOffest
-               + ", binlogMasterId=" + binlogMasterId + ", binlogTimestamp=" + binlogTimestamp + ", useSchema="
-               + useSchema + ", sqlSchema=" + sqlSchema + ", sqlTable=" + sqlTable + ", sqlText=" + sqlText
-               + ", sqlType=" + sqlType + ", extra=" + extra + "]";
+                + ", destination=" + destination + ", binlogFile=" + binlogFile + ", binlogOffest=" + binlogOffest
+                + ", binlogMasterId=" + binlogMasterId + ", binlogTimestamp=" + binlogTimestamp + ", useSchema="
+                + useSchema + ", sqlSchema=" + sqlSchema + ", sqlTable=" + sqlTable + ", sqlText=" + sqlText
+                + ", sqlType=" + sqlType + ", extra=" + extra + "]";
     }
 
 }

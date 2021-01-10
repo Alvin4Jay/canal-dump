@@ -8,30 +8,30 @@ import com.alibaba.otter.canal.protocol.CanalEntry.EventType;
 
 /**
  * 简单的ddl解析工具类，后续可使用cobar/druid的SqlParser进行语法树解析
- * 
+ *
  * <pre>
  * 解析支持：
  * a. 带schema: retl.retl_mark
  * b. 带引号` :  `retl.retl_mark`
  * c. 存在换行符： create table \n `retl.retl_mark`
  * </pre>
- * 
+ * <p>
  * http://dev.mysql.com/doc/refman/5.6/en/sql-syntax-data-definition.html
- * 
+ *
  * @author jianghang 2013-1-22 下午10:03:22
  * @version 1.0.0
  */
 public class SimpleDdlParser {
 
-    public static final String CREATE_PATTERN         = "^\\s*CREATE\\s*(TEMPORARY)?\\s*TABLE\\s*(.*)$";
-    public static final String DROP_PATTERN           = "^\\s*DROP\\s*(TEMPORARY)?\\s*TABLE\\s*(.*)$";
-    public static final String ALERT_PATTERN          = "^\\s*ALTER\\s*(IGNORE)?\\s*TABLE\\s*(.*)$";
-    public static final String TRUNCATE_PATTERN       = "^\\s*TRUNCATE\\s*(TABLE)?\\s*(.*)$";
-    public static final String TABLE_PATTERN          = "^(IF\\s*NOT\\s*EXISTS\\s*)?(IF\\s*EXISTS\\s*)?(`?.+?`?[;\\(\\s]+?)?.*$";         // 采用非贪婪模式
-    public static final String INSERT_PATTERN         = "^\\s*(INSERT|MERGE|REPLACE)(.*)$";
-    public static final String UPDATE_PATTERN         = "^\\s*UPDATE(.*)$";
-    public static final String DELETE_PATTERN         = "^\\s*DELETE(.*)$";
-    public static final String RENAME_PATTERN         = "^\\s*RENAME\\s+TABLE\\s+(.+?)\\s+TO\\s+(.+?)$";
+    public static final String CREATE_PATTERN = "^\\s*CREATE\\s*(TEMPORARY)?\\s*TABLE\\s*(.*)$";
+    public static final String DROP_PATTERN = "^\\s*DROP\\s*(TEMPORARY)?\\s*TABLE\\s*(.*)$";
+    public static final String ALERT_PATTERN = "^\\s*ALTER\\s*(IGNORE)?\\s*TABLE\\s*(.*)$";
+    public static final String TRUNCATE_PATTERN = "^\\s*TRUNCATE\\s*(TABLE)?\\s*(.*)$";
+    public static final String TABLE_PATTERN = "^(IF\\s*NOT\\s*EXISTS\\s*)?(IF\\s*EXISTS\\s*)?(`?.+?`?[;\\(\\s]+?)?.*$";         // 采用非贪婪模式
+    public static final String INSERT_PATTERN = "^\\s*(INSERT|MERGE|REPLACE)(.*)$";
+    public static final String UPDATE_PATTERN = "^\\s*UPDATE(.*)$";
+    public static final String DELETE_PATTERN = "^\\s*DELETE(.*)$";
+    public static final String RENAME_PATTERN = "^\\s*RENAME\\s+TABLE\\s+(.+?)\\s+TO\\s+(.+?)$";
     public static final String RENAME_REMNANT_PATTERN = "^\\s*(.+?)\\s+TO\\s+(.+?)$";
 
     /**
@@ -40,12 +40,12 @@ public class SimpleDdlParser {
      *         [index_type]
      *         ON tbl_name (index_col_name,...)
      *         [algorithm_option | lock_option] ...
-     *         
+     *
      * http://dev.mysql.com/doc/refman/5.6/en/create-index.html
      * </pre>
      */
-    public static final String CREATE_INDEX_PATTERN   = "^\\s*CREATE\\s*(UNIQUE)?(FULLTEXT)?(SPATIAL)?\\s*INDEX\\s*(.*?)\\s+ON\\s+(.*?)$";
-    public static final String DROP_INDEX_PATTERN     = "^\\s*DROP\\s*INDEX\\s*(.*?)\\s+ON\\s+(.*?)$";
+    public static final String CREATE_INDEX_PATTERN = "^\\s*CREATE\\s*(UNIQUE)?(FULLTEXT)?(SPATIAL)?\\s*INDEX\\s*(.*?)\\s+ON\\s+(.*?)$";
+    public static final String DROP_INDEX_PATTERN = "^\\s*DROP\\s*INDEX\\s*(.*?)\\s+ON\\s+(.*?)$";
 
     public static DdlResult parse(String queryString, String schmeaName) {
         queryString = removeComment(queryString); // 去除/* */的sql注释内容
@@ -149,9 +149,9 @@ public class SimpleDdlParser {
             DdlResult target = parseTableName(matcher.getMatch().group(2), schmeaName);
             if (orign != null && target != null) {
                 return new DdlResult(target.getSchemaName(),
-                    target.getTableName(),
-                    orign.getSchemaName(),
-                    orign.getTableName());
+                        target.getTableName(),
+                        orign.getSchemaName(),
+                        orign.getTableName());
             }
         }
 

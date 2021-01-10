@@ -42,26 +42,26 @@ import com.taobao.tddl.dbsync.binlog.event.FormatDescriptionLogEvent;
 
 public class MysqlConnection implements ErosaConnection {
 
-    private static final Logger logger         = LoggerFactory.getLogger(MysqlConnection.class);
+    private static final Logger logger = LoggerFactory.getLogger(MysqlConnection.class);
 
-    private MysqlConnector      connector;
-    private long                slaveId;
-    private Charset             charset        = Charset.forName("UTF-8");
-    private BinlogFormat        binlogFormat;
-    private BinlogImage         binlogImage;
+    private MysqlConnector connector;
+    private long slaveId;
+    private Charset charset = Charset.forName("UTF-8");
+    private BinlogFormat binlogFormat;
+    private BinlogImage binlogImage;
 
     // tsdb releated
-    private AuthenticationInfo  authInfo;
-    protected int               connTimeout    = 5 * 1000;                                      // 5秒
-    protected int               soTimeout      = 60 * 60 * 1000;                                // 1小时
-    private int                 binlogChecksum = LogEvent.BINLOG_CHECKSUM_ALG_OFF;
+    private AuthenticationInfo authInfo;
+    protected int connTimeout = 5 * 1000;                                      // 5秒
+    protected int soTimeout = 60 * 60 * 1000;                                // 1小时
+    private int binlogChecksum = LogEvent.BINLOG_CHECKSUM_ALG_OFF;
     // dump binlog bytes, 暂不包括meta与TSDB
-    private AtomicLong          receivedBinlogBytes;
+    private AtomicLong receivedBinlogBytes;
 
-    public MysqlConnection(){
+    public MysqlConnection() {
     }
 
-    public MysqlConnection(InetSocketAddress address, String username, String password){
+    public MysqlConnection(InetSocketAddress address, String username, String password) {
         authInfo = new AuthenticationInfo();
         authInfo.setAddress(address);
         authInfo.setUsername(username);
@@ -73,7 +73,7 @@ public class MysqlConnection implements ErosaConnection {
     }
 
     public MysqlConnection(InetSocketAddress address, String username, String password, byte charsetNumber,
-                           String defaultSchema){
+                           String defaultSchema) {
         authInfo = new AuthenticationInfo();
         authInfo.setAddress(address);
         authInfo.setUsername(username);
@@ -383,7 +383,7 @@ public class MysqlConnection implements ErosaConnection {
      * <li>net_write_timeout</li>
      * <li>net_read_timeout</li>
      * </ol>
-     * 
+     *
      * @throws IOException
      */
     private void updateSettings() throws IOException {
@@ -509,7 +509,7 @@ public class MysqlConnection implements ErosaConnection {
 
     /**
      * 获取主库checksum信息
-     * 
+     *
      * <pre>
      * mariadb区别于mysql会在binlog的第一个事件Rotate_Event里也会采用checksum逻辑,而mysql是在第二个binlog事件之后才感知是否需要处理checksum
      * 导致maraidb只要是开启checksum就会出现binlog文件名解析乱码
@@ -522,7 +522,7 @@ public class MysqlConnection implements ErosaConnection {
             rs = query("select @@global.binlog_checksum");
             List<String> columnValues = rs.getFieldValues();
             if (columnValues != null && columnValues.size() >= 1 && columnValues.get(0) != null
-                && columnValues.get(0).toUpperCase().equals("CRC32")) {
+                    && columnValues.get(0).toUpperCase().equals("CRC32")) {
                 binlogChecksum = LogEvent.BINLOG_CHECKSUM_ALG_CRC32;
             } else {
                 binlogChecksum = LogEvent.BINLOG_CHECKSUM_ALG_OFF;
@@ -557,7 +557,7 @@ public class MysqlConnection implements ErosaConnection {
 
         private String value;
 
-        private BinlogFormat(String value){
+        private BinlogFormat(String value) {
             this.value = value;
         }
 
@@ -575,7 +575,7 @@ public class MysqlConnection implements ErosaConnection {
     /**
      * http://dev.mysql.com/doc/refman/5.6/en/replication-options-binary-log.
      * html#sysvar_binlog_row_image
-     * 
+     *
      * @author agapple 2015年6月29日 下午10:39:03
      * @since 1.0.20
      */
@@ -597,7 +597,7 @@ public class MysqlConnection implements ErosaConnection {
 
         private String value;
 
-        private BinlogImage(String value){
+        private BinlogImage(String value) {
             this.value = value;
         }
 

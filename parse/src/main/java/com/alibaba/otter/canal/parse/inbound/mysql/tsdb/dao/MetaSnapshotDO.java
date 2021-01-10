@@ -8,14 +8,14 @@ import java.util.Date;
  */
 public class MetaSnapshotDO {
 
-    private Long   id;
-    private Date   gmtCreate;
-    private Date   gmtModified;
+    private Long id;
+    private Date gmtCreate;
+    private Date gmtModified;
     private String destination;
     private String binlogFile;
-    private Long   binlogOffest;
+    private Long binlogOffest;
     private String binlogMasterId;
-    private Long   binlogTimestamp;
+    private Long binlogTimestamp;
     private String data;
     private String extra;
 
@@ -102,9 +102,9 @@ public class MetaSnapshotDO {
     @Override
     public String toString() {
         return "MetaSnapshotDO [id=" + id + ", gmtCreate=" + gmtCreate + ", gmtModified=" + gmtModified
-               + ", destination=" + destination + ", binlogFile=" + binlogFile + ", binlogOffest=" + binlogOffest
-               + ", binlogMasterId=" + binlogMasterId + ", binlogTimestamp=" + binlogTimestamp + ", data=" + data
-               + ", extra=" + extra + "]";
+                + ", destination=" + destination + ", binlogFile=" + binlogFile + ", binlogOffest=" + binlogOffest
+                + ", binlogMasterId=" + binlogMasterId + ", binlogTimestamp=" + binlogTimestamp + ", data=" + data
+                + ", extra=" + extra + "]";
     }
 
 }

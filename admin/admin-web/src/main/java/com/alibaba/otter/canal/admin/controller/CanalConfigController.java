@@ -42,7 +42,7 @@ public class CanalConfigController {
      * 修改配置
      *
      * @param canalConfig 配置信息对象
-     * @param env 环境变量
+     * @param env         环境变量
      * @return 是否成功
      */
     @PutMapping(value = "/config")

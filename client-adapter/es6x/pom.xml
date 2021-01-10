@@ -87,7 +87,7 @@
                             <tasks>
                                 <copy todir="${project.basedir}/../launcher/target/classes/es6" overwrite="true">
                                     <fileset dir="${project.basedir}/target/classes/es6" erroronmissingdir="true">
-                                        <include name="*.yml" />
+                                        <include name="*.yml"/>
                                     </fileset>
                                 </copy>
                             </tasks>

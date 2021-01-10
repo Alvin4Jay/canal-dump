@@ -75,12 +75,13 @@
                             <tasks>
                                 <copy todir="${project.basedir}/../../deployer/target/canal/plugin" overwrite="true">
                                     <fileset dir="${project.basedir}/target" erroronmissingdir="true">
-                                        <include name="connector.kafka-${project.version}-jar-with-dependencies.jar" />
+                                        <include name="connector.kafka-${project.version}-jar-with-dependencies.jar"/>
                                     </fileset>
                                 </copy>
-                                <copy todir="${project.basedir}/../../client-adapter/launcher/target/canal-adapter/plugin" overwrite="true">
+                                <copy todir="${project.basedir}/../../client-adapter/launcher/target/canal-adapter/plugin"
+                                      overwrite="true">
                                     <fileset dir="${project.basedir}/target" erroronmissingdir="true">
-                                        <include name="connector.kafka-${project.version}-jar-with-dependencies.jar" />
+                                        <include name="connector.kafka-${project.version}-jar-with-dependencies.jar"/>
                                     </fileset>
                                 </copy>
                             </tasks>

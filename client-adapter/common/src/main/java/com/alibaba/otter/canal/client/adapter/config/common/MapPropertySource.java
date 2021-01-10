@@ -11,12 +11,12 @@ import org.springframework.util.StringUtils;
  *
  * @author Chris Beams
  * @author Juergen Hoeller
- * @since 3.1
  * @see PropertiesPropertySource
+ * @since 3.1
  */
 public class MapPropertySource extends EnumerablePropertySource<Map<String, Object>> {
 
-    public MapPropertySource(String name, Map<String, Object> source){
+    public MapPropertySource(String name, Map<String, Object> source) {
         super(name, source);
     }
 

@@ -30,11 +30,11 @@ public class CanalServerWithEmbedded_FileModeTest extends BaseCanalServerWithEmb
 
         parameter.setSourcingType(SourcingType.MYSQL);
         parameter.setDbAddresses(Arrays.asList(new InetSocketAddress(MYSQL_ADDRESS, 3306),
-            new InetSocketAddress(MYSQL_ADDRESS, 3306)));
+                new InetSocketAddress(MYSQL_ADDRESS, 3306)));
         parameter.setDbUsername(USERNAME);
         parameter.setDbPassword(PASSWORD);
         parameter.setPositions(Arrays.asList("{\"journalName\":\"mysql-bin.000001\",\"position\":332L,\"timestamp\":\"1505998863000\"}",
-            "{\"journalName\":\"mysql-bin.000001\",\"position\":332L,\"timestamp\":\"1505998863000\"}"));
+                "{\"journalName\":\"mysql-bin.000001\",\"position\":332L,\"timestamp\":\"1505998863000\"}"));
 
         parameter.setSlaveId(1234L);
 

@@ -10,44 +10,44 @@ import java.text.MessageFormat;
  */
 public class CanalConstants {
 
-    public static final String MDC_DESTINATION                      = "destination";
-    public static final String ROOT                                 = "canal";
-    public static final String CANAL_ID                             = ROOT + "." + "id";
-    public static final String CANAL_IP                             = ROOT + "." + "ip";
-    public static final String CANAL_REGISTER_IP                    = ROOT + "." + "register.ip";
-    public static final String CANAL_PORT                           = ROOT + "." + "port";
-    public static final String CANAL_USER                           = ROOT + "." + "user";
-    public static final String CANAL_PASSWD                         = ROOT + "." + "passwd";
-    public static final String CANAL_METRICS_PULL_PORT              = ROOT + "." + "metrics.pull.port";
-    public static final String CANAL_ADMIN_MANAGER                  = ROOT + "." + "admin.manager";
-    public static final String CANAL_ADMIN_PORT                     = ROOT + "." + "admin.port";
-    public static final String CANAL_ADMIN_USER                     = ROOT + "." + "admin.user";
-    public static final String CANAL_ADMIN_PASSWD                   = ROOT + "." + "admin.passwd";
-    public static final String CANAL_ADMIN_AUTO_REGISTER            = ROOT + "." + "admin.register.auto";
-    public static final String CANAL_ADMIN_AUTO_CLUSTER             = ROOT + "." + "admin.register.cluster";
-    public static final String CANAL_ZKSERVERS                      = ROOT + "." + "zkServers";
-    public static final String CANAL_WITHOUT_NETTY                  = ROOT + "." + "withoutNetty";
+    public static final String MDC_DESTINATION = "destination";
+    public static final String ROOT = "canal";
+    public static final String CANAL_ID = ROOT + "." + "id";
+    public static final String CANAL_IP = ROOT + "." + "ip";
+    public static final String CANAL_REGISTER_IP = ROOT + "." + "register.ip";
+    public static final String CANAL_PORT = ROOT + "." + "port";
+    public static final String CANAL_USER = ROOT + "." + "user";
+    public static final String CANAL_PASSWD = ROOT + "." + "passwd";
+    public static final String CANAL_METRICS_PULL_PORT = ROOT + "." + "metrics.pull.port";
+    public static final String CANAL_ADMIN_MANAGER = ROOT + "." + "admin.manager";
+    public static final String CANAL_ADMIN_PORT = ROOT + "." + "admin.port";
+    public static final String CANAL_ADMIN_USER = ROOT + "." + "admin.user";
+    public static final String CANAL_ADMIN_PASSWD = ROOT + "." + "admin.passwd";
+    public static final String CANAL_ADMIN_AUTO_REGISTER = ROOT + "." + "admin.register.auto";
+    public static final String CANAL_ADMIN_AUTO_CLUSTER = ROOT + "." + "admin.register.cluster";
+    public static final String CANAL_ZKSERVERS = ROOT + "." + "zkServers";
+    public static final String CANAL_WITHOUT_NETTY = ROOT + "." + "withoutNetty";
 
-    public static final String CANAL_DESTINATIONS                   = ROOT + "." + "destinations";
-    public static final String CANAL_AUTO_SCAN                      = ROOT + "." + "auto.scan";
-    public static final String CANAL_AUTO_SCAN_INTERVAL             = ROOT + "." + "auto.scan.interval";
-    public static final String CANAL_CONF_DIR                       = ROOT + "." + "conf.dir";
-    public static final String CANAL_SERVER_MODE                    = ROOT + "." + "serverMode";
+    public static final String CANAL_DESTINATIONS = ROOT + "." + "destinations";
+    public static final String CANAL_AUTO_SCAN = ROOT + "." + "auto.scan";
+    public static final String CANAL_AUTO_SCAN_INTERVAL = ROOT + "." + "auto.scan.interval";
+    public static final String CANAL_CONF_DIR = ROOT + "." + "conf.dir";
+    public static final String CANAL_SERVER_MODE = ROOT + "." + "serverMode";
 
-    public static final String CANAL_DESTINATION_SPLIT              = ",";
-    public static final String GLOBAL_NAME                          = "global";
+    public static final String CANAL_DESTINATION_SPLIT = ",";
+    public static final String GLOBAL_NAME = "global";
 
-    public static final String INSTANCE_MODE_TEMPLATE               = ROOT + "." + "instance.{0}.mode";
-    public static final String INSTANCE_LAZY_TEMPLATE               = ROOT + "." + "instance.{0}.lazy";
-    public static final String INSTANCE_MANAGER_ADDRESS_TEMPLATE    = ROOT + "." + "instance.{0}.manager.address";
-    public static final String INSTANCE_SPRING_XML_TEMPLATE         = ROOT + "." + "instance.{0}.spring.xml";
+    public static final String INSTANCE_MODE_TEMPLATE = ROOT + "." + "instance.{0}.mode";
+    public static final String INSTANCE_LAZY_TEMPLATE = ROOT + "." + "instance.{0}.lazy";
+    public static final String INSTANCE_MANAGER_ADDRESS_TEMPLATE = ROOT + "." + "instance.{0}.manager.address";
+    public static final String INSTANCE_SPRING_XML_TEMPLATE = ROOT + "." + "instance.{0}.spring.xml";
 
-    public static final String CANAL_DESTINATION_PROPERTY           = ROOT + ".instance.destination";
+    public static final String CANAL_DESTINATION_PROPERTY = ROOT + ".instance.destination";
 
-    public static final String CANAL_SOCKETCHANNEL                  = ROOT + "." + "socketChannel";
+    public static final String CANAL_SOCKETCHANNEL = ROOT + "." + "socketChannel";
 
-    public static final String CANAL_ALIYUN_ACCESSKEY               = ROOT + "." + "aliyun.accessKey";
-    public static final String CANAL_ALIYUN_SECRETKEY               = ROOT + "." + "aliyun.secretKey";
+    public static final String CANAL_ALIYUN_ACCESSKEY = ROOT + "." + "aliyun.accessKey";
+    public static final String CANAL_ALIYUN_SECRETKEY = ROOT + "." + "aliyun.secretKey";
 
 //    public static final String CANAL_MQ_SERVERS                     = ROOT + "." + "mq.servers";
 //    public static final String CANAL_MQ_RETRIES                     = ROOT + "." + "mq.retries";

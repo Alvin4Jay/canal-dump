@@ -14,11 +14,11 @@ public class FieldPacket extends PacketWithHeaderPacket {
     private String originalTable;
     private String name;
     private String originalName;
-    private int    character;
-    private long   length;
-    private byte   type;
-    private int    flags;
-    private byte   decimals;
+    private int character;
+    private long length;
+    private byte type;
+    private int flags;
+    private byte decimals;
     private String definition;
 
     /**
@@ -40,7 +40,7 @@ public class FieldPacket extends PacketWithHeaderPacket {
      *  1                          decimals
      *  2                          (filler), always 0x00
      *  n (Length Coded Binary)    default
-     * 
+     *
      * </pre>
      */
     public void fromBytes(byte[] data) throws IOException {
@@ -184,9 +184,9 @@ public class FieldPacket extends PacketWithHeaderPacket {
 
     public String toString() {
         return "FieldPacket [catalog=" + catalog + ", character=" + character + ", db=" + db + ", decimals=" + decimals
-               + ", definition=" + definition + ", flags=" + flags + ", length=" + length + ", name=" + name
-               + ", originalName=" + originalName + ", originalTable=" + originalTable + ", table=" + table + ", type="
-               + type + "]";
+                + ", definition=" + definition + ", flags=" + flags + ", length=" + length + ", name=" + name
+                + ", originalName=" + originalName + ", originalTable=" + originalTable + ", table=" + table + ", type="
+                + type + "]";
     }
 
 }

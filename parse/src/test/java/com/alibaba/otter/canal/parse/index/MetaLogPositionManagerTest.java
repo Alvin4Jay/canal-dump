@@ -18,11 +18,12 @@ import com.alibaba.otter.canal.protocol.position.EntryPosition;
 import com.alibaba.otter.canal.protocol.position.LogIdentity;
 import com.alibaba.otter.canal.protocol.position.LogPosition;
 import com.alibaba.otter.canal.protocol.position.PositionRange;
+
 @Ignore
 public class MetaLogPositionManagerTest extends AbstractLogPositionManagerTest {
 
     private static final String MYSQL_ADDRESS = "127.0.0.1";
-    private ZkClientx           zkclientx     = new ZkClientx(cluster1 + ";" + cluster2);
+    private ZkClientx zkclientx = new ZkClientx(cluster1 + ";" + cluster2);
 
     @Before
     public void setUp() {

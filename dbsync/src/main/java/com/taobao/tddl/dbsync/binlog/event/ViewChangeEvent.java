@@ -10,7 +10,7 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
  */
 public class ViewChangeEvent extends LogEvent {
 
-    public ViewChangeEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent){
+    public ViewChangeEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent) {
         super(header);
     }
 }

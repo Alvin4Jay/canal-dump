@@ -19,7 +19,7 @@ import com.alibaba.otter.canal.protocol.Message;
  */
 public class KafkaClientRunningTest extends AbstractKafkaTest {
 
-    private Logger  logger  = LoggerFactory.getLogger(KafkaClientRunningTest.class);
+    private Logger logger = LoggerFactory.getLogger(KafkaClientRunningTest.class);
 
     private boolean running = true;
 

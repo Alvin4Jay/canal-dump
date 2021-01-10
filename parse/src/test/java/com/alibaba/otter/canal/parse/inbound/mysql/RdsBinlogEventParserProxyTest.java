@@ -29,11 +29,11 @@ public class RdsBinlogEventParserProxyTest {
 
     private static final String DETECTING_SQL = "insert into retl.xdual values(1,now()) on duplicate key update x=now()";
     private static final String MYSQL_ADDRESS = "";
-    private static final String USERNAME      = "";
-    private static final String PASSWORD      = "";
-    public static final String  DBNAME        = "";
-    public static final String  TBNAME        = "";
-    public static final String  DDL           = "";
+    private static final String USERNAME = "";
+    private static final String PASSWORD = "";
+    public static final String DBNAME = "";
+    public static final String TBNAME = "";
+    public static final String DDL = "";
 
     @Test
     public void test_timestamp() throws InterruptedException {
@@ -61,7 +61,7 @@ public class RdsBinlogEventParserProxyTest {
 
             @Override
             public boolean sink(List<CanalEntry.Entry> entrys, InetSocketAddress remoteAddress, String destination)
-                                                                                                                   throws CanalSinkException {
+                    throws CanalSinkException {
                 for (CanalEntry.Entry entry : entrys) {
                     if (entry.getEntryType() != CanalEntry.EntryType.HEARTBEAT) {
                         entryCount.incrementAndGet();

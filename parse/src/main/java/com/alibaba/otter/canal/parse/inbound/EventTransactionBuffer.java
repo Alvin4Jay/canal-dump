@@ -13,27 +13,27 @@ import com.alibaba.otter.canal.store.CanalStoreException;
 
 /**
  * 缓冲event队列，提供按事务刷新数据的机制
- * 
+ *
  * @author jianghang 2012-12-6 上午11:05:12
  * @version 1.0.0
  */
 public class EventTransactionBuffer extends AbstractCanalLifeCycle {
 
-    private static final long        INIT_SQEUENCE = -1;
-    private int                      bufferSize    = 1024;
-    private int                      indexMask;
-    private CanalEntry.Entry[]       entries;
+    private static final long INIT_SQEUENCE = -1;
+    private int bufferSize = 1024;
+    private int indexMask;
+    private CanalEntry.Entry[] entries;
 
-    private AtomicLong               putSequence   = new AtomicLong(INIT_SQEUENCE); // 代表当前put操作最后一次写操作发生的位置
-    private AtomicLong               flushSequence = new AtomicLong(INIT_SQEUENCE); // 代表满足flush条件后最后一次数据flush的时间
+    private AtomicLong putSequence = new AtomicLong(INIT_SQEUENCE); // 代表当前put操作最后一次写操作发生的位置
+    private AtomicLong flushSequence = new AtomicLong(INIT_SQEUENCE); // 代表满足flush条件后最后一次数据flush的时间
 
     private TransactionFlushCallback flushCallback;
 
-    public EventTransactionBuffer(){
+    public EventTransactionBuffer() {
 
     }
 
-    public EventTransactionBuffer(TransactionFlushCallback flushCallback){
+    public EventTransactionBuffer(TransactionFlushCallback flushCallback) {
         this.flushCallback = flushCallback;
     }
 
@@ -157,7 +157,7 @@ public class EventTransactionBuffer extends AbstractCanalLifeCycle {
 
     /**
      * 事务刷新机制
-     * 
+     *
      * @author jianghang 2012-12-6 上午11:57:38
      * @version 1.0.0
      */

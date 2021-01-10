@@ -23,23 +23,23 @@ import com.alibaba.otter.canal.server.netty.NettyUtils;
 
 /**
  * 客户端身份认证处理
- * 
+ *
  * @author agapple 2019年8月24日 下午10:58:53
  * @since 1.1.4
  */
 public class ClientAuthenticationHandler extends SimpleChannelHandler {
 
-    private static final Logger logger                                  = LoggerFactory.getLogger(ClientAuthenticationHandler.class);
-    private final int           SUPPORTED_VERSION                       = 3;
-    private final int           defaultSubscriptorDisconnectIdleTimeout = 60 * 60 * 1000;
-    private CanalAdmin          canalAdmin;
-    private byte[]              seed;
+    private static final Logger logger = LoggerFactory.getLogger(ClientAuthenticationHandler.class);
+    private final int SUPPORTED_VERSION = 3;
+    private final int defaultSubscriptorDisconnectIdleTimeout = 60 * 60 * 1000;
+    private CanalAdmin canalAdmin;
+    private byte[] seed;
 
-    public ClientAuthenticationHandler(){
+    public ClientAuthenticationHandler() {
 
     }
 
-    public ClientAuthenticationHandler(CanalAdmin canalAdmin){
+    public ClientAuthenticationHandler(CanalAdmin canalAdmin) {
         this.canalAdmin = canalAdmin;
     }
 
@@ -52,13 +52,13 @@ public class ClientAuthenticationHandler extends SimpleChannelHandler {
                 final ClientAuth clientAuth = ClientAuth.parseFrom(packet.getBody());
                 if (seed == null) {
                     byte[] errorBytes = AdminNettyUtils.errorPacket(300,
-                        MessageFormatter.format("auth failed for seed is null", clientAuth.getUsername()).getMessage());
+                            MessageFormatter.format("auth failed for seed is null", clientAuth.getUsername()).getMessage());
                     AdminNettyUtils.write(ctx.getChannel(), errorBytes);
                 }
 
                 if (!canalAdmin.auth(clientAuth.getUsername(), clientAuth.getPassword().toStringUtf8(), seed)) {
                     byte[] errorBytes = AdminNettyUtils.errorPacket(300,
-                        MessageFormatter.format("auth failed for user:{}", clientAuth.getUsername()).getMessage());
+                            MessageFormatter.format("auth failed for user:{}", clientAuth.getUsername()).getMessage());
                     AdminNettyUtils.write(ctx.getChannel(), errorBytes);
                 }
 
@@ -81,26 +81,26 @@ public class ClientAuthenticationHandler extends SimpleChannelHandler {
                         // fix bug: soTimeout parameter's unit from connector is
                         // millseconds.
                         IdleStateHandler idleStateHandler = new IdleStateHandler(NettyUtils.hashedWheelTimer,
-                            readTimeout,
-                            writeTimeout,
-                            0,
-                            TimeUnit.MILLISECONDS);
+                                readTimeout,
+                                writeTimeout,
+                                0,
+                                TimeUnit.MILLISECONDS);
                         ctx.getPipeline().addBefore(SessionHandler.class.getName(),
-                            IdleStateHandler.class.getName(),
-                            idleStateHandler);
+                                IdleStateHandler.class.getName(),
+                                idleStateHandler);
 
                         IdleStateAwareChannelHandler idleStateAwareChannelHandler = new IdleStateAwareChannelHandler() {
 
                             public void channelIdle(ChannelHandlerContext ctx, IdleStateEvent e) throws Exception {
                                 logger.warn("channel:{} idle timeout exceeds, close channel to save server resources...",
-                                    ctx.getChannel());
+                                        ctx.getChannel());
                                 ctx.getChannel().close();
                             }
 
                         };
                         ctx.getPipeline().addBefore(SessionHandler.class.getName(),
-                            IdleStateAwareChannelHandler.class.getName(),
-                            idleStateAwareChannelHandler);
+                                IdleStateAwareChannelHandler.class.getName(),
+                                idleStateAwareChannelHandler);
                     }
 
                 });

@@ -6,7 +6,7 @@ import com.alibaba.otter.canal.instance.manager.model.Canal;
 
 /**
  * 基于manager生成对应的{@linkplain CanalInstance}
- * 
+ *
  * @author jianghang 2012-7-12 下午05:37:09
  * @version 1.0.0
  */

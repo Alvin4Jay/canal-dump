@@ -6,23 +6,23 @@ import com.alibaba.otter.canal.common.utils.CanalToStringStyle;
 
 /**
  * 启动的相关配置
- * 
+ *
  * @author jianghang 2012-11-8 下午02:50:54
  * @version 1.0.0
  */
 public class InstanceConfig {
 
     private InstanceConfig globalConfig;
-    private InstanceMode   mode;
-    private Boolean        lazy;
-    private String         managerAddress;
-    private String         springXml;
+    private InstanceMode mode;
+    private Boolean lazy;
+    private String managerAddress;
+    private String springXml;
 
-    public InstanceConfig(){
+    public InstanceConfig() {
 
     }
 
-    public InstanceConfig(InstanceConfig globalConfig){
+    public InstanceConfig(InstanceConfig globalConfig) {
         this.globalConfig = globalConfig;
     }
 

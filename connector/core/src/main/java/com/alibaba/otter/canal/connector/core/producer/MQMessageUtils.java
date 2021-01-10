@@ -34,80 +34,80 @@ import com.google.protobuf.InvalidProtocolBufferException;
  */
 public class MQMessageUtils {
 
-    private static Map<String, List<PartitionData>>    partitionDatas    = MigrateMap.makeComputingMap(CacheBuilder.newBuilder()
-                                                                             .softValues(),
-                                                                             pkHashConfigs -> {
-                                                                                 List<PartitionData> datas = Lists.newArrayList();
+    private static Map<String, List<PartitionData>> partitionDatas = MigrateMap.makeComputingMap(CacheBuilder.newBuilder()
+                    .softValues(),
+            pkHashConfigs -> {
+                List<PartitionData> datas = Lists.newArrayList();
 
-                                                                                 String[] pkHashConfigArray = StringUtils.split(StringUtils.replace(pkHashConfigs,
-                                                                                     ",",
-                                                                                     ";"),
-                                                                                     ";");
-                                                                                 // schema.table:id^name
-                                                                                 for (String pkHashConfig : pkHashConfigArray) {
-                                                                                     PartitionData data = new PartitionData();
-                                                                                     int i = pkHashConfig.lastIndexOf(":");
-                                                                                     if (i > 0) {
-                                                                                         String pkStr = pkHashConfig.substring(i + 1);
-                                                                                         if (pkStr.equalsIgnoreCase("$pk$")) {
-                                                                                             data.hashMode.autoPkHash = true;
-                                                                                         } else {
-                                                                                             data.hashMode.pkNames = Lists.newArrayList(StringUtils.split(pkStr,
-                                                                                                 '^'));
-                                                                                         }
+                String[] pkHashConfigArray = StringUtils.split(StringUtils.replace(pkHashConfigs,
+                        ",",
+                        ";"),
+                        ";");
+                // schema.table:id^name
+                for (String pkHashConfig : pkHashConfigArray) {
+                    PartitionData data = new PartitionData();
+                    int i = pkHashConfig.lastIndexOf(":");
+                    if (i > 0) {
+                        String pkStr = pkHashConfig.substring(i + 1);
+                        if (pkStr.equalsIgnoreCase("$pk$")) {
+                            data.hashMode.autoPkHash = true;
+                        } else {
+                            data.hashMode.pkNames = Lists.newArrayList(StringUtils.split(pkStr,
+                                    '^'));
+                        }
 
-                                                                                         pkHashConfig = pkHashConfig.substring(0,
-                                                                                             i);
-                                                                                     } else {
-                                                                                         data.hashMode.tableHash = true;
-                                                                                     }
+                        pkHashConfig = pkHashConfig.substring(0,
+                                i);
+                    } else {
+                        data.hashMode.tableHash = true;
+                    }
 
-                                                                                     if (!isWildCard(pkHashConfig)) {
-                                                                                         data.simpleName = pkHashConfig;
-                                                                                     } else {
-                                                                                         data.regexFilter = new AviaterRegexFilter(pkHashConfig);
-                                                                                     }
-                                                                                     datas.add(data);
-                                                                                 }
+                    if (!isWildCard(pkHashConfig)) {
+                        data.simpleName = pkHashConfig;
+                    } else {
+                        data.regexFilter = new AviaterRegexFilter(pkHashConfig);
+                    }
+                    datas.add(data);
+                }
 
-                                                                                 return datas;
-                                                                             });
+                return datas;
+            });
 
     private static Map<String, List<DynamicTopicData>> dynamicTopicDatas = MigrateMap.makeComputingMap(CacheBuilder.newBuilder()
-                                                                             .softValues(),
-                                                                             new Function<String, List<DynamicTopicData>>() {
+                    .softValues(),
+            new Function<String, List<DynamicTopicData>>() {
 
-                                                                                 public List<DynamicTopicData> apply(String pkHashConfigs) {
-                                                                                     List<DynamicTopicData> datas = Lists.newArrayList();
-                                                                                     String[] dynamicTopicArray = StringUtils.split(StringUtils.replace(pkHashConfigs,
-                                                                                         ",",
-                                                                                         ";"),
-                                                                                         ";");
-                                                                                     // schema.table
-                                                                                     for (String dynamicTopic : dynamicTopicArray) {
-                                                                                         DynamicTopicData data = new DynamicTopicData();
+                public List<DynamicTopicData> apply(String pkHashConfigs) {
+                    List<DynamicTopicData> datas = Lists.newArrayList();
+                    String[] dynamicTopicArray = StringUtils.split(StringUtils.replace(pkHashConfigs,
+                            ",",
+                            ";"),
+                            ";");
+                    // schema.table
+                    for (String dynamicTopic : dynamicTopicArray) {
+                        DynamicTopicData data = new DynamicTopicData();
 
-                                                                                         if (!isWildCard(dynamicTopic)) {
-                                                                                             data.simpleName = dynamicTopic;
-                                                                                         } else {
-                                                                                             if (dynamicTopic.contains("\\.")) {
-                                                                                                 data.tableRegexFilter = new AviaterRegexFilter(dynamicTopic);
-                                                                                             } else {
-                                                                                                 data.schemaRegexFilter = new AviaterRegexFilter(dynamicTopic);
-                                                                                             }
-                                                                                         }
-                                                                                         datas.add(data);
-                                                                                     }
+                        if (!isWildCard(dynamicTopic)) {
+                            data.simpleName = dynamicTopic;
+                        } else {
+                            if (dynamicTopic.contains("\\.")) {
+                                data.tableRegexFilter = new AviaterRegexFilter(dynamicTopic);
+                            } else {
+                                data.schemaRegexFilter = new AviaterRegexFilter(dynamicTopic);
+                            }
+                        }
+                        datas.add(data);
+                    }
 
-                                                                                     return datas;
-                                                                                 }
-                                                                             });
+                    return datas;
+                }
+            });
 
     /**
      * 按 schema 或者 schema+table 将 message 分配到对应topic
      *
-     * @param message 原message
-     * @param defaultTopic 默认topic
+     * @param message             原message
+     * @param defaultTopic        默认topic
      * @param dynamicTopicConfigs 动态topic规则
      * @return 分隔后的message map
      */
@@ -132,7 +132,7 @@ public class MQMessageUtils {
         for (CanalEntry.Entry entry : entries) {
             // 如果有topic路由,则忽略begin/end事件
             if (entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONBEGIN
-                || entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONEND) {
+                    || entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONEND) {
                 continue;
             }
 
@@ -228,7 +228,7 @@ public class MQMessageUtils {
      *
      * @param partitionsNum 分区数
      * @param pkHashConfigs 分区库表主键正则表达式
-     * @param databaseHash 是否取消根据database进行hash
+     * @param databaseHash  是否取消根据database进行hash
      * @return 分区message数组
      */
     @SuppressWarnings("unchecked")
@@ -249,7 +249,7 @@ public class MQMessageUtils {
             CanalEntry.RowChange rowChange = data.rowChange;
             // 如果有分区路由,则忽略begin/end事件
             if (entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONBEGIN
-                || entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONEND) {
+                    || entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONEND) {
                 continue;
             }
 
@@ -342,7 +342,7 @@ public class MQMessageUtils {
             CanalEntry.RowChange rowChange = entryRowData.rowChange;
             // 如果有分区路由,则忽略begin/end事件
             if (entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONBEGIN
-                || entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONEND) {
+                    || entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONEND) {
                 continue;
             }
 
@@ -368,7 +368,7 @@ public class MQMessageUtils {
                 boolean hasInitPkNames = false;
                 for (CanalEntry.RowData rowData : rowChange.getRowDatasList()) {
                     if (eventType != CanalEntry.EventType.INSERT && eventType != CanalEntry.EventType.UPDATE
-                        && eventType != CanalEntry.EventType.DELETE) {
+                            && eventType != CanalEntry.EventType.DELETE) {
                         continue;
                     }
 
@@ -440,10 +440,10 @@ public class MQMessageUtils {
     /**
      * 将FlatMessage按指定的字段值hash拆分
      *
-     * @param flatMessage flatMessage
+     * @param flatMessage   flatMessage
      * @param partitionsNum 分区数量
      * @param pkHashConfigs hash映射
-     * @param databaseHash 是否取消根据database进行hash
+     * @param databaseHash  是否取消根据database进行hash
      * @return 拆分后的flatMessage数组
      */
     public static FlatMessage[] messagePartition(FlatMessage flatMessage, Integer partitionsNum, String pkHashConfigs,
@@ -621,8 +621,8 @@ public class MQMessageUtils {
 
     private static boolean isWildCard(String value) {
         // not contaiins '.' ?
-        return StringUtils.containsAny(value, new char[] { '*', '?', '+', '|', '(', ')', '{', '}', '[', ']', '\\', '$',
-                '^' });
+        return StringUtils.containsAny(value, new char[]{'*', '?', '+', '|', '(', ')', '{', '}', '[', ']', '\\', '$',
+                '^'});
     }
 
     private static void put2MapMessage(Map<String, Message> messageMap, Long messageId, String topicName,
@@ -637,28 +637,28 @@ public class MQMessageUtils {
 
     public static class PartitionData {
 
-        public String             simpleName;
+        public String simpleName;
         public AviaterRegexFilter regexFilter;
-        public HashMode           hashMode = new HashMode();
+        public HashMode hashMode = new HashMode();
     }
 
     public static class HashMode {
 
-        public boolean      autoPkHash = false;
-        public boolean      tableHash  = false;
-        public List<String> pkNames    = Lists.newArrayList();
+        public boolean autoPkHash = false;
+        public boolean tableHash = false;
+        public List<String> pkNames = Lists.newArrayList();
     }
 
     public static class DynamicTopicData {
 
-        public String             simpleName;
+        public String simpleName;
         public AviaterRegexFilter schemaRegexFilter;
         public AviaterRegexFilter tableRegexFilter;
     }
 
     public static class EntryRowData {
 
-        public Entry     entry;
+        public Entry entry;
         public RowChange rowChange;
     }
 }

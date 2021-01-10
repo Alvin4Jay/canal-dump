@@ -42,15 +42,15 @@ import com.alibaba.fastjson.JSON;
  */
 public class HttpHelper {
 
-    private final static Logger logger                   = LoggerFactory.getLogger(HttpHelper.class);
+    private final static Logger logger = LoggerFactory.getLogger(HttpHelper.class);
 
-    public static final Integer REST_STATE_OK            = 20000;
+    public static final Integer REST_STATE_OK = 20000;
     public static final Integer REST_STATE_TOKEN_INVALID = 50014;
-    public static final Integer REST_STATE_ERROR         = 50000;
+    public static final Integer REST_STATE_ERROR = 50000;
 
     private CloseableHttpClient httpclient;
 
-    public HttpHelper(){
+    public HttpHelper() {
         HttpClientBuilder builder = HttpClientBuilder.create();
         builder.setMaxConnPerRoute(50);
         builder.setMaxConnTotal(100);
@@ -66,12 +66,12 @@ public class HttpHelper {
             }).build();
 
             httpclient = HttpClientBuilder.create()
-                .setSSLContext(sslContext)
-                .setConnectionManager(new PoolingHttpClientConnectionManager(RegistryBuilder.<ConnectionSocketFactory> create()
-                    .register("http", PlainConnectionSocketFactory.INSTANCE)
-                    .register("https", new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE))
-                    .build()))
-                .build();
+                    .setSSLContext(sslContext)
+                    .setConnectionManager(new PoolingHttpClientConnectionManager(RegistryBuilder.<ConnectionSocketFactory>create()
+                            .register("http", PlainConnectionSocketFactory.INSTANCE)
+                            .register("https", new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE))
+                            .build()))
+                    .build();
         } catch (Throwable e) {
             // ignore
         }
@@ -84,9 +84,9 @@ public class HttpHelper {
         try {
             URI uri = new URIBuilder(url).build();
             RequestConfig config = custom().setConnectTimeout(timeout)
-                .setConnectionRequestTimeout(timeout)
-                .setSocketTimeout(timeout)
-                .build();
+                    .setConnectionRequestTimeout(timeout)
+                    .setSocketTimeout(timeout)
+                    .build();
             httpGet = new HttpGet(uri);
             if (heads != null) {
                 for (Map.Entry<String, String> entry : heads.entrySet()) {
@@ -103,7 +103,7 @@ public class HttpHelper {
             } else {
                 String errorMsg = EntityUtils.toString(response.getEntity());
                 throw new RuntimeException("requestGet remote error, url=" + uri.toString() + ", code=" + statusCode
-                                           + ", error msg=" + errorMsg);
+                        + ", error msg=" + errorMsg);
             }
         } catch (Throwable t) {
             throw new RuntimeException("requestGet remote error, request : " + url, t);
@@ -132,9 +132,9 @@ public class HttpHelper {
         try {
             URI uri = new URIBuilder(url).build();
             RequestConfig config = custom().setConnectTimeout(timeout)
-                .setConnectionRequestTimeout(timeout)
-                .setSocketTimeout(timeout)
-                .build();
+                    .setConnectionRequestTimeout(timeout)
+                    .setSocketTimeout(timeout)
+                    .build();
             httpPost = new HttpPost(uri);
             StringEntity entity = new StringEntity(requestBody, "UTF-8");
             httpPost.setEntity(entity);
@@ -154,7 +154,7 @@ public class HttpHelper {
                 return EntityUtils.toString(response.getEntity());
             } else {
                 throw new RuntimeException("requestPost remote error, request : " + url + ", statusCode=" + statusCode
-                                           + ";" + EntityUtils.toString(response.getEntity()));
+                        + ";" + EntityUtils.toString(response.getEntity()));
             }
         } catch (Throwable t) {
             throw new RuntimeException("requestPost remote error, request : " + url, t);

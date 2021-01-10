@@ -36,25 +36,25 @@ import com.google.common.collect.MigrateMap;
  */
 public class FileMixedLogPositionManager extends AbstractLogPositionManager {
 
-    private final static Logger      logger       = LoggerFactory.getLogger(FileMixedLogPositionManager.class);
-    private final static Charset     charset      = Charset.forName("UTF-8");
+    private final static Logger logger = LoggerFactory.getLogger(FileMixedLogPositionManager.class);
+    private final static Charset charset = Charset.forName("UTF-8");
 
-    private File                     dataDir;
+    private File dataDir;
 
-    private Map<String, File>        dataFileCaches;
+    private Map<String, File> dataFileCaches;
 
     private ScheduledExecutorService executorService;
 
     @SuppressWarnings("serial")
-    private final LogPosition        nullPosition = new LogPosition() {
-                                                  };
+    private final LogPosition nullPosition = new LogPosition() {
+    };
 
     private MemoryLogPositionManager memoryLogPositionManager;
 
-    private long                     period;
-    private Set<String>              persistTasks;
+    private long period;
+    private Set<String> persistTasks;
 
-    public FileMixedLogPositionManager(File dataDir, long period, MemoryLogPositionManager memoryLogPositionManager){
+    public FileMixedLogPositionManager(File dataDir, long period, MemoryLogPositionManager memoryLogPositionManager) {
         if (dataDir == null) {
             throw new NullPointerException("null dataDir");
         }

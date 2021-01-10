@@ -15,15 +15,15 @@ import java.util.List;
  */
 public class CanalInstanceExports {
 
-    private static final Logger      logger           = LoggerFactory.getLogger(CanalInstanceExports.class);
-    public static final String       DEST             = "destination";
-    public static final String[]     DEST_LABELS      = {DEST};
+    private static final Logger logger = LoggerFactory.getLogger(CanalInstanceExports.class);
+    public static final String DEST = "destination";
+    public static final String[] DEST_LABELS = {DEST};
     public static final List<String> DEST_LABELS_LIST = Collections.singletonList(DEST);
-    private final Collector          storeCollector;
-    private final Collector          entryCollector;
-    private final Collector          metaCollector;
-    private final Collector          sinkCollector;
-    private final Collector          parserCollector;
+    private final Collector storeCollector;
+    private final Collector entryCollector;
+    private final Collector metaCollector;
+    private final Collector sinkCollector;
+    private final Collector parserCollector;
 
     private CanalInstanceExports() {
         this.storeCollector = StoreCollector.instance();

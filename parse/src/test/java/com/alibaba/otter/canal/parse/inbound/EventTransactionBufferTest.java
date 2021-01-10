@@ -17,7 +17,7 @@ import com.alibaba.otter.canal.protocol.CanalEntry.Header;
 public class EventTransactionBufferTest {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    private static final String messgae     = "{0} [{1}:{2}:{3}] {4}.{5}";
+    private static final String messgae = "{0} [{1}:{2}:{3}] {4}.{5}";
 
     @Test
     public void testTransactionFlush() {
@@ -36,13 +36,13 @@ public class EventTransactionBufferTest {
                     Date date = new Date(header.getExecuteTime());
                     SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
                     if (data.getEntryType() == EntryType.TRANSACTIONBEGIN
-                        || data.getEntryType() == EntryType.TRANSACTIONEND) {
+                            || data.getEntryType() == EntryType.TRANSACTIONEND) {
                         System.out.println(data.getEntryType());
 
                     } else {
-                        System.out.println(MessageFormat.format(messgae, new Object[] {
+                        System.out.println(MessageFormat.format(messgae, new Object[]{
                                 Thread.currentThread().getName(), header.getLogfileName(), header.getLogfileOffset(),
-                                format.format(date), header.getSchemaName(), header.getTableName() }));
+                                format.format(date), header.getSchemaName(), header.getTableName()}));
                     }
 
                 }
@@ -84,7 +84,7 @@ public class EventTransactionBufferTest {
                     Date date = new Date(header.getExecuteTime());
                     SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
                     if (data.getEntryType() == EntryType.TRANSACTIONBEGIN
-                        || data.getEntryType() == EntryType.TRANSACTIONEND) {
+                            || data.getEntryType() == EntryType.TRANSACTIONEND) {
                         // System.out.println(MessageFormat.format(messgae, new
                         // Object[] {
                         // Thread.currentThread().getName(),
@@ -94,9 +94,9 @@ public class EventTransactionBufferTest {
                         System.out.println(data.getEntryType());
 
                     } else {
-                        System.out.println(MessageFormat.format(messgae, new Object[] {
+                        System.out.println(MessageFormat.format(messgae, new Object[]{
                                 Thread.currentThread().getName(), header.getLogfileName(), header.getLogfileOffset(),
-                                format.format(date), header.getSchemaName(), header.getTableName() }));
+                                format.format(date), header.getSchemaName(), header.getTableName()}));
                     }
 
                 }

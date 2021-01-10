@@ -25,10 +25,10 @@ public class ZkClientx extends ZkClient {
     // 对于zkclient进行一次缓存，避免一个jvm内部使用多个zk connection
     private static Map<String, ZkClientx> clients = MigrateMap.makeComputingMap(new Function<String, ZkClientx>() {
 
-                                                      public ZkClientx apply(String servers) {
-                                                          return new ZkClientx(servers);
-                                                      }
-                                                  });
+        public ZkClientx apply(String servers) {
+            return new ZkClientx(servers);
+        }
+    });
 
     public static ZkClientx getZkClient(String servers) {
         return clients.get(servers);
@@ -38,27 +38,27 @@ public class ZkClientx extends ZkClient {
         clients.clear();
     }
 
-    public ZkClientx(String serverstring){
+    public ZkClientx(String serverstring) {
         this(serverstring, Integer.MAX_VALUE);
     }
 
-    public ZkClientx(String zkServers, int connectionTimeout){
+    public ZkClientx(String zkServers, int connectionTimeout) {
         this(new ZooKeeperx(zkServers), connectionTimeout);
     }
 
-    public ZkClientx(String zkServers, int sessionTimeout, int connectionTimeout){
+    public ZkClientx(String zkServers, int sessionTimeout, int connectionTimeout) {
         this(new ZooKeeperx(zkServers, sessionTimeout), connectionTimeout);
     }
 
-    public ZkClientx(String zkServers, int sessionTimeout, int connectionTimeout, ZkSerializer zkSerializer){
+    public ZkClientx(String zkServers, int sessionTimeout, int connectionTimeout, ZkSerializer zkSerializer) {
         this(new ZooKeeperx(zkServers, sessionTimeout), connectionTimeout, zkSerializer);
     }
 
-    private ZkClientx(IZkConnection connection, int connectionTimeout){
+    private ZkClientx(IZkConnection connection, int connectionTimeout) {
         this(connection, connectionTimeout, new ByteSerializer());
     }
 
-    private ZkClientx(IZkConnection zkConnection, int connectionTimeout, ZkSerializer zkSerializer){
+    private ZkClientx(IZkConnection zkConnection, int connectionTimeout, ZkSerializer zkSerializer) {
         super(zkConnection, connectionTimeout, zkSerializer);
     }
 
@@ -67,17 +67,17 @@ public class ZkClientx extends ZkClient {
      *
      * @param path
      * @param createParents if true all parent dirs are created as well and no
-     * {@link ZkNodeExistsException} is thrown in case the path already exists
-     * @throws ZkInterruptedException if operation was interrupted, or a
-     * required reconnection got interrupted
+     *                      {@link ZkNodeExistsException} is thrown in case the path already exists
+     * @throws ZkInterruptedException   if operation was interrupted, or a
+     *                                  required reconnection got interrupted
      * @throws IllegalArgumentException if called from anything except the
-     * ZooKeeper event thread
-     * @throws ZkException if any ZooKeeper exception occurred
-     * @throws RuntimeException if any other exception occurs
+     *                                  ZooKeeper event thread
+     * @throws ZkException              if any ZooKeeper exception occurred
+     * @throws RuntimeException         if any other exception occurs
      */
     public String createPersistentSequential(String path, boolean createParents) throws ZkInterruptedException,
-                                                                                IllegalArgumentException, ZkException,
-                                                                                RuntimeException {
+            IllegalArgumentException, ZkException,
+            RuntimeException {
         try {
             return create(path, null, CreateMode.PERSISTENT_SEQUENTIAL);
         } catch (ZkNoNodeException e) {
@@ -96,19 +96,19 @@ public class ZkClientx extends ZkClient {
      * @param path
      * @param data
      * @param createParents if true all parent dirs are created as well and no
-     * {@link ZkNodeExistsException} is thrown in case the path already exists
-     * @throws ZkInterruptedException if operation was interrupted, or a
-     * required reconnection got interrupted
+     *                      {@link ZkNodeExistsException} is thrown in case the path already exists
+     * @throws ZkInterruptedException   if operation was interrupted, or a
+     *                                  required reconnection got interrupted
      * @throws IllegalArgumentException if called from anything except the
-     * ZooKeeper event thread
-     * @throws ZkException if any ZooKeeper exception occurred
-     * @throws RuntimeException if any other exception occurs
+     *                                  ZooKeeper event thread
+     * @throws ZkException              if any ZooKeeper exception occurred
+     * @throws RuntimeException         if any other exception occurs
      */
     public String createPersistentSequential(String path, Object data, boolean createParents)
-                                                                                             throws ZkInterruptedException,
-                                                                                             IllegalArgumentException,
-                                                                                             ZkException,
-                                                                                             RuntimeException {
+            throws ZkInterruptedException,
+            IllegalArgumentException,
+            ZkException,
+            RuntimeException {
         try {
             return create(path, data, CreateMode.PERSISTENT_SEQUENTIAL);
         } catch (ZkNoNodeException e) {
@@ -127,17 +127,17 @@ public class ZkClientx extends ZkClient {
      * @param path
      * @param data
      * @param createParents if true all parent dirs are created as well and no
-     * {@link ZkNodeExistsException} is thrown in case the path already exists
-     * @throws ZkInterruptedException if operation was interrupted, or a
-     * required reconnection got interrupted
+     *                      {@link ZkNodeExistsException} is thrown in case the path already exists
+     * @throws ZkInterruptedException   if operation was interrupted, or a
+     *                                  required reconnection got interrupted
      * @throws IllegalArgumentException if called from anything except the
-     * ZooKeeper event thread
-     * @throws ZkException if any ZooKeeper exception occurred
-     * @throws RuntimeException if any other exception occurs
+     *                                  ZooKeeper event thread
+     * @throws ZkException              if any ZooKeeper exception occurred
+     * @throws RuntimeException         if any other exception occurs
      */
     public void createPersistent(String path, Object data, boolean createParents) throws ZkInterruptedException,
-                                                                                 IllegalArgumentException, ZkException,
-                                                                                 RuntimeException {
+            IllegalArgumentException, ZkException,
+            RuntimeException {
         try {
             create(path, data, CreateMode.PERSISTENT);
         } catch (ZkNodeExistsException e) {

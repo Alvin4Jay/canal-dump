@@ -18,22 +18,22 @@ import java.util.concurrent.ThreadPoolExecutor;
  *    for ( ....) {
  *       template.submit(new Runnable() {})
  *    }
- * 
+ *
  *    List<?> result = template.waitForResult();
  *    // do result
  * } finally {
  *    template.clear();
  * }
- * 
+ *
  * 注意：该模板工程，不支持多业务并发调用，会出现数据混乱
  * </pre>
  */
 public class ExecutorTemplate {
 
     private volatile ThreadPoolExecutor executor = null;
-    private volatile List<Future>       futures  = null;
+    private volatile List<Future> futures = null;
 
-    public ExecutorTemplate(ThreadPoolExecutor executor){
+    public ExecutorTemplate(ThreadPoolExecutor executor) {
         this.futures = Collections.synchronizedList(new ArrayList<Future>());
         this.executor = executor;
     }

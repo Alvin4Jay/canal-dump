@@ -14,37 +14,37 @@ import com.google.protobuf.ByteString;
 
 /**
  * store存储数据对象
- * 
+ *
  * @author jianghang 2012-7-13 下午03:03:03
  */
 public class Event implements Serializable {
 
     private static final long serialVersionUID = 1333330351758762739L;
 
-    private LogIdentity       logIdentity;                            // 记录数据产生的来源
-    private ByteString        rawEntry;
+    private LogIdentity logIdentity;                            // 记录数据产生的来源
+    private ByteString rawEntry;
 
-    private long              executeTime;
-    private EntryType         entryType;
-    private String            journalName;
-    private long              position;
-    private long              serverId;
-    private EventType         eventType;
-    private String            gtid;
-    private long              rawLength;
-    private int               rowsCount;
+    private long executeTime;
+    private EntryType entryType;
+    private String journalName;
+    private long position;
+    private long serverId;
+    private EventType eventType;
+    private String gtid;
+    private long rawLength;
+    private int rowsCount;
 
     // ==== https://github.com/alibaba/canal/issues/1019
-    private CanalEntry.Entry  entry;
+    private CanalEntry.Entry entry;
 
-    public Event(){
+    public Event() {
     }
 
-    public Event(LogIdentity logIdentity, CanalEntry.Entry entry){
+    public Event(LogIdentity logIdentity, CanalEntry.Entry entry) {
         this(logIdentity, entry, true);
     }
 
-    public Event(LogIdentity logIdentity, CanalEntry.Entry entry, boolean raw){
+    public Event(LogIdentity logIdentity, CanalEntry.Entry entry, boolean raw) {
         this.logIdentity = logIdentity;
         this.entryType = entry.getEntryType();
         this.executeTime = entry.getHeader().getExecuteTime();

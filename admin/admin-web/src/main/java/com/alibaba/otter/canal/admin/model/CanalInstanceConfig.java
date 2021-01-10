@@ -29,35 +29,35 @@ public class CanalInstanceConfig extends Model {
         /**
          * Construct using the default EbeanServer.
          */
-        public CanalInstanceConfigFinder(){
+        public CanalInstanceConfigFinder() {
             super(CanalInstanceConfig.class);
         }
 
     }
 
     @Id
-    private Long         id;
+    private Long id;
     @Column(name = "cluster_id")
-    private Long         clusterId;
+    private Long clusterId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cluster_id", updatable = false, insertable = false)
     private CanalCluster canalCluster;
     @Column(name = "server_id")
-    private Long         serverId;
+    private Long serverId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "server_id", updatable = false, insertable = false)
-    private NodeServer   nodeServer;
-    private String       name;
-    private String       content;
-    private String       contentMd5;
-    private String       status;             // 1: 正常 0: 停止
+    private NodeServer nodeServer;
+    private String name;
+    private String content;
+    private String contentMd5;
+    private String status;             // 1: 正常 0: 停止
     @WhenModified
-    private Date         modifiedTime;
+    private Date modifiedTime;
 
     @Transient
-    private String       clusterServerId;
+    private String clusterServerId;
     @Transient
-    private String       runningStatus = "0"; // 1: 运行中 0: 停止
+    private String runningStatus = "0"; // 1: 运行中 0: 停止
 
     public void init() {
         status = "1";

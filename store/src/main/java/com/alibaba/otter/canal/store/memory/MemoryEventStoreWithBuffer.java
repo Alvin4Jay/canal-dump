@@ -25,58 +25,58 @@ import com.alibaba.otter.canal.store.model.Events;
 
 /**
  * 基于内存buffer构建内存memory store
- * 
+ *
  * <pre>
  * 变更记录：
  * 1. 新增BatchMode类型，支持按内存大小获取批次数据，内存大小更加可控.
  *   a. put操作，会首先根据bufferSize进行控制，然后再进行bufferSize * bufferMemUnit进行控制. 因存储的内容是以Event，如果纯依赖于memsize进行控制，会导致RingBuffer出现动态伸缩
  * </pre>
- * 
+ *
  * @author jianghang 2012-6-20 上午09:46:31
  * @version 1.0.0
  */
 public class MemoryEventStoreWithBuffer extends AbstractCanalStoreScavenge implements CanalEventStore<Event>, CanalStoreScavenge {
 
     private static final long INIT_SEQUENCE = -1;
-    private int               bufferSize    = 16 * 1024;
-    private int               bufferMemUnit = 1024;                                      // memsize的单位，默认为1kb大小
-    private int               indexMask;
-    private Event[]           entries;
+    private int bufferSize = 16 * 1024;
+    private int bufferMemUnit = 1024;                                      // memsize的单位，默认为1kb大小
+    private int indexMask;
+    private Event[] entries;
 
     // 记录下put/get/ack操作的三个下标
-    private AtomicLong        putSequence   = new AtomicLong(INIT_SEQUENCE);             // 代表当前put操作最后一次写操作发生的位置
-    private AtomicLong        getSequence   = new AtomicLong(INIT_SEQUENCE);             // 代表当前get操作读取的最后一条的位置
-    private AtomicLong        ackSequence   = new AtomicLong(INIT_SEQUENCE);             // 代表当前ack操作的最后一条的位置
+    private AtomicLong putSequence = new AtomicLong(INIT_SEQUENCE);             // 代表当前put操作最后一次写操作发生的位置
+    private AtomicLong getSequence = new AtomicLong(INIT_SEQUENCE);             // 代表当前get操作读取的最后一条的位置
+    private AtomicLong ackSequence = new AtomicLong(INIT_SEQUENCE);             // 代表当前ack操作的最后一条的位置
 
     // 记录下put/get/ack操作的三个memsize大小
-    private AtomicLong        putMemSize    = new AtomicLong(0);
-    private AtomicLong        getMemSize    = new AtomicLong(0);
-    private AtomicLong        ackMemSize    = new AtomicLong(0);
+    private AtomicLong putMemSize = new AtomicLong(0);
+    private AtomicLong getMemSize = new AtomicLong(0);
+    private AtomicLong ackMemSize = new AtomicLong(0);
 
     // 记录下put/get/ack操作的三个execTime
-    private AtomicLong        putExecTime   = new AtomicLong(System.currentTimeMillis());
-    private AtomicLong        getExecTime   = new AtomicLong(System.currentTimeMillis());
-    private AtomicLong        ackExecTime   = new AtomicLong(System.currentTimeMillis());
+    private AtomicLong putExecTime = new AtomicLong(System.currentTimeMillis());
+    private AtomicLong getExecTime = new AtomicLong(System.currentTimeMillis());
+    private AtomicLong ackExecTime = new AtomicLong(System.currentTimeMillis());
 
     // 记录下put/get/ack操作的三个table rows
-    private AtomicLong        putTableRows  = new AtomicLong(0);
-    private AtomicLong        getTableRows  = new AtomicLong(0);
-    private AtomicLong        ackTableRows  = new AtomicLong(0);
+    private AtomicLong putTableRows = new AtomicLong(0);
+    private AtomicLong getTableRows = new AtomicLong(0);
+    private AtomicLong ackTableRows = new AtomicLong(0);
 
     // 阻塞put/get操作控制信号
-    private ReentrantLock     lock          = new ReentrantLock();
-    private Condition         notFull       = lock.newCondition();
-    private Condition         notEmpty      = lock.newCondition();
+    private ReentrantLock lock = new ReentrantLock();
+    private Condition notFull = lock.newCondition();
+    private Condition notEmpty = lock.newCondition();
 
-    private BatchMode         batchMode     = BatchMode.ITEMSIZE;                        // 默认为内存大小模式
-    private boolean           ddlIsolation  = false;
-    private boolean           raw           = true;                                      // 针对entry是否开启raw模式
+    private BatchMode batchMode = BatchMode.ITEMSIZE;                        // 默认为内存大小模式
+    private boolean ddlIsolation = false;
+    private boolean raw = true;                                      // 针对entry是否开启raw模式
 
-    public MemoryEventStoreWithBuffer(){
+    public MemoryEventStoreWithBuffer() {
 
     }
 
-    public MemoryEventStoreWithBuffer(BatchMode batchMode){
+    public MemoryEventStoreWithBuffer(BatchMode batchMode) {
         this.batchMode = batchMode;
     }
 
@@ -130,7 +130,7 @@ public class MemoryEventStoreWithBuffer extends AbstractCanalStoreScavenge imple
         final ReentrantLock lock = this.lock;
         lock.lockInterruptibly();
         try {
-            for (;;) {
+            for (; ; ) {
                 if (checkFreeSlotAt(putSequence.get() + data.size())) {
                     doPut(data);
                     return true;
@@ -229,12 +229,12 @@ public class MemoryEventStoreWithBuffer extends AbstractCanalStoreScavenge imple
     }
 
     public Events<Event> get(Position start, int batchSize, long timeout, TimeUnit unit) throws InterruptedException,
-                                                                                        CanalStoreException {
+            CanalStoreException {
         long nanos = unit.toNanos(timeout);
         final ReentrantLock lock = this.lock;
         lock.lockInterruptibly();
         try {
-            for (;;) {
+            for (; ; ) {
                 if (checkUnGetSlotAt((LogPosition) start, batchSize)) {
                     return doGet(start, batchSize);
                 }
@@ -341,7 +341,7 @@ public class MemoryEventStoreWithBuffer extends AbstractCanalStoreScavenge imple
             Event event = entrys.get(i);
             // GTID模式,ack的位点必须是事务结尾,因为下一次订阅的时候mysql会发送这个gtid之后的next,如果在事务头就记录了会丢这最后一个事务
             if ((CanalEntry.EntryType.TRANSACTIONBEGIN == event.getEntryType() && StringUtils.isEmpty(event.getGtid()))
-                || CanalEntry.EntryType.TRANSACTIONEND == event.getEntryType() || isDdl(event.getEventType())) {
+                    || CanalEntry.EntryType.TRANSACTIONEND == event.getEntryType() || isDdl(event.getEventType())) {
                 // 将事务头/尾设置可被为ack的点
                 range.setAck(CanalEventUtils.createPosition(event));
                 break;
@@ -366,7 +366,7 @@ public class MemoryEventStoreWithBuffer extends AbstractCanalStoreScavenge imple
             if (firstSeqeuence == INIT_SEQUENCE && firstSeqeuence < putSequence.get()) {
                 // 没有ack过数据
                 Event event = entries[getIndex(firstSeqeuence + 1)]; // 最后一次ack为-1，需要移动到下一条,included
-                                                                     // = false
+                // = false
                 return CanalEventUtils.createPosition(event, false);
             } else if (firstSeqeuence > INIT_SEQUENCE && firstSeqeuence < putSequence.get()) {
                 // ack未追上put操作
@@ -376,7 +376,7 @@ public class MemoryEventStoreWithBuffer extends AbstractCanalStoreScavenge imple
             } else if (firstSeqeuence > INIT_SEQUENCE && firstSeqeuence == putSequence.get()) {
                 // 已经追上，store中没有数据
                 Event event = entries[getIndex(firstSeqeuence)]; // 最后一次ack的位置数据，和last为同一条，included
-                                                                 // = false
+                // = false
                 return CanalEventUtils.createPosition(event, false);
             } else {
                 // 没有任何数据
@@ -398,8 +398,8 @@ public class MemoryEventStoreWithBuffer extends AbstractCanalStoreScavenge imple
             } else if (latestSequence > INIT_SEQUENCE && latestSequence == ackSequence.get()) {
                 // ack已经追上了put操作
                 Event event = entries[(int) putSequence.get() & indexMask]; // 最后一次写入的数据，included
-                                                                            // =
-                                                                            // false
+                // =
+                // false
                 return CanalEventUtils.createPosition(event, false);
             } else {
                 // 没有任何数据
@@ -584,8 +584,8 @@ public class MemoryEventStoreWithBuffer extends AbstractCanalStoreScavenge imple
 
     private boolean isDdl(EventType type) {
         return type == EventType.ALTER || type == EventType.CREATE || type == EventType.ERASE
-               || type == EventType.RENAME || type == EventType.TRUNCATE || type == EventType.CINDEX
-               || type == EventType.DINDEX;
+                || type == EventType.RENAME || type == EventType.TRUNCATE || type == EventType.CINDEX
+                || type == EventType.DINDEX;
     }
 
     private void profiling(List<Event> events, OP op) {

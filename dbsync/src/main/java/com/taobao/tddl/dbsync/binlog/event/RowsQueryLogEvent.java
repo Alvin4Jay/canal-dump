@@ -11,7 +11,7 @@ public class RowsQueryLogEvent extends IgnorableLogEvent {
 
     private String rowsQuery;
 
-    public RowsQueryLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent){
+    public RowsQueryLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent) {
         super(header, buffer, descriptionEvent);
 
         final int commonHeaderLen = descriptionEvent.commonHeaderLen;

@@ -19,11 +19,11 @@ import static com.alibaba.otter.canal.server.netty.CanalServerWithNettyProfiler.
  */
 public class PrometheusService implements CanalMetricsService {
 
-    private static final Logger          logger          = LoggerFactory.getLogger(PrometheusService.class);
-    private final CanalInstanceExports   instanceExports;
-    private volatile boolean             running         = false;
-    private int                          port;
-    private HTTPServer                   server;
+    private static final Logger logger = LoggerFactory.getLogger(PrometheusService.class);
+    private final CanalInstanceExports instanceExports;
+    private volatile boolean running = false;
+    private int port;
+    private HTTPServer server;
     private final ClientInstanceProfiler clientProfiler;
 
     private PrometheusService() {

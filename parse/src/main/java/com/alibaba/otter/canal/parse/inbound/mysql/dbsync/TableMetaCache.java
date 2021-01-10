@@ -31,21 +31,21 @@ import com.google.common.cache.LoadingCache;
  */
 public class TableMetaCache {
 
-    public static final String              COLUMN_NAME    = "COLUMN_NAME";
-    public static final String              COLUMN_TYPE    = "COLUMN_TYPE";
-    public static final String              IS_NULLABLE    = "IS_NULLABLE";
-    public static final String              COLUMN_KEY     = "COLUMN_KEY";
-    public static final String              COLUMN_DEFAULT = "COLUMN_DEFAULT";
-    public static final String              EXTRA          = "EXTRA";
-    private MysqlConnection                 connection;
-    private boolean                         isOnRDS        = false;
-    private boolean                         isOnTSDB       = false;
+    public static final String COLUMN_NAME = "COLUMN_NAME";
+    public static final String COLUMN_TYPE = "COLUMN_TYPE";
+    public static final String IS_NULLABLE = "IS_NULLABLE";
+    public static final String COLUMN_KEY = "COLUMN_KEY";
+    public static final String COLUMN_DEFAULT = "COLUMN_DEFAULT";
+    public static final String EXTRA = "EXTRA";
+    private MysqlConnection connection;
+    private boolean isOnRDS = false;
+    private boolean isOnTSDB = false;
 
-    private TableMetaTSDB                   tableMetaTSDB;
+    private TableMetaTSDB tableMetaTSDB;
     // 第一层tableId,第二层schema.table,解决tableId重复，对应多张表
     private LoadingCache<String, TableMeta> tableMetaDB;
 
-    public TableMetaCache(MysqlConnection con, TableMetaTSDB tableMetaTSDB){
+    public TableMetaCache(MysqlConnection con, TableMetaTSDB tableMetaTSDB) {
         this.connection = con;
         this.tableMetaTSDB = tableMetaTSDB;
         // 如果持久存储的表结构为空，从db里面获取下
@@ -128,13 +128,13 @@ public class TableMetaCache {
             meta.setColumnName(packet.getFieldValues().get(nameMaps.get(COLUMN_NAME) + i * size).intern());
             meta.setColumnType(packet.getFieldValues().get(nameMaps.get(COLUMN_TYPE) + i * size));
             meta.setNullable(StringUtils.equalsIgnoreCase(packet.getFieldValues().get(nameMaps.get(IS_NULLABLE) + i
-                                                                                      * size),
-                "YES"));
+                            * size),
+                    "YES"));
             meta.setKey("PRI".equalsIgnoreCase(packet.getFieldValues().get(nameMaps.get(COLUMN_KEY) + i * size)));
             meta.setUnique("UNI".equalsIgnoreCase(packet.getFieldValues().get(nameMaps.get(COLUMN_KEY) + i * size)));
             // 特殊处理引号
             meta.setDefaultValue(DruidDdlParser.unescapeQuotaName(packet.getFieldValues()
-                .get(nameMaps.get(COLUMN_DEFAULT) + i * size)));
+                    .get(nameMaps.get(COLUMN_DEFAULT) + i * size)));
             meta.setExtra(packet.getFieldValues().get(nameMaps.get(EXTRA) + i * size));
 
             result.add(meta);
@@ -245,13 +245,13 @@ public class TableMetaCache {
     private String getFullName(String schema, String table) {
         StringBuilder builder = new StringBuilder();
         return builder.append('`')
-            .append(schema)
-            .append('`')
-            .append('.')
-            .append('`')
-            .append(table)
-            .append('`')
-            .toString();
+                .append(schema)
+                .append('`')
+                .append('.')
+                .append('`')
+                .append(table)
+                .append('`')
+                .toString();
     }
 
 

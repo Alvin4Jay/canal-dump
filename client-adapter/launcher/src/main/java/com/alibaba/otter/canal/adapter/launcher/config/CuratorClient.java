@@ -20,18 +20,18 @@ public class CuratorClient {
     @Resource
     private AdapterCanalConfig adapterCanalConfig;
 
-    private CuratorFramework   curator = null;
+    private CuratorFramework curator = null;
 
     @PostConstruct
     public void init() {
         if (adapterCanalConfig.getZookeeperHosts() != null) {
             curator = CuratorFrameworkFactory.builder()
-                .connectString(adapterCanalConfig.getZookeeperHosts())
-                .retryPolicy(new ExponentialBackoffRetry(1000, 3))
-                .sessionTimeoutMs(6000)
-                .connectionTimeoutMs(3000)
-                .namespace("canal-adapter")
-                .build();
+                    .connectString(adapterCanalConfig.getZookeeperHosts())
+                    .retryPolicy(new ExponentialBackoffRetry(1000, 3))
+                    .sessionTimeoutMs(6000)
+                    .connectionTimeoutMs(3000)
+                    .namespace("canal-adapter")
+                    .build();
             curator.start();
         }
     }

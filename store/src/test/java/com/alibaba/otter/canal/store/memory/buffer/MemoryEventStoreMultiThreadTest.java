@@ -31,10 +31,10 @@ import com.alibaba.otter.canal.store.model.Events;
  */
 public class MemoryEventStoreMultiThreadTest extends MemoryEventStoreBase {
 
-    private ExecutorService            executor = Executors.newFixedThreadPool(2); // 1
-                                                                                   // producer
-                                                                                   // ,1
-                                                                                   // cousmer
+    private ExecutorService executor = Executors.newFixedThreadPool(2); // 1
+    // producer
+    // ,1
+    // cousmer
     private MemoryEventStoreWithBuffer eventStore;
 
     @Before
@@ -49,6 +49,7 @@ public class MemoryEventStoreMultiThreadTest extends MemoryEventStoreBase {
     public void tearDown() {
         eventStore.stop();
     }
+
     @Ignore
     @Test
     public void test() {
@@ -84,9 +85,9 @@ public class MemoryEventStoreMultiThreadTest extends MemoryEventStoreBase {
     class Producer implements Runnable {
 
         private BooleanMutex mutex;
-        private int          freq;
+        private int freq;
 
-        public Producer(BooleanMutex mutex, int freq){
+        public Producer(BooleanMutex mutex, int freq) {
             this.mutex = mutex;
             this.freq = freq;
         }
@@ -119,11 +120,11 @@ public class MemoryEventStoreMultiThreadTest extends MemoryEventStoreBase {
     class Cosumer implements Runnable {
 
         private CountDownLatch latch;
-        private int            freq;
-        private int            batchSize;
-        private List<Long>     result = new ArrayList<Long>();
+        private int freq;
+        private int batchSize;
+        private List<Long> result = new ArrayList<Long>();
 
-        public Cosumer(CountDownLatch latch, int freq, int batchSize){
+        public Cosumer(CountDownLatch latch, int freq, int batchSize) {
             this.latch = latch;
             this.freq = freq;
             this.batchSize = batchSize;
@@ -157,7 +158,7 @@ public class MemoryEventStoreMultiThreadTest extends MemoryEventStoreBase {
                     if (!CollectionUtils.isEmpty(entrys.getEvents())) {
                         if (entrys.getEvents().size() != batchSize) {
                             System.out.println("get size:" + entrys.getEvents().size() + " with not full batchSize:"
-                                               + batchSize);
+                                    + batchSize);
                         }
 
                         first = entrys.getPositionRange().getEnd();
@@ -167,7 +168,7 @@ public class MemoryEventStoreMultiThreadTest extends MemoryEventStoreBase {
                         emptyCount = 0;
 
                         System.out.println("offest : " + entrys.getEvents().get(0).getPosition() + " , count :"
-                                           + entrys.getEvents().size());
+                                + entrys.getEvents().size());
                         ackCount++;
                         if (ackCount == 1) {
                             eventStore.cleanUntil(entrys.getPositionRange().getEnd());

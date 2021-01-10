@@ -15,27 +15,27 @@ import org.springframework.util.Assert;
  * {@linkplain org.springframework.beans.factory.config.PropertyPlaceholderConfigurer}
  * ，增加默认值的功能。 例如：${placeholder:defaultValue}，假如placeholder的值不存在，则默认取得
  * defaultValue。
- * 
+ *
  * @author jianghang 2013-1-24 下午03:37:56
  * @version 1.0.0
  */
 public class PropertyPlaceholderConfigurer extends org.springframework.beans.factory.config.PropertyPlaceholderConfigurer implements ResourceLoaderAware, InitializingBean {
 
-    private static final String           PLACEHOLDER_PREFIX = "${";
-    private static final String           PLACEHOLDER_SUFFIX = "}";
-    public static ThreadLocal<Properties> propertiesLocal    = new ThreadLocal<Properties>() {
+    private static final String PLACEHOLDER_PREFIX = "${";
+    private static final String PLACEHOLDER_SUFFIX = "}";
+    public static ThreadLocal<Properties> propertiesLocal = new ThreadLocal<Properties>() {
 
-                                                                 @Override
-                                                                 protected Properties initialValue() {
-                                                                     return new Properties();
-                                                                 }
+        @Override
+        protected Properties initialValue() {
+            return new Properties();
+        }
 
-                                                             };
+    };
 
-    private ResourceLoader                loader;
-    private String[]                      locationNames;
+    private ResourceLoader loader;
+    private String[] locationNames;
 
-    public PropertyPlaceholderConfigurer(){
+    public PropertyPlaceholderConfigurer() {
         setIgnoreUnresolvablePlaceholders(true);
     }
 
@@ -74,7 +74,7 @@ public class PropertyPlaceholderConfigurer extends org.springframework.beans.fac
     private String resolveSystemPropertyPlaceholders(String text) {
         StringBuilder buf = new StringBuilder(text);
 
-        for (int startIndex = buf.indexOf(PLACEHOLDER_PREFIX); startIndex >= 0;) {
+        for (int startIndex = buf.indexOf(PLACEHOLDER_PREFIX); startIndex >= 0; ) {
             int endIndex = buf.indexOf(PLACEHOLDER_SUFFIX, startIndex + PLACEHOLDER_PREFIX.length());
 
             if (endIndex != -1) {
@@ -89,14 +89,14 @@ public class PropertyPlaceholderConfigurer extends org.springframework.beans.fac
                         nextIndex = startIndex + value.length();
                     } else {
                         System.err.println("Could not resolve placeholder '"
-                                           + placeholder
-                                           + "' in ["
-                                           + text
-                                           + "] as system property: neither system property nor environment variable found");
+                                + placeholder
+                                + "' in ["
+                                + text
+                                + "] as system property: neither system property nor environment variable found");
                     }
                 } catch (Throwable ex) {
                     System.err.println("Could not resolve placeholder '" + placeholder + "' in [" + text
-                                       + "] as system property: " + ex);
+                            + "] as system property: " + ex);
                 }
 
                 startIndex = buf.indexOf(PLACEHOLDER_PREFIX, nextIndex);
@@ -158,7 +158,7 @@ public class PropertyPlaceholderConfigurer extends org.springframework.beans.fac
         private final String defaultValue;
         private final String placeholder;
 
-        public DefaultablePlaceholder(String placeholder){
+        public DefaultablePlaceholder(String placeholder) {
             int commaIndex = placeholder.indexOf(":");
             String defaultValue = null;
 

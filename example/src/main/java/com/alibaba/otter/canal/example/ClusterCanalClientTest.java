@@ -5,13 +5,13 @@ import com.alibaba.otter.canal.client.CanalConnectors;
 
 /**
  * 集群模式的测试例子
- * 
+ *
  * @author jianghang 2013-4-15 下午04:19:20
  * @version 1.0.4
  */
 public class ClusterCanalClientTest extends AbstractCanalClientTest {
 
-    public ClusterCanalClientTest(String destination){
+    public ClusterCanalClientTest(String destination) {
         super(destination);
     }
 

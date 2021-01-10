@@ -17,7 +17,7 @@ import com.alibaba.otter.canal.parse.inbound.mysql.tsdb.dao.MetaHistoryDO;
  * Created by wanshao Date: 2017/9/20 Time: 下午5:00
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/tsdb/h2-tsdb.xml" })
+@ContextConfiguration(locations = {"/tsdb/h2-tsdb.xml"})
 @Ignore
 public class MetaHistoryDAOTest {
 

@@ -6,37 +6,37 @@ import static com.taobao.tddl.dbsync.binlog.event.RowsLogBuffer.usecondsToStr;
 
 /**
  * 处理下MySQL json二进制转化为可读的字符串
- * 
+ *
  * @author agapple 2016年6月30日 上午11:26:17
  * @since 1.0.22
  */
 public class JsonConversion {
 
     // JSON TYPE
-    public static final int  JSONB_TYPE_SMALL_OBJECT = 0x0;
-    public static final int  JSONB_TYPE_LARGE_OBJECT = 0x1;
-    public static final int  JSONB_TYPE_SMALL_ARRAY  = 0x2;
-    public static final int  JSONB_TYPE_LARGE_ARRAY  = 0x3;
-    public static final int  JSONB_TYPE_LITERAL      = 0x4;
-    public static final int  JSONB_TYPE_INT16        = 0x5;
-    public static final int  JSONB_TYPE_UINT16       = 0x6;
-    public static final int  JSONB_TYPE_INT32        = 0x7;
-    public static final int  JSONB_TYPE_UINT32       = 0x8;
-    public static final int  JSONB_TYPE_INT64        = 0x9;
-    public static final int  JSONB_TYPE_UINT64       = 0xA;
-    public static final int  JSONB_TYPE_DOUBLE       = 0xB;
-    public static final int  JSONB_TYPE_STRING       = 0xC;
-    public static final int  JSONB_TYPE_OPAQUE       = 0xF;
-    public static final char JSONB_NULL_LITERAL      = '\0';
-    public static final char JSONB_TRUE_LITERAL      = '\1';
-    public static final char JSONB_FALSE_LITERAL     = '\2';
+    public static final int JSONB_TYPE_SMALL_OBJECT = 0x0;
+    public static final int JSONB_TYPE_LARGE_OBJECT = 0x1;
+    public static final int JSONB_TYPE_SMALL_ARRAY = 0x2;
+    public static final int JSONB_TYPE_LARGE_ARRAY = 0x3;
+    public static final int JSONB_TYPE_LITERAL = 0x4;
+    public static final int JSONB_TYPE_INT16 = 0x5;
+    public static final int JSONB_TYPE_UINT16 = 0x6;
+    public static final int JSONB_TYPE_INT32 = 0x7;
+    public static final int JSONB_TYPE_UINT32 = 0x8;
+    public static final int JSONB_TYPE_INT64 = 0x9;
+    public static final int JSONB_TYPE_UINT64 = 0xA;
+    public static final int JSONB_TYPE_DOUBLE = 0xB;
+    public static final int JSONB_TYPE_STRING = 0xC;
+    public static final int JSONB_TYPE_OPAQUE = 0xF;
+    public static final char JSONB_NULL_LITERAL = '\0';
+    public static final char JSONB_TRUE_LITERAL = '\1';
+    public static final char JSONB_FALSE_LITERAL = '\2';
 
     /*
      * The size of offset or size fields in the small and the large storage
      * format for JSON objects and JSON arrays.
      */
-    public static final int  SMALL_OFFSET_SIZE       = 2;
-    public static final int  LARGE_OFFSET_SIZE       = 4;
+    public static final int SMALL_OFFSET_SIZE = 2;
+    public static final int LARGE_OFFSET_SIZE = 4;
 
     /*
      * The size of key entries for objects when using the small storage format
@@ -44,8 +44,8 @@ public class JsonConversion {
      * for key length and 2 bytes for key offset). In the large format it is 6
      * (2 bytes for length, 4 bytes for offset).
      */
-    public static final int  KEY_ENTRY_SIZE_SMALL    = (2 + SMALL_OFFSET_SIZE);
-    public static final int  KEY_ENTRY_SIZE_LARGE    = (2 + LARGE_OFFSET_SIZE);
+    public static final int KEY_ENTRY_SIZE_SMALL = (2 + SMALL_OFFSET_SIZE);
+    public static final int KEY_ENTRY_SIZE_LARGE = (2 + LARGE_OFFSET_SIZE);
 
     /*
      * The size of value entries for objects or arrays. When using the small
@@ -53,8 +53,8 @@ public class JsonConversion {
      * offset). When using the large storage format, it is 5 (1 byte for type, 4
      * bytes for offset).
      */
-    public static final int  VALUE_ENTRY_SIZE_SMALL  = (1 + SMALL_OFFSET_SIZE);
-    public static final int  VALUE_ENTRY_SIZE_LARGE  = (1 + LARGE_OFFSET_SIZE);
+    public static final int VALUE_ENTRY_SIZE_SMALL = (1 + SMALL_OFFSET_SIZE);
+    public static final int VALUE_ENTRY_SIZE_LARGE = (1 + LARGE_OFFSET_SIZE);
 
     public static Json_Value parse_value(int type, LogBuffer buffer, long len, String charsetName) {
         buffer = buffer.duplicate(buffer.position(), (int) len);
@@ -155,8 +155,8 @@ public class JsonConversion {
                     throw new IllegalArgumentException("illegal json data");
                 }
                 return new Json_Value(Json_enum_type.STRING, buffer.rewind()
-                    .forward((int) n)
-                    .getFixString((int) str_len, charsetName));
+                        .forward((int) n)
+                        .getFixString((int) str_len, charsetName));
             case JSONB_TYPE_OPAQUE:
                 /*
                  * There should always be at least one byte, which tells the
@@ -200,20 +200,20 @@ public class JsonConversion {
     public static class Json_Value {
 
         Json_enum_type m_type;
-        int            m_field_type;
-        LogBuffer      m_data;
-        long           m_element_count;
-        long           m_length;
-        String         m_string_value;
-        Number         m_int_value;
-        double         m_double_value;
-        boolean        m_large;
+        int m_field_type;
+        LogBuffer m_data;
+        long m_element_count;
+        long m_length;
+        String m_string_value;
+        Number m_int_value;
+        double m_double_value;
+        boolean m_large;
 
-        public Json_Value(Json_enum_type t){
+        public Json_Value(Json_enum_type t) {
             this.m_type = t;
         }
 
-        public Json_Value(Json_enum_type t, Number val){
+        public Json_Value(Json_enum_type t, Number val) {
             this.m_type = t;
             if (t == Json_enum_type.DOUBLE) {
                 this.m_double_value = val.doubleValue();
@@ -222,19 +222,19 @@ public class JsonConversion {
             }
         }
 
-        public Json_Value(Json_enum_type t, String value){
+        public Json_Value(Json_enum_type t, String value) {
             this.m_type = t;
             this.m_string_value = value;
         }
 
-        public Json_Value(int field_type, LogBuffer data, long bytes){
+        public Json_Value(int field_type, LogBuffer data, long bytes) {
             this.m_type = Json_enum_type.OPAQUE; // 不确定类型
             this.m_field_type = field_type;
             this.m_data = data;
             this.m_length = bytes;
         }
 
-        public Json_Value(Json_enum_type t, LogBuffer data, long element_count, long bytes, boolean large){
+        public Json_Value(Json_enum_type t, LogBuffer data, long element_count, long bytes, boolean large) {
             this.m_type = t;
             this.m_data = data;
             this.m_element_count = element_count;
@@ -270,7 +270,7 @@ public class JsonConversion {
             int entry_offset = first_entry_offset + value_entry_size * i;
             int type = m_data.forward(entry_offset).getUint8();
             if (type == JSONB_TYPE_INT16 || type == JSONB_TYPE_UINT16 || type == JSONB_TYPE_LITERAL
-                || (m_large && (type == JSONB_TYPE_INT32 || type == JSONB_TYPE_UINT32))) {
+                    || (m_large && (type == JSONB_TYPE_INT32 || type == JSONB_TYPE_UINT32))) {
                 return parse_scalar(type, m_data, value_entry_size - 1, charsetName);
             }
             int value_offset = (int) read_offset_or_size(m_data, m_large);
@@ -361,7 +361,7 @@ public class JsonConversion {
                         }
                         buf.append('"').append(text).append('"');
                     } else if (m_field_type == LogEvent.MYSQL_TYPE_DATE || m_field_type == LogEvent.MYSQL_TYPE_DATETIME
-                               || m_field_type == LogEvent.MYSQL_TYPE_TIMESTAMP) {
+                            || m_field_type == LogEvent.MYSQL_TYPE_TIMESTAMP) {
                         long packed_value = m_data.getLong64();
                         if (packed_value == 0) {
                             text = "0000-00-00 00:00:00";

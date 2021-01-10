@@ -7,7 +7,7 @@ import com.alibaba.otter.canal.parse.driver.mysql.utils.ByteHelper;
 
 public class AuthSwitchRequestMoreData extends CommandPacket {
 
-    public int    status;
+    public int status;
     public byte[] authData;
 
     public void fromBytes(byte[] data) {

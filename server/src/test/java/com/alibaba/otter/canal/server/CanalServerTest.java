@@ -39,16 +39,16 @@ import com.alibaba.otter.canal.server.netty.NettyUtils;
 @Ignore
 public class CanalServerTest {
 
-    protected static final String cluster1      = "127.0.0.1:2188";
-    protected static final String DESTINATION   = "ljhtest1";
+    protected static final String cluster1 = "127.0.0.1:2188";
+    protected static final String DESTINATION = "ljhtest1";
     protected static final String DETECTING_SQL = "insert into retl.xdual values(1,now()) on duplicate key update x=now()";
     protected static final String MYSQL_ADDRESS = "127.0.0.1";
-    protected static final String USERNAME      = "retl";
-    protected static final String PASSWORD      = "retl";
-    protected static final String FILTER        = "retl\\..*,erosa.canaltable1s,erosa.canaltable1t";
+    protected static final String USERNAME = "retl";
+    protected static final String PASSWORD = "retl";
+    protected static final String FILTER = "retl\\..*,erosa.canaltable1s,erosa.canaltable1t";
 
-    private final ByteBuffer      header        = ByteBuffer.allocate(4);
-    private CanalServerWithNetty  nettyServer;
+    private final ByteBuffer header = ByteBuffer.allocate(4);
+    private CanalServerWithNetty nettyServer;
 
     @Before
     public void setUp() {
@@ -87,17 +87,17 @@ public class CanalServerTest {
             System.out.println(handshake.getSupportedCompressions());
             //
             ClientAuth ca = ClientAuth.newBuilder()
-                .setUsername("")
-                .setNetReadTimeout(10000)
-                .setNetWriteTimeout(10000)
-                .build();
+                    .setUsername("")
+                    .setNetReadTimeout(10000)
+                    .setNetWriteTimeout(10000)
+                    .build();
             writeWithHeader(channel,
-                Packet.newBuilder()
-                    .setType(PacketType.CLIENTAUTHENTICATION)
-                    .setVersion(NettyUtils.VERSION)
-                    .setBody(ca.toByteString())
-                    .build()
-                    .toByteArray());
+                    Packet.newBuilder()
+                            .setType(PacketType.CLIENTAUTHENTICATION)
+                            .setVersion(NettyUtils.VERSION)
+                            .setBody(ca.toByteString())
+                            .build()
+                            .toByteArray());
             //
             p = Packet.parseFrom(readNextPacket(channel));
             if (p.getType() != PacketType.ACK) {
@@ -110,11 +110,11 @@ public class CanalServerTest {
             }
 
             writeWithHeader(channel, Packet.newBuilder()
-                .setType(PacketType.SUBSCRIPTION)
-                .setVersion(NettyUtils.VERSION)
-                .setBody(Sub.newBuilder().setDestination(DESTINATION).setClientId("1").build().toByteString())
-                .build()
-                .toByteArray());
+                    .setType(PacketType.SUBSCRIPTION)
+                    .setVersion(NettyUtils.VERSION)
+                    .setBody(Sub.newBuilder().setDestination(DESTINATION).setClientId("1").build().toByteString())
+                    .build()
+                    .toByteArray());
             //
             p = Packet.parseFrom(readNextPacket(channel));
             ack = Ack.parseFrom(p.getBody());
@@ -124,17 +124,17 @@ public class CanalServerTest {
 
             for (int i = 0; i < 10; i++) {
                 writeWithHeader(channel,
-                    Packet.newBuilder()
-                        .setType(PacketType.GET)
-                        .setVersion(NettyUtils.VERSION)
-                        .setBody(Get.newBuilder()
-                            .setDestination(DESTINATION)
-                            .setClientId("1")
-                            .setFetchSize(10)
-                            .build()
-                            .toByteString())
-                        .build()
-                        .toByteArray());
+                        Packet.newBuilder()
+                                .setType(PacketType.GET)
+                                .setVersion(NettyUtils.VERSION)
+                                .setBody(Get.newBuilder()
+                                        .setDestination(DESTINATION)
+                                        .setClientId("1")
+                                        .setFetchSize(10)
+                                        .build()
+                                        .toByteString())
+                                .build()
+                                .toByteArray());
                 p = Packet.parseFrom(readNextPacket(channel));
 
                 long batchId = -1L;
@@ -159,38 +159,38 @@ public class CanalServerTest {
                 System.out.println("!!!!!!!!!!!!!!!!! " + batchId);
                 Thread.sleep(1000L);
                 writeWithHeader(channel,
-                    Packet.newBuilder()
-                        .setType(PacketType.CLIENTACK)
-                        .setVersion(NettyUtils.VERSION)
-                        .setBody(ClientAck.newBuilder()
-                            .setDestination(DESTINATION)
-                            .setClientId("1")
-                            .setBatchId(batchId)
-                            .build()
-                            .toByteString())
-                        .build()
-                        .toByteArray());
+                        Packet.newBuilder()
+                                .setType(PacketType.CLIENTACK)
+                                .setVersion(NettyUtils.VERSION)
+                                .setBody(ClientAck.newBuilder()
+                                        .setDestination(DESTINATION)
+                                        .setClientId("1")
+                                        .setBatchId(batchId)
+                                        .build()
+                                        .toByteString())
+                                .build()
+                                .toByteArray());
             }
 
             writeWithHeader(channel,
-                Packet.newBuilder()
-                    .setType(PacketType.CLIENTROLLBACK)
-                    .setVersion(NettyUtils.VERSION)
-                    .setBody(ClientRollback.newBuilder()
-                        .setDestination(DESTINATION)
-                        .setClientId("1")
-                        .build()
-                        .toByteString())
-                    .build()
-                    .toByteArray());
+                    Packet.newBuilder()
+                            .setType(PacketType.CLIENTROLLBACK)
+                            .setVersion(NettyUtils.VERSION)
+                            .setBody(ClientRollback.newBuilder()
+                                    .setDestination(DESTINATION)
+                                    .setClientId("1")
+                                    .build()
+                                    .toByteString())
+                            .build()
+                            .toByteArray());
 
             writeWithHeader(channel,
-                Packet.newBuilder()
-                    .setType(PacketType.UNSUBSCRIPTION)
-                    .setVersion(NettyUtils.VERSION)
-                    .setBody(Unsub.newBuilder().setDestination(DESTINATION).setClientId("1").build().toByteString())
-                    .build()
-                    .toByteArray());
+                    Packet.newBuilder()
+                            .setType(PacketType.UNSUBSCRIPTION)
+                            .setVersion(NettyUtils.VERSION)
+                            .setBody(Unsub.newBuilder().setDestination(DESTINATION).setClientId("1").build().toByteString())
+                            .build()
+                            .toByteArray());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -248,11 +248,11 @@ public class CanalServerTest {
 
         parameter.setSourcingType(SourcingType.MYSQL);
         parameter.setDbAddresses(Arrays.asList(new InetSocketAddress(MYSQL_ADDRESS, 3306),
-            new InetSocketAddress(MYSQL_ADDRESS, 3306)));
+                new InetSocketAddress(MYSQL_ADDRESS, 3306)));
         parameter.setDbUsername(USERNAME);
         parameter.setDbPassword(PASSWORD);
         parameter.setPositions(Arrays.asList("{\"journalName\":\"mysql-bin.000001\",\"position\":6163L,\"timestamp\":1322803601000L}",
-            "{\"journalName\":\"mysql-bin.000001\",\"position\":6163L,\"timestamp\":1322803601000L}"));
+                "{\"journalName\":\"mysql-bin.000001\",\"position\":6163L,\"timestamp\":1322803601000L}"));
 
         parameter.setSlaveId(1234L);
 

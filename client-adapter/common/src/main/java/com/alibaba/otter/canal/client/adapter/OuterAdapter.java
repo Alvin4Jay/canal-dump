@@ -41,7 +41,7 @@ public interface OuterAdapter {
     /**
      * Etl操作
      *
-     * @param task 任务名, 对应配置名
+     * @param task   任务名, 对应配置名
      * @param params etl筛选条件
      */
     default EtlResult etl(String task, List<String> params) {

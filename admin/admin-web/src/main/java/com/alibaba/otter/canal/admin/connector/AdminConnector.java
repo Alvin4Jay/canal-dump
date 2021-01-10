@@ -5,7 +5,7 @@ import com.alibaba.otter.canal.protocol.exception.CanalClientException;
 
 /**
  * canal admin操作客户端
- * 
+ *
  * @author agapple 2019年8月31日 下午12:46:29
  * @since 1.1.4
  */
@@ -13,14 +13,14 @@ public interface AdminConnector {
 
     /**
      * 链接对应的canal server
-     * 
+     *
      * @throws CanalClientException
      */
     void connect() throws ServiceException;
 
     /**
      * 释放链接
-     * 
+     *
      * @throws CanalClientException
      */
     void disconnect() throws ServiceException;
@@ -62,7 +62,7 @@ public interface AdminConnector {
 
     /**
      * 通过实例名检查
-     * 
+     *
      * @param destination
      * @return
      */
@@ -116,7 +116,7 @@ public interface AdminConnector {
 
     /**
      * 获取Instance的机器日志列表
-     * 
+     *
      * @param destination
      */
     String listInstanceLog(String destination);

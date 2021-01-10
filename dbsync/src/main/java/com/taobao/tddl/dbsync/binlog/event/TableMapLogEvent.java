@@ -96,7 +96,9 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
  * Type takes 1 byte. Length is a packed integer value. Values takes Length
  * bytes.</td>
  * <td>There are some optional metadata defined. They are listed in the table
- * 
+ *
+ * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
+ * @version 1.0
  * @ref Table_table_map_event_optional_metadata. Optional metadata fields follow
  * null_bits. Whether binlogging an optional metadata is decided by the server.
  * The order is not defined, so they can be binlogged in any order. </td>
@@ -297,8 +299,6 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
  * of the geometry: 1, 2, 3, or 4.</td>
  * </tr>
  * </table>
- * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
- * @version 1.0
  */
 public final class TableMapLogEvent extends LogEvent {
 
@@ -334,57 +334,59 @@ public final class TableMapLogEvent extends LogEvent {
      */
     public static final class ColumnInfo {
 
-        public int          type;
-        public int          meta;
-        public String       name;
-        public boolean      unsigned;
-        public boolean      pk;
+        public int type;
+        public int meta;
+        public String name;
+        public boolean unsigned;
+        public boolean pk;
         public List<String> set_enum_values;
-        public int          charset;        // 可以通过CharsetUtil进行转化
-        public int          geoType;
-        public boolean      nullable;
+        public int charset;        // 可以通过CharsetUtil进行转化
+        public int geoType;
+        public boolean nullable;
 
         @Override
         public String toString() {
             return "ColumnInfo [type=" + type + ", meta=" + meta + ", name=" + name + ", unsigned=" + unsigned
-                   + ", pk=" + pk + ", set_enum_values=" + set_enum_values + ", charset=" + charset + ", geoType="
-                   + geoType + ", nullable=" + nullable + "]";
+                    + ", pk=" + pk + ", set_enum_values=" + set_enum_values + ", charset=" + charset + ", geoType="
+                    + geoType + ", nullable=" + nullable + "]";
         }
     }
 
-    protected final int          columnCnt;
+    protected final int columnCnt;
     protected final ColumnInfo[] columnInfo;                     // buffer
-                                                                  // for
-                                                                  // field
-                                                                  // metadata
+    // for
+    // field
+    // metadata
 
-    protected final long         tableId;
-    protected BitSet             nullBits;
+    protected final long tableId;
+    protected BitSet nullBits;
 
-    /** TM = "Table Map" */
-    public static final int      TM_MAPID_OFFSET         = 0;
-    public static final int      TM_FLAGS_OFFSET         = 6;
+    /**
+     * TM = "Table Map"
+     */
+    public static final int TM_MAPID_OFFSET = 0;
+    public static final int TM_FLAGS_OFFSET = 6;
 
     // UNSIGNED flag of numeric columns
-    public static final int      SIGNEDNESS              = 1;
+    public static final int SIGNEDNESS = 1;
     // Default character set of string columns
-    public static final int      DEFAULT_CHARSET         = 2;
+    public static final int DEFAULT_CHARSET = 2;
     // Character set of string columns
-    public static final int      COLUMN_CHARSET          = 3;
-    public static final int      COLUMN_NAME             = 4;
+    public static final int COLUMN_CHARSET = 3;
+    public static final int COLUMN_NAME = 4;
     // String value of SET columns
-    public static final int      SET_STR_VALUE           = 5;
+    public static final int SET_STR_VALUE = 5;
     // String value of ENUM columns
-    public static final int      ENUM_STR_VALUE          = 6;
+    public static final int ENUM_STR_VALUE = 6;
     // Real type of geometry columns
-    public static final int      GEOMETRY_TYPE           = 7;
+    public static final int GEOMETRY_TYPE = 7;
     // Primary key without prefix
-    public static final int      SIMPLE_PRIMARY_KEY      = 8;
+    public static final int SIMPLE_PRIMARY_KEY = 8;
     // Primary key with prefix
-    public static final int      PRIMARY_KEY_WITH_PREFIX = 9;
+    public static final int PRIMARY_KEY_WITH_PREFIX = 9;
 
-    private int                  default_charset;
-    private boolean              existOptionalMetaData   = false;
+    private int default_charset;
+    private boolean existOptionalMetaData = false;
 
     private static final class Pair {
 
@@ -395,7 +397,7 @@ public final class TableMapLogEvent extends LogEvent {
     /**
      * Constructor used by slave to read the event from the binary log.
      */
-    public TableMapLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent){
+    public TableMapLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent) {
         super(header);
 
         final int commonHeaderLen = descriptionEvent.commonHeaderLen;
@@ -497,7 +499,7 @@ public final class TableMapLogEvent extends LogEvent {
                     if (is_character_type(type)) {
                         if (defaultCharsetPairs != null && !defaultCharsetPairs.isEmpty()) {
                             if (index < defaultCharsetPairs.size()
-                                && char_col_index == defaultCharsetPairs.get(index).col_index) {
+                                    && char_col_index == defaultCharsetPairs.get(index).col_index) {
                                 cs = defaultCharsetPairs.get(index).col_charset;
                                 index++;
                             } else {
@@ -523,7 +525,7 @@ public final class TableMapLogEvent extends LogEvent {
 
     /**
      * Decode field metadata by column types.
-     * 
+     *
      * @see mysql-5.1.60/sql/rpl_utility.h
      */
     private final void decodeFields(LogBuffer buffer, final int len) {
@@ -555,7 +557,7 @@ public final class TableMapLogEvent extends LogEvent {
                      * exist in a binlog.
                      */
                     logger.warn("This enumeration value is only used internally "
-                                + "and cannot exist in a binlog: type=" + info.type);
+                            + "and cannot exist in a binlog: type=" + info.type);
                     break;
                 case MYSQL_TYPE_STRING: {
                     /*

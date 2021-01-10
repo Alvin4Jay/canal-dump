@@ -5,10 +5,11 @@ import com.alibaba.otter.canal.instance.core.CanalInstance;
 /**
  * Canal server/instance metrics for export.
  * <strong>
- *     Designed to be created by service provider.
+ * Designed to be created by service provider.
  * </strong>
- * @see CanalMetricsProvider
+ *
  * @author Chuanyi Li
+ * @see CanalMetricsProvider
  */
 public interface CanalMetricsService {
 
@@ -29,12 +30,14 @@ public interface CanalMetricsService {
 
     /**
      * Register instance level metrics for specified instance.
+     *
      * @param instance {@link CanalInstance}
      */
     void register(CanalInstance instance);
 
     /**
      * Unregister instance level metrics for specified instance.
+     *
      * @param instance {@link CanalInstance}
      */
     void unregister(CanalInstance instance);

@@ -9,7 +9,7 @@ import com.alibaba.otter.canal.common.utils.CanalToStringStyle;
 
 /**
  * 对应的canal模型对象
- * 
+ *
  * @author jianghang 2012-7-4 下午02:32:39
  * @version 1.0.0
  */
@@ -17,13 +17,13 @@ public class Canal implements Serializable {
 
     private static final long serialVersionUID = 8333284022624682754L;
 
-    private Long              id;
-    private String            name;                                   // 对应的名字
-    private String            desc;                                   // 描述
-    private CanalStatus       status;
-    private CanalParameter    canalParameter;                         // 参数定义
-    private Date              gmtCreate;                              // 创建时间
-    private Date              gmtModified;                            // 修改时间
+    private Long id;
+    private String name;                                   // 对应的名字
+    private String desc;                                   // 描述
+    private CanalStatus status;
+    private CanalParameter canalParameter;                         // 参数定义
+    private Date gmtCreate;                              // 创建时间
+    private Date gmtModified;                            // 修改时间
 
     public Long getId() {
         return id;

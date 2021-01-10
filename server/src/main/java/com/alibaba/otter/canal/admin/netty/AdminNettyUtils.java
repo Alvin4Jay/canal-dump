@@ -19,7 +19,7 @@ import com.alibaba.otter.canal.protocol.AdminPacket.Packet;
 public class AdminNettyUtils {
 
     public static int HEADER_LENGTH = 4;
-    public static int VERSION       = 1;
+    public static int VERSION = 1;
 
     public static void write(Channel channel, ByteBuffer body) {
         byte[] header = ByteBuffer.allocate(HEADER_LENGTH).order(ByteOrder.BIG_ENDIAN).putInt(body.limit()).array();
@@ -45,19 +45,19 @@ public class AdminNettyUtils {
 
     public static byte[] ackPacket(String message) {
         return Packet.newBuilder()
-            .setType(AdminPacket.PacketType.ACK)
-            .setVersion(VERSION)
-            .setBody(Ack.newBuilder().setCode(0).setMessage(message == null ? "" : message).build().toByteString())
-            .build()
-            .toByteArray();
+                .setType(AdminPacket.PacketType.ACK)
+                .setVersion(VERSION)
+                .setBody(Ack.newBuilder().setCode(0).setMessage(message == null ? "" : message).build().toByteString())
+                .build()
+                .toByteArray();
     }
 
     public static byte[] errorPacket(int errorCode, String errorMessage) {
         return Packet.newBuilder()
-            .setType(AdminPacket.PacketType.ACK)
-            .setVersion(VERSION)
-            .setBody(Ack.newBuilder().setCode(errorCode).setMessage(errorMessage).build().toByteString())
-            .build()
-            .toByteArray();
+                .setType(AdminPacket.PacketType.ACK)
+                .setVersion(VERSION)
+                .setBody(Ack.newBuilder().setCode(errorCode).setMessage(errorMessage).build().toByteString())
+                .build()
+                .toByteArray();
     }
 }

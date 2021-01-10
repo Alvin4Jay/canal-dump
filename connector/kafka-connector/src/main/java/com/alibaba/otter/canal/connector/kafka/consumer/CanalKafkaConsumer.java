@@ -32,14 +32,14 @@ import com.alibaba.otter.canal.protocol.Message;
 @SPI("kafka")
 public class CanalKafkaConsumer implements CanalMsgConsumer {
 
-    private static final String      PREFIX_KAFKA_CONFIG = "kafka.";
+    private static final String PREFIX_KAFKA_CONFIG = "kafka.";
 
     private KafkaConsumer<String, ?> kafkaConsumer;
-    private boolean                  flatMessage         = true;
-    private String                   topic;
+    private boolean flatMessage = true;
+    private String topic;
 
-    private Map<Integer, Long>       currentOffsets      = new ConcurrentHashMap<>();
-    private Properties               kafkaProperties     = new Properties();
+    private Map<Integer, Long> currentOffsets = new ConcurrentHashMap<>();
+    private Properties kafkaProperties = new Properties();
 
     @Override
     public void init(Properties properties, String topic, String groupId) {

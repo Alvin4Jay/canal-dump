@@ -33,7 +33,7 @@ public class MappingConfigLoader {
         Map<String, String> configContentMap = MappingConfigsLoader.loadConfigs("hbase");
         configContentMap.forEach((fileName, content) -> {
             MappingConfig config = YmlConfigBinder
-                .bindYmlToObj(null, content, MappingConfig.class, null, envProperties);
+                    .bindYmlToObj(null, content, MappingConfig.class, null, envProperties);
             if (config == null) {
                 return;
             }

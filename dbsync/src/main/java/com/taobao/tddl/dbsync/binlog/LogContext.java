@@ -10,7 +10,7 @@ import com.taobao.tddl.dbsync.binlog.event.TableMapLogEvent;
 
 /**
  * TODO: Document Me!! NOTE: Log context will NOT write multi-threaded.
- * 
+ *
  * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
  * @version 1.0
  */
@@ -18,19 +18,19 @@ public final class LogContext {
 
     private final Map<Long, TableMapLogEvent> mapOfTable = new HashMap<Long, TableMapLogEvent>();
 
-    private FormatDescriptionLogEvent         formatDescription;
+    private FormatDescriptionLogEvent formatDescription;
 
-    private LogPosition                       logPosition;
+    private LogPosition logPosition;
 
-    private GTIDSet                           gtidSet;
+    private GTIDSet gtidSet;
 
-    private GtidLogEvent                      gtidLogEvent; // save current gtid log event
+    private GtidLogEvent gtidLogEvent; // save current gtid log event
 
-    public LogContext(){
+    public LogContext() {
         this.formatDescription = FormatDescriptionLogEvent.FORMAT_DESCRIPTION_EVENT_5_x;
     }
 
-    public LogContext(FormatDescriptionLogEvent descriptionEvent){
+    public LogContext(FormatDescriptionLogEvent descriptionEvent) {
         this.formatDescription = descriptionEvent;
     }
 

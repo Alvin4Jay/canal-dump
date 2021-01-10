@@ -45,11 +45,11 @@ public class CanalServerWithEmbedded_StandbyTest extends BaseCanalServerWithEmbe
 
         parameter.setSourcingType(SourcingType.MYSQL);
         parameter.setDbAddresses(Arrays.asList(new InetSocketAddress(MYSQL_ADDRESS, 3306),
-            new InetSocketAddress(MYSQL_ADDRESS, 3306)));
+                new InetSocketAddress(MYSQL_ADDRESS, 3306)));
         parameter.setDbUsername(USERNAME);
         parameter.setDbPassword(PASSWORD);
         parameter.setPositions(Arrays.asList("{\"journalName\":\"mysql-bin.000001\",\"position\":6163L,\"timestamp\":1322803601000L}",
-            "{\"journalName\":\"mysql-bin.000001\",\"position\":6163L,\"timestamp\":1322803601000L}"));
+                "{\"journalName\":\"mysql-bin.000001\",\"position\":6163L,\"timestamp\":1322803601000L}"));
 
         parameter.setSlaveId(1234L);
 

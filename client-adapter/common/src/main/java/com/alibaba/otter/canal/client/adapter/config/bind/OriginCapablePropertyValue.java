@@ -11,21 +11,21 @@ import com.alibaba.otter.canal.client.adapter.config.common.PropertySource;
  */
 class OriginCapablePropertyValue extends PropertyValue {
 
-    private static final String  ATTRIBUTE_PROPERTY_ORIGIN = "propertyOrigin";
+    private static final String ATTRIBUTE_PROPERTY_ORIGIN = "propertyOrigin";
 
     private final PropertyOrigin origin;
 
-    OriginCapablePropertyValue(PropertyValue propertyValue){
+    OriginCapablePropertyValue(PropertyValue propertyValue) {
         this(propertyValue.getName(),
-            propertyValue.getValue(),
-            (PropertyOrigin) propertyValue.getAttribute(ATTRIBUTE_PROPERTY_ORIGIN));
+                propertyValue.getValue(),
+                (PropertyOrigin) propertyValue.getAttribute(ATTRIBUTE_PROPERTY_ORIGIN));
     }
 
-    OriginCapablePropertyValue(String name, Object value, String originName, PropertySource<?> originSource){
+    OriginCapablePropertyValue(String name, Object value, String originName, PropertySource<?> originSource) {
         this(name, value, new PropertyOrigin(originSource, originName));
     }
 
-    OriginCapablePropertyValue(String name, Object value, PropertyOrigin origin){
+    OriginCapablePropertyValue(String name, Object value, PropertyOrigin origin) {
         super(name, value);
         this.origin = origin;
         setAttribute(ATTRIBUTE_PROPERTY_ORIGIN, origin);

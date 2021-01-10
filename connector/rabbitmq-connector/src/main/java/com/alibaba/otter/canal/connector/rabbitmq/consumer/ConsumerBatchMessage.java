@@ -6,11 +6,11 @@ import java.util.concurrent.TimeUnit;
 
 public class ConsumerBatchMessage<T> {
 
-    private final List<T>  data;
+    private final List<T> data;
     private CountDownLatch latch;
-    private boolean        hasFailure = false;
+    private boolean hasFailure = false;
 
-    public ConsumerBatchMessage(List<T> data){
+    public ConsumerBatchMessage(List<T> data) {
         this.data = data;
         latch = new CountDownLatch(1);
     }

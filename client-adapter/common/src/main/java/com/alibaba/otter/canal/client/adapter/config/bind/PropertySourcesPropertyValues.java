@@ -28,27 +28,27 @@ import com.alibaba.otter.canal.client.adapter.config.common.PropertySources;
  */
 public class PropertySourcesPropertyValues implements PropertyValues {
 
-    private static final Pattern                               COLLECTION_PROPERTY = Pattern
-        .compile("\\[(\\d+)\\](\\.\\S+)?");
+    private static final Pattern COLLECTION_PROPERTY = Pattern
+            .compile("\\[(\\d+)\\](\\.\\S+)?");
 
-    private final PropertySources                              propertySources;
+    private final PropertySources propertySources;
 
-    private final Collection<String>                           nonEnumerableFallbackNames;
+    private final Collection<String> nonEnumerableFallbackNames;
 
-    private final PropertyNamePatternsMatcher                  includes;
+    private final PropertyNamePatternsMatcher includes;
 
-    private final Map<String, PropertyValue>                   propertyValues      = new LinkedHashMap<String, PropertyValue>();
+    private final Map<String, PropertyValue> propertyValues = new LinkedHashMap<String, PropertyValue>();
 
-    private final ConcurrentHashMap<String, PropertySource<?>> collectionOwners    = new ConcurrentHashMap<String, PropertySource<?>>();
+    private final ConcurrentHashMap<String, PropertySource<?>> collectionOwners = new ConcurrentHashMap<String, PropertySource<?>>();
 
-    private final boolean                                      resolvePlaceholders;
+    private final boolean resolvePlaceholders;
 
     /**
      * Create a new PropertyValues from the given PropertySources.
      *
      * @param propertySources a PropertySources instance
      */
-    public PropertySourcesPropertyValues(PropertySources propertySources){
+    public PropertySourcesPropertyValues(PropertySources propertySources) {
         this(propertySources, true);
     }
 
@@ -56,43 +56,43 @@ public class PropertySourcesPropertyValues implements PropertyValues {
      * Create a new PropertyValues from the given PropertySources that will
      * optionally resolve placeholders.
      *
-     * @param propertySources a PropertySources instance
+     * @param propertySources     a PropertySources instance
      * @param resolvePlaceholders {@code true} if placeholders should be resolved.
      * @since 1.5.2
      */
-    public PropertySourcesPropertyValues(PropertySources propertySources, boolean resolvePlaceholders){
+    public PropertySourcesPropertyValues(PropertySources propertySources, boolean resolvePlaceholders) {
         this(propertySources, (Collection<String>) null, PropertyNamePatternsMatcher.ALL, resolvePlaceholders);
     }
 
     /**
      * Create a new PropertyValues from the given PropertySources.
      *
-     * @param propertySources a PropertySources instance
-     * @param includePatterns property name patterns to include from system
-     *     properties and environment variables
+     * @param propertySources            a PropertySources instance
+     * @param includePatterns            property name patterns to include from system
+     *                                   properties and environment variables
      * @param nonEnumerableFallbackNames the property names to try in lieu of an
-     *     {@link EnumerablePropertySource}.
+     *                                   {@link EnumerablePropertySource}.
      */
     public PropertySourcesPropertyValues(PropertySources propertySources, Collection<String> includePatterns,
-                                         Collection<String> nonEnumerableFallbackNames){
+                                         Collection<String> nonEnumerableFallbackNames) {
         this(propertySources,
-            nonEnumerableFallbackNames,
-            new PatternPropertyNamePatternsMatcher(includePatterns),
-            true);
+                nonEnumerableFallbackNames,
+                new PatternPropertyNamePatternsMatcher(includePatterns),
+                true);
     }
 
     /**
      * Create a new PropertyValues from the given PropertySources.
      *
-     * @param propertySources a PropertySources instance
+     * @param propertySources            a PropertySources instance
      * @param nonEnumerableFallbackNames the property names to try in lieu of an
-     *     {@link EnumerablePropertySource}.
-     * @param includes the property name patterns to include
-     * @param resolvePlaceholders flag to indicate the placeholders should be
-     *     resolved
+     *                                   {@link EnumerablePropertySource}.
+     * @param includes                   the property name patterns to include
+     * @param resolvePlaceholders        flag to indicate the placeholders should be
+     *                                   resolved
      */
     PropertySourcesPropertyValues(PropertySources propertySources, Collection<String> nonEnumerableFallbackNames,
-                                  PropertyNamePatternsMatcher includes, boolean resolvePlaceholders){
+                                  PropertyNamePatternsMatcher includes, boolean resolvePlaceholders) {
         Assert.notNull(propertySources, "PropertySources must not be null");
         Assert.notNull(includes, "Includes must not be null");
         this.propertySources = propertySources;
@@ -196,7 +196,7 @@ public class PropertySourcesPropertyValues implements PropertyValues {
     private PropertyValue putIfAbsent(String propertyName, Object value, PropertySource<?> source) {
         if (value != null && !this.propertyValues.containsKey(propertyName)) {
             PropertySource<?> collectionOwner = this.collectionOwners
-                .putIfAbsent(COLLECTION_PROPERTY.matcher(propertyName).replaceAll("[]"), source);
+                    .putIfAbsent(COLLECTION_PROPERTY.matcher(propertyName).replaceAll("[]"), source);
             if (collectionOwner == null || collectionOwner == source) {
                 PropertyValue propertyValue = new OriginCapablePropertyValue(propertyName, value, propertyName, source);
                 this.propertyValues.put(propertyName, propertyValue);

@@ -20,7 +20,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 
 /**
  * 字节处理相关工具类
- * 
+ *
  * @author jianghang
  */
 public class JsonUtils {
@@ -95,7 +95,7 @@ public class JsonUtils {
 
         @Override
         public void write(JSONSerializer serializer, Object object, Object fieldName, Type fieldType, int features)
-                                                                                                                   throws IOException {
+                throws IOException {
             if (object == null) {
                 serializer.writeNull();
                 return;

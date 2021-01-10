@@ -18,7 +18,7 @@ import com.alibaba.otter.canal.adapter.launcher.monitor.remote.RemoteConfigLoade
 public class BootstrapConfiguration {
 
     @Autowired
-    private Environment        env;
+    private Environment env;
 
     private RemoteConfigLoader remoteConfigLoader = null;
 

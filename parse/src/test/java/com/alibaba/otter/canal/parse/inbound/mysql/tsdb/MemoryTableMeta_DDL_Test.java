@@ -21,7 +21,7 @@ import com.google.common.collect.Lists;
  * @author agapple 2017年8月1日 下午7:15:54
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/tsdb/h2-tsdb.xml" })
+@ContextConfiguration(locations = {"/tsdb/h2-tsdb.xml"})
 public class MemoryTableMeta_DDL_Test {
 
     @Test
@@ -78,7 +78,7 @@ public class MemoryTableMeta_DDL_Test {
         File create = new File(dummyFile.getParent() + "/ddl", "ddl_any.sql");
         String sql = StringUtils.join(IOUtils.readLines(new FileInputStream(create)), "\n");
         memoryTableMeta.apply(null, "test", sql, null);
-        
+
         List<String> tableNames = Lists.newArrayList();
         for (Schema schema : memoryTableMeta.getRepository().getSchemas()) {
             tableNames.addAll(schema.showTables());

@@ -27,23 +27,23 @@ import com.alibaba.otter.canal.protocol.SecurityUtil;
 public class PlainCanalConfigClient extends AbstractCanalLifeCycle implements CanalLifeCycle {
 
     private final static Integer REQUEST_TIMEOUT = 5000;
-    private String               configURL;
-    private String               user;
-    private String               passwd;
-    private HttpHelper           httpHelper;
-    private String               localIp;
-    private int                  adminPort;
-    private boolean              autoRegister;
-    private String               autoCluster;
+    private String configURL;
+    private String user;
+    private String passwd;
+    private HttpHelper httpHelper;
+    private String localIp;
+    private int adminPort;
+    private boolean autoRegister;
+    private String autoCluster;
 
     public PlainCanalConfigClient(String configURL, String user, String passwd, String localIp, int adminPort,
-                                  boolean autoRegister, String autoCluster){
+                                  boolean autoRegister, String autoCluster) {
         this(configURL, user, passwd, localIp, adminPort);
         this.autoCluster = autoCluster;
         this.autoRegister = autoRegister;
     }
 
-    public PlainCanalConfigClient(String configURL, String user, String passwd, String localIp, int adminPort){
+    public PlainCanalConfigClient(String configURL, String user, String passwd, String localIp, int adminPort) {
         this.configURL = configURL;
         if (!StringUtils.startsWithIgnoreCase(configURL, "http")) {
             this.configURL = "http://" + configURL;
@@ -71,7 +71,7 @@ public class PlainCanalConfigClient extends AbstractCanalLifeCycle implements Ca
             md5 = "";
         }
         String url = configURL + "/api/v1/config/server_polling?ip=" + localIp + "&port=" + adminPort + "&md5=" + md5
-                     + "&register=" + (autoRegister ? 1 : 0) + "&cluster=" + autoCluster;
+                + "&register=" + (autoRegister ? 1 : 0) + "&cluster=" + autoCluster;
         return queryConfig(url);
     }
 
@@ -94,7 +94,7 @@ public class PlainCanalConfigClient extends AbstractCanalLifeCycle implements Ca
             md5 = "";
         }
         String url = configURL + "/api/v1/config/instances_polling?md5=" + md5 + "&ip=" + localIp + "&port="
-                     + adminPort;
+                + adminPort;
         ResponseModel<CanalConfig> config = doQuery(url);
         if (config.data != null) {
             return config.data.content;
@@ -118,8 +118,8 @@ public class PlainCanalConfigClient extends AbstractCanalLifeCycle implements Ca
         heads.put("passwd", passwd);
         String response = httpHelper.get(url, heads, REQUEST_TIMEOUT);
         ResponseModel<CanalConfig> resp = JSONObject.parseObject(response,
-            new TypeReference<ResponseModel<CanalConfig>>() {
-            });
+                new TypeReference<ResponseModel<CanalConfig>>() {
+                });
 
         if (!HttpHelper.REST_STATE_OK.equals(resp.code)) {
             throw new CanalException("requestGet for canal config error: " + resp.message);
@@ -147,8 +147,8 @@ public class PlainCanalConfigClient extends AbstractCanalLifeCycle implements Ca
     private static class ResponseModel<T> {
 
         public Integer code;
-        public String  message;
-        public T       data;
+        public String message;
+        public T data;
     }
 
     private static class CanalConfig {

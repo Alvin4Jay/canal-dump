@@ -23,14 +23,14 @@ import com.alibaba.otter.canal.adapter.launcher.config.CuratorClient;
 @Component
 public class EtlLock {
 
-    private static final Map<String, ReentrantLock>     LOCAL_LOCK       = new ConcurrentHashMap<>();
+    private static final Map<String, ReentrantLock> LOCAL_LOCK = new ConcurrentHashMap<>();
 
     private static final Map<String, InterProcessMutex> DISTRIBUTED_LOCK = new ConcurrentHashMap<>();
 
-    private Mode                                        mode             = Mode.LOCAL;
+    private Mode mode = Mode.LOCAL;
 
     @Resource
-    private CuratorClient                               curatorClient;
+    private CuratorClient curatorClient;
 
     @PostConstruct
     public void init() {

@@ -12,18 +12,18 @@ import com.alibaba.otter.canal.protocol.position.Position;
 
 /**
  * store回收机制
- * 
+ *
  * @author jianghang 2012-8-8 下午12:57:36
  * @version 1.0.0
  */
 public abstract class AbstractCanalStoreScavenge extends AbstractCanalLifeCycle implements CanalStoreScavenge {
 
-    protected String           destination;
+    protected String destination;
     protected CanalMetaManager canalMetaManager;
-    protected boolean          onAck            = true;
-    protected boolean          onFull           = false;
-    protected boolean          onSchedule       = false;
-    protected String           scavengeSchedule = null;
+    protected boolean onAck = true;
+    protected boolean onFull = false;
+    protected boolean onSchedule = false;
+    protected String scavengeSchedule = null;
 
     public void scavenge() {
         Position position = getLatestAckPosition(destination);
@@ -32,7 +32,7 @@ public abstract class AbstractCanalStoreScavenge extends AbstractCanalLifeCycle 
 
     /**
      * 找出该destination中可被清理掉的position位置
-     * 
+     *
      * @param destination
      */
     private Position getLatestAckPosition(String destination) {

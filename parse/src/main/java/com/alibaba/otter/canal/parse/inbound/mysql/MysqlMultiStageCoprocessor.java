@@ -40,40 +40,40 @@ import com.taobao.tddl.dbsync.binlog.event.WriteRowsLogEvent;
 
 /**
  * 针对解析器提供一个多阶段协同的处理
- * 
+ *
  * <pre>
  * 1. 网络接收 (单线程)
  * 2. 事件基本解析 (单线程，事件类型、DDL解析构造TableMeta、维护位点信息)
  * 3. 事件深度解析 (多线程, DML事件数据的完整解析)
  * 4. 投递到store (单线程)
  * </pre>
- * 
+ *
  * @author agapple 2018年7月3日 下午4:54:17
  * @since 1.0.26
  */
 public class MysqlMultiStageCoprocessor extends AbstractCanalLifeCycle implements MultiStageCoprocessor {
 
-    private static final int                  maxFullTimes = 10;
-    private LogEventConvert                   logEventConvert;
-    private EventTransactionBuffer            transactionBuffer;
-    private ErosaConnection                   connection;
+    private static final int maxFullTimes = 10;
+    private LogEventConvert logEventConvert;
+    private EventTransactionBuffer transactionBuffer;
+    private ErosaConnection connection;
 
-    private int                               parserThreadCount;
-    private int                               ringBufferSize;
-    private RingBuffer<MessageEvent>          disruptorMsgBuffer;
-    private ExecutorService                   parserExecutor;
-    private ExecutorService                   stageExecutor;
-    private String                            destination;
-    private volatile CanalParseException      exception;
-    private AtomicLong                        eventsPublishBlockingTime;
-    private GTIDSet                           gtidSet;
-    private WorkerPool<MessageEvent>          workerPool;
+    private int parserThreadCount;
+    private int ringBufferSize;
+    private RingBuffer<MessageEvent> disruptorMsgBuffer;
+    private ExecutorService parserExecutor;
+    private ExecutorService stageExecutor;
+    private String destination;
+    private volatile CanalParseException exception;
+    private AtomicLong eventsPublishBlockingTime;
+    private GTIDSet gtidSet;
+    private WorkerPool<MessageEvent> workerPool;
     private BatchEventProcessor<MessageEvent> simpleParserStage;
     private BatchEventProcessor<MessageEvent> sinkStoreStage;
-    private LogContext                        logContext;
+    private LogContext logContext;
 
     public MysqlMultiStageCoprocessor(int ringBufferSize, int parserThreadCount, LogEventConvert logEventConvert,
-                                      EventTransactionBuffer transactionBuffer, String destination){
+                                      EventTransactionBuffer transactionBuffer, String destination) {
         this.ringBufferSize = ringBufferSize;
         this.parserThreadCount = parserThreadCount;
         this.logEventConvert = logEventConvert;
@@ -86,21 +86,21 @@ public class MysqlMultiStageCoprocessor extends AbstractCanalLifeCycle implement
         super.start();
         this.exception = null;
         this.disruptorMsgBuffer = RingBuffer.createSingleProducer(new MessageEventFactory(),
-            ringBufferSize,
-            new BlockingWaitStrategy());
+                ringBufferSize,
+                new BlockingWaitStrategy());
         int tc = parserThreadCount > 0 ? parserThreadCount : 1;
         this.parserExecutor = Executors.newFixedThreadPool(tc, new NamedThreadFactory("MultiStageCoprocessor-Parser-"
-                                                                                      + destination));
+                + destination));
 
         this.stageExecutor = Executors.newFixedThreadPool(2, new NamedThreadFactory("MultiStageCoprocessor-other-"
-                                                                                    + destination));
+                + destination));
         SequenceBarrier sequenceBarrier = disruptorMsgBuffer.newBarrier();
         ExceptionHandler exceptionHandler = new SimpleFatalExceptionHandler();
         // stage 2
         this.logContext = new LogContext();
         simpleParserStage = new BatchEventProcessor<MessageEvent>(disruptorMsgBuffer,
-            sequenceBarrier,
-            new SimpleParserStage(logContext));
+                sequenceBarrier,
+                new SimpleParserStage(logContext));
         simpleParserStage.setExceptionHandler(exceptionHandler);
         disruptorMsgBuffer.addGatingSequences(simpleParserStage.getSequence());
 
@@ -111,17 +111,17 @@ public class MysqlMultiStageCoprocessor extends AbstractCanalLifeCycle implement
             workHandlers[i] = new DmlParserStage();
         }
         workerPool = new WorkerPool<MessageEvent>(disruptorMsgBuffer,
-            dmlParserSequenceBarrier,
-            exceptionHandler,
-            workHandlers);
+                dmlParserSequenceBarrier,
+                exceptionHandler,
+                workHandlers);
         Sequence[] sequence = workerPool.getWorkerSequences();
         disruptorMsgBuffer.addGatingSequences(sequence);
 
         // stage 4
         SequenceBarrier sinkSequenceBarrier = disruptorMsgBuffer.newBarrier(sequence);
         sinkStoreStage = new BatchEventProcessor<MessageEvent>(disruptorMsgBuffer,
-            sinkSequenceBarrier,
-            new SinkStoreStage());
+                sinkSequenceBarrier,
+                new SinkStoreStage());
         sinkStoreStage.setExceptionHandler(exceptionHandler);
         disruptorMsgBuffer.addGatingSequences(sinkStoreStage.getSequence());
 
@@ -248,7 +248,7 @@ public class MysqlMultiStageCoprocessor extends AbstractCanalLifeCycle implement
         private LogDecoder decoder;
         private LogContext context;
 
-        public SimpleParserStage(LogContext context){
+        public SimpleParserStage(LogContext context) {
             decoder = new LogDecoder(LogEvent.UNKNOWN_EVENT, LogEvent.ENUM_END_EVENT);
             this.context = context;
             if (gtidSet != null) {
@@ -361,7 +361,7 @@ public class MysqlMultiStageCoprocessor extends AbstractCanalLifeCycle implement
                 if (connection instanceof MysqlConnection && logEvent.getSemival() == 1) {
                     // semi ack回报
                     ((MysqlConnection) connection).sendSemiAck(logEvent.getHeader().getLogFileName(),
-                        logEvent.getHeader().getLogPos());
+                            logEvent.getHeader().getLogPos());
                 }
 
                 // clear for gc
@@ -389,11 +389,11 @@ public class MysqlMultiStageCoprocessor extends AbstractCanalLifeCycle implement
 
     class MessageEvent {
 
-        private LogBuffer        buffer;
+        private LogBuffer buffer;
         private CanalEntry.Entry entry;
-        private boolean          needDmlParse = false;
-        private TableMeta        table;
-        private LogEvent         event;
+        private boolean needDmlParse = false;
+        private TableMeta table;
+        private LogEvent event;
 
         public LogBuffer getBuffer() {
             return buffer;

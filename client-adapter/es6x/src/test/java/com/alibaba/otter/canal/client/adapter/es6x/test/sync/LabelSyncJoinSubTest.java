@@ -61,9 +61,9 @@ public class LabelSyncJoinSubTest {
         esAdapter.getEsSyncService().sync(esSyncConfigs.values(), dml);
 
         GetResponse response = esAdapter.getEsConnection()
-            .getTransportClient()
-            .prepareGet("mytest_user", "_doc", "1")
-            .get();
+                .getTransportClient()
+                .prepareGet("mytest_user", "_doc", "1")
+                .get();
         Assert.assertEquals("b;a", response.getSource().get("_labels"));
     }
 
@@ -102,9 +102,9 @@ public class LabelSyncJoinSubTest {
         esAdapter.getEsSyncService().sync(esSyncConfigs.values(), dml);
 
         GetResponse response = esAdapter.getEsConnection()
-            .getTransportClient()
-            .prepareGet("mytest_user", "_doc", "1")
-            .get();
+                .getTransportClient()
+                .prepareGet("mytest_user", "_doc", "1")
+                .get();
         Assert.assertEquals("b;aa", response.getSource().get("_labels"));
     }
 
@@ -137,9 +137,9 @@ public class LabelSyncJoinSubTest {
         esAdapter.getEsSyncService().sync(esSyncConfigs.values(), dml);
 
         GetResponse response = esAdapter.getEsConnection()
-            .getTransportClient()
-            .prepareGet("mytest_user", "_doc", "1")
-            .get();
+                .getTransportClient()
+                .prepareGet("mytest_user", "_doc", "1")
+                .get();
         Assert.assertEquals("b", response.getSource().get("_labels"));
     }
 }

@@ -24,22 +24,22 @@ public class CanalConfig extends Model {
         /**
          * Construct using the default EbeanServer.
          */
-        public CanalConfigFinder(){
+        public CanalConfigFinder() {
             super(CanalConfig.class);
         }
 
     }
 
     @Id
-    private Long   id;
-    private Long   clusterId;
-    private Long   serverId;
+    private Long id;
+    private Long clusterId;
+    private Long serverId;
     private String name;
     private String content;
     private String contentMd5;
     private String status;
     @WhenModified
-    private Date   modifiedTime;
+    private Date modifiedTime;
 
     public void init() {
         this.name = "canal.properties";

@@ -29,7 +29,7 @@ public class CompositePropertySource extends EnumerablePropertySource<Object> {
      *
      * @param name the name of the property source
      */
-    public CompositePropertySource(String name){
+    public CompositePropertySource(String name) {
         super(name);
     }
 
@@ -60,7 +60,7 @@ public class CompositePropertySource extends EnumerablePropertySource<Object> {
         for (PropertySource<?> propertySource : this.propertySources) {
             if (!(propertySource instanceof EnumerablePropertySource)) {
                 throw new IllegalStateException(
-                    "Failed to enumerate property names due to non-enumerable property source: " + propertySource);
+                        "Failed to enumerate property names due to non-enumerable property source: " + propertySource);
             }
             names.addAll(Arrays.asList(((EnumerablePropertySource<?>) propertySource).getPropertyNames()));
         }
@@ -101,7 +101,7 @@ public class CompositePropertySource extends EnumerablePropertySource<Object> {
     @Override
     public String toString() {
         return String
-            .format("%s [name='%s', propertySources=%s]", getClass().getSimpleName(), this.name, this.propertySources);
+                .format("%s [name='%s', propertySources=%s]", getClass().getSimpleName(), this.name, this.propertySources);
     }
 
 }

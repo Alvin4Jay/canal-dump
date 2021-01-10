@@ -24,13 +24,13 @@ public class KuduSyncService {
 
     private static Logger logger = LoggerFactory.getLogger(KuduSyncService.class);
 
-    private KuduTemplate  kuduTemplate;
+    private KuduTemplate kuduTemplate;
 
     // 源库表字段类型缓存: instance.schema.table -> <columnName, jdbcType>
     // private Map<String, Map<String, Integer>> columnsTypeCache = new
     // ConcurrentHashMap<>();
 
-    public KuduSyncService(KuduTemplate kuduTemplate){
+    public KuduSyncService(KuduTemplate kuduTemplate) {
         this.kuduTemplate = kuduTemplate;
     }
 

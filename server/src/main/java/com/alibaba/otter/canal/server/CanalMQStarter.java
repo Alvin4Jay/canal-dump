@@ -25,23 +25,23 @@ import com.alibaba.otter.canal.connector.core.config.MQProperties;
 
 public class CanalMQStarter {
 
-    private static final Logger          logger         = LoggerFactory.getLogger(CanalMQStarter.class);
+    private static final Logger logger = LoggerFactory.getLogger(CanalMQStarter.class);
 
-    private volatile boolean             running        = false;
+    private volatile boolean running = false;
 
-    private ExecutorService              executorService;
+    private ExecutorService executorService;
 
-    private CanalMQProducer              canalMQProducer;
+    private CanalMQProducer canalMQProducer;
 
-    private MQProperties                 mqProperties;
+    private MQProperties mqProperties;
 
-    private CanalServerWithEmbedded      canalServer;
+    private CanalServerWithEmbedded canalServer;
 
-    private Map<String, CanalMQRunnable> canalMQWorks   = new ConcurrentHashMap<>();
+    private Map<String, CanalMQRunnable> canalMQWorks = new ConcurrentHashMap<>();
 
-    private static Thread                shutdownThread = null;
+    private static Thread shutdownThread = null;
 
-    public CanalMQStarter(CanalMQProducer canalMQProducer){
+    public CanalMQStarter(CanalMQProducer canalMQProducer) {
         this.canalMQProducer = canalMQProducer;
     }
 
@@ -171,7 +171,7 @@ public class CanalMQStarter {
                     Message message;
                     if (getTimeout != null && getTimeout > 0) {
                         message = canalServer
-                            .getWithoutAck(clientIdentity, getBatchSize, getTimeout.longValue(), TimeUnit.MILLISECONDS);
+                                .getWithoutAck(clientIdentity, getBatchSize, getTimeout.longValue(), TimeUnit.MILLISECONDS);
                     } else {
                         message = canalServer.getWithoutAck(clientIdentity, getBatchSize);
                     }
@@ -214,7 +214,7 @@ public class CanalMQStarter {
 
         private String destination;
 
-        CanalMQRunnable(String destination){
+        CanalMQRunnable(String destination) {
             this.destination = destination;
         }
 

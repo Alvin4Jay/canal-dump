@@ -37,17 +37,17 @@ import com.alibaba.otter.canal.client.adapter.support.SPI;
 @SPI("hbase")
 public class HbaseAdapter implements OuterAdapter {
 
-    private static Logger                           logger             = LoggerFactory.getLogger(HbaseAdapter.class);
+    private static Logger logger = LoggerFactory.getLogger(HbaseAdapter.class);
 
-    private Map<String, MappingConfig>              hbaseMapping       = new ConcurrentHashMap<>();                  // 文件名对应配置
+    private Map<String, MappingConfig> hbaseMapping = new ConcurrentHashMap<>();                  // 文件名对应配置
     private Map<String, Map<String, MappingConfig>> mappingConfigCache = new ConcurrentHashMap<>();                  // 库名-表名对应配置
 
-    private HbaseSyncService                        hbaseSyncService;
-    private HbaseTemplate                           hbaseTemplate;
+    private HbaseSyncService hbaseSyncService;
+    private HbaseTemplate hbaseTemplate;
 
-    private HbaseConfigMonitor                      configMonitor;
+    private HbaseConfigMonitor configMonitor;
 
-    private Properties                              envProperties;
+    private Properties envProperties;
 
     public Map<String, MappingConfig> getHbaseMapping() {
         return hbaseMapping;
@@ -65,7 +65,7 @@ public class HbaseAdapter implements OuterAdapter {
             // 过滤不匹配的key的配置
             hbaseMappingTmp.forEach((key, mappingConfig) -> {
                 if ((mappingConfig.getOuterAdapterKey() == null && configuration.getKey() == null)
-                    || (mappingConfig.getOuterAdapterKey() != null
+                        || (mappingConfig.getOuterAdapterKey() != null
                         && mappingConfig.getOuterAdapterKey().equalsIgnoreCase(configuration.getKey()))) {
                     hbaseMapping.put(key, mappingConfig);
                 }
@@ -76,16 +76,16 @@ public class HbaseAdapter implements OuterAdapter {
                 String k;
                 if (envProperties != null && !"tcp".equalsIgnoreCase(envProperties.getProperty("canal.conf.mode"))) {
                     k = StringUtils.trimToEmpty(mappingConfig.getDestination()) + "-"
-                        + StringUtils.trimToEmpty(mappingConfig.getGroupId()) + "_"
-                        + mappingConfig.getHbaseMapping().getDatabase() + "-"
-                        + mappingConfig.getHbaseMapping().getTable();
+                            + StringUtils.trimToEmpty(mappingConfig.getGroupId()) + "_"
+                            + mappingConfig.getHbaseMapping().getDatabase() + "-"
+                            + mappingConfig.getHbaseMapping().getTable();
                 } else {
                     k = StringUtils.trimToEmpty(mappingConfig.getDestination()) + "_"
-                        + mappingConfig.getHbaseMapping().getDatabase() + "-"
-                        + mappingConfig.getHbaseMapping().getTable();
+                            + mappingConfig.getHbaseMapping().getDatabase() + "-"
+                            + mappingConfig.getHbaseMapping().getTable();
                 }
                 Map<String, MappingConfig> configMap = mappingConfigCache.computeIfAbsent(k,
-                    k1 -> new ConcurrentHashMap<>());
+                        k1 -> new ConcurrentHashMap<>());
                 configMap.put(configName, mappingConfig);
             }
 

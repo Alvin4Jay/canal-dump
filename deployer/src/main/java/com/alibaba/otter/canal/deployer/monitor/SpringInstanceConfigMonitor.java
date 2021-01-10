@@ -27,28 +27,28 @@ import com.google.common.collect.MigrateMap;
 
 /**
  * 监听基于spring配置的instance变化
- * 
+ *
  * @author jianghang 2013-2-6 下午06:23:55
  * @version 1.0.1
  */
 public class SpringInstanceConfigMonitor extends AbstractCanalLifeCycle implements InstanceConfigMonitor, CanalLifeCycle {
 
-    private static final Logger              logger               = LoggerFactory.getLogger(SpringInstanceConfigMonitor.class);
-    private String                           rootConf;
+    private static final Logger logger = LoggerFactory.getLogger(SpringInstanceConfigMonitor.class);
+    private String rootConf;
     // 扫描周期，单位秒
-    private long                             scanIntervalInSecond = 5;
-    private InstanceAction                   defaultAction        = null;
-    private Map<String, InstanceAction>      actions              = new MapMaker().makeMap();
-    private Map<String, InstanceConfigFiles> lastFiles            = MigrateMap.makeComputingMap(new Function<String, InstanceConfigFiles>() {
+    private long scanIntervalInSecond = 5;
+    private InstanceAction defaultAction = null;
+    private Map<String, InstanceAction> actions = new MapMaker().makeMap();
+    private Map<String, InstanceConfigFiles> lastFiles = MigrateMap.makeComputingMap(new Function<String, InstanceConfigFiles>() {
 
-                                                                      public InstanceConfigFiles apply(String destination) {
-                                                                          return new InstanceConfigFiles(destination);
-                                                                      }
-                                                                  });
-    private ScheduledExecutorService         executor             = Executors.newScheduledThreadPool(1,
-                                                                      new NamedThreadFactory("canal-instance-scan"));
+        public InstanceConfigFiles apply(String destination) {
+            return new InstanceConfigFiles(destination);
+        }
+    });
+    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1,
+            new NamedThreadFactory("canal-instance-scan"));
 
-    private volatile boolean                 isFirst              = true;
+    private volatile boolean isFirst = true;
 
     public Map<String, InstanceAction> getActions() {
         return actions;
@@ -241,14 +241,14 @@ public class SpringInstanceConfigMonitor extends AbstractCanalLifeCycle implemen
 
     public static class InstanceConfigFiles {
 
-        private String         destination;                              // instance
-                                                                          // name
-        private List<FileInfo> springFile    = new ArrayList<FileInfo>(); // spring的instance
-                                                                          // xml
-        private FileInfo       rootFile;                                 // canal.properties
+        private String destination;                              // instance
+        // name
+        private List<FileInfo> springFile = new ArrayList<FileInfo>(); // spring的instance
+        // xml
+        private FileInfo rootFile;                                 // canal.properties
         private List<FileInfo> instanceFiles = new ArrayList<FileInfo>(); // instance对应的配置
 
-        public InstanceConfigFiles(String destination){
+        public InstanceConfigFiles(String destination) {
             this.destination = destination;
         }
 
@@ -289,9 +289,9 @@ public class SpringInstanceConfigMonitor extends AbstractCanalLifeCycle implemen
     public static class FileInfo {
 
         private String name;
-        private long   lastModified = 0;
+        private long lastModified = 0;
 
-        public FileInfo(String name, long lastModified){
+        public FileInfo(String name, long lastModified) {
             this.name = name;
             this.lastModified = lastModified;
         }

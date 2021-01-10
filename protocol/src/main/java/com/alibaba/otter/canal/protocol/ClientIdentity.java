@@ -14,20 +14,20 @@ import com.alibaba.otter.canal.common.utils.CanalToStringStyle;
 public class ClientIdentity implements Serializable {
 
     private static final long serialVersionUID = -8262100681930834834L;
-    private String            destination;
-    private short             clientId;
-    private String            filter;
+    private String destination;
+    private short clientId;
+    private String filter;
 
-    public ClientIdentity(){
+    public ClientIdentity() {
 
     }
 
-    public ClientIdentity(String destination, short clientId){
+    public ClientIdentity(String destination, short clientId) {
         this.clientId = clientId;
         this.destination = destination;
     }
 
-    public ClientIdentity(String destination, short clientId, String filter){
+    public ClientIdentity(String destination, short clientId, String filter) {
         this.clientId = clientId;
         this.destination = destination;
         this.filter = filter;

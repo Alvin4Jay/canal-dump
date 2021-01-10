@@ -23,28 +23,28 @@ import com.alibaba.otter.canal.server.netty.handler.SessionHandler;
 
 /**
  * 基于netty网络服务的server实现
- * 
+ *
  * @author jianghang 2012-7-12 下午01:34:49
  * @version 1.0.0
  */
 public class CanalServerWithNetty extends AbstractCanalLifeCycle implements CanalServer {
 
     private CanalServerWithEmbedded embeddedServer;      // 嵌入式server
-    private String                  ip;
-    private int                     port;
-    private Channel                 serverChannel = null;
-    private ServerBootstrap         bootstrap     = null;
-    private ChannelGroup            childGroups   = null; // socket channel
-                                                          // container, used to
-                                                          // close sockets
-                                                          // explicitly.
+    private String ip;
+    private int port;
+    private Channel serverChannel = null;
+    private ServerBootstrap bootstrap = null;
+    private ChannelGroup childGroups = null; // socket channel
+    // container, used to
+    // close sockets
+    // explicitly.
 
     private static class SingletonHolder {
 
         private static final CanalServerWithNetty CANAL_SERVER_WITH_NETTY = new CanalServerWithNetty();
     }
 
-    private CanalServerWithNetty(){
+    private CanalServerWithNetty() {
         this.embeddedServer = CanalServerWithEmbedded.instance();
         this.childGroups = new DefaultChannelGroup();
     }
@@ -61,7 +61,7 @@ public class CanalServerWithNetty extends AbstractCanalLifeCycle implements Cana
         }
 
         this.bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(),
-            Executors.newCachedThreadPool()));
+                Executors.newCachedThreadPool()));
         /*
          * enable keep-alive mechanism, handle abnormal network connection
          * scenarios on OS level. the threshold parameters are depended on OS.
@@ -82,9 +82,9 @@ public class CanalServerWithNetty extends AbstractCanalLifeCycle implements Cana
                 pipelines.addLast(FixedHeaderFrameDecoder.class.getName(), new FixedHeaderFrameDecoder());
                 // support to maintain child socket channel.
                 pipelines.addLast(HandshakeInitializationHandler.class.getName(),
-                    new HandshakeInitializationHandler(childGroups));
+                        new HandshakeInitializationHandler(childGroups));
                 pipelines.addLast(ClientAuthenticationHandler.class.getName(),
-                    new ClientAuthenticationHandler(embeddedServer));
+                        new ClientAuthenticationHandler(embeddedServer));
 
                 SessionHandler sessionHandler = new SessionHandler(embeddedServer);
                 pipelines.addLast(SessionHandler.class.getName(), sessionHandler);

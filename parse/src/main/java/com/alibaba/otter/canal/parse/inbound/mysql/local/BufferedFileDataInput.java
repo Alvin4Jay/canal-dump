@@ -20,22 +20,22 @@ public class BufferedFileDataInput {
 
     private static final Logger logger = LoggerFactory.getLogger(BufferedFileDataInput.class);
     // Read parameters.
-    private File                file;
-    private int                 size;
+    private File file;
+    private int size;
 
     // Variables to control reading.
-    private FileInputStream     fileInput;
+    private FileInputStream fileInput;
     private BufferedInputStream bufferedInput;
-    private DataInputStream     dataInput;
-    private long                offset;
-    private FileChannel         fileChannel;
+    private DataInputStream dataInput;
+    private long offset;
+    private FileChannel fileChannel;
 
-    public BufferedFileDataInput(File file, int size) throws FileNotFoundException, IOException, InterruptedException{
+    public BufferedFileDataInput(File file, int size) throws FileNotFoundException, IOException, InterruptedException {
         this.file = file;
         this.size = size;
     }
 
-    public BufferedFileDataInput(File file) throws FileNotFoundException, IOException, InterruptedException{
+    public BufferedFileDataInput(File file) throws FileNotFoundException, IOException, InterruptedException {
         this(file, 1024);
     }
 

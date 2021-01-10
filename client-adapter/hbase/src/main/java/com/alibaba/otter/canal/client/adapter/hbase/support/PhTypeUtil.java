@@ -66,9 +66,9 @@ public class PhTypeUtil {
             encodeUnsignedDouble(((Number) v).doubleValue(), b, 0);
         } else if (phType == PhType.BOOLEAN) {
             if ((Boolean) v) {
-                b = new byte[] { 1 };
+                b = new byte[]{1};
             } else {
-                b = new byte[] { 0 };
+                b = new byte[]{0};
             }
         } else if (phType == PhType.TIME || phType == PhType.DATE) {
             b = new byte[Bytes.SIZEOF_LONG];
@@ -172,7 +172,7 @@ public class PhTypeUtil {
     private static int encodeInt(int v, byte[] b, int o) {
         checkForSufficientLength(b, o, Bytes.SIZEOF_INT);
         b[o + 0] = (byte) ((v >> 24) ^ 0x80); // Flip sign bit so that INTEGER
-                                              // is binary comparable
+        // is binary comparable
         b[o + 1] = (byte) (v >> 16);
         b[o + 2] = (byte) (v >> 8);
         b[o + 3] = (byte) v;
@@ -213,7 +213,7 @@ public class PhTypeUtil {
     private static int encodeLong(long v, byte[] b, int o) {
         checkForSufficientLength(b, o, Bytes.SIZEOF_LONG);
         b[o + 0] = (byte) ((v >> 56) ^ 0x80); // Flip sign bit so that INTEGER
-                                              // is binary comparable
+        // is binary comparable
         b[o + 1] = (byte) (v >> 48);
         b[o + 2] = (byte) (v >> 40);
         b[o + 3] = (byte) (v >> 32);
@@ -260,7 +260,7 @@ public class PhTypeUtil {
     private static int encodeShort(short v, byte[] b, int o) {
         checkForSufficientLength(b, o, Bytes.SIZEOF_SHORT);
         b[o + 0] = (byte) ((v >> 8) ^ 0x80); // Flip sign bit so that Short is
-                                             // binary comparable
+        // binary comparable
         b[o + 1] = (byte) v;
         return Bytes.SIZEOF_SHORT;
     }
@@ -293,7 +293,7 @@ public class PhTypeUtil {
     private static int encodeByte(byte v, byte[] b, int o) {
         checkForSufficientLength(b, o, Bytes.SIZEOF_BYTE);
         b[o] = (byte) (v ^ 0x80); // Flip sign bit so that Short is binary
-                                  // comparable
+        // comparable
         return Bytes.SIZEOF_BYTE;
     }
 
@@ -521,18 +521,18 @@ public class PhTypeUtil {
         return (signum < 0 ? 2 : 1) + (v.precision() + 1 + (v.scale() % 2 == 0 ? 0 : 1)) / 2;
     }
 
-    private static final int         MAX_PRECISION            = 38;
-    private static final MathContext DEFAULT_MATH_CONTEXT     = new MathContext(MAX_PRECISION, RoundingMode.HALF_UP);
-    private static final Integer     MAX_BIG_DECIMAL_BYTES    = 21;
-    private static final byte        ZERO_BYTE                = (byte) 0x80;
-    private static final byte        NEG_TERMINAL_BYTE        = (byte) 102;
-    private static final int         EXP_BYTE_OFFSET          = 65;
-    private static final int         POS_DIGIT_OFFSET         = 1;
-    private static final int         NEG_DIGIT_OFFSET         = 101;
-    private static final BigInteger  MAX_LONG                 = BigInteger.valueOf(Long.MAX_VALUE);
-    private static final BigInteger  MIN_LONG                 = BigInteger.valueOf(Long.MIN_VALUE);
-    private static final BigInteger  ONE_HUNDRED              = BigInteger.valueOf(100);
-    private static final long        MAX_LONG_FOR_DESERIALIZE = Long.MAX_VALUE / 1000;
+    private static final int MAX_PRECISION = 38;
+    private static final MathContext DEFAULT_MATH_CONTEXT = new MathContext(MAX_PRECISION, RoundingMode.HALF_UP);
+    private static final Integer MAX_BIG_DECIMAL_BYTES = 21;
+    private static final byte ZERO_BYTE = (byte) 0x80;
+    private static final byte NEG_TERMINAL_BYTE = (byte) 102;
+    private static final int EXP_BYTE_OFFSET = 65;
+    private static final int POS_DIGIT_OFFSET = 1;
+    private static final int NEG_DIGIT_OFFSET = 101;
+    private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
+    private static final BigInteger MIN_LONG = BigInteger.valueOf(Long.MIN_VALUE);
+    private static final BigInteger ONE_HUNDRED = BigInteger.valueOf(100);
+    private static final long MAX_LONG_FOR_DESERIALIZE = Long.MAX_VALUE / 1000;
 
     private static int decimalToBytes(BigDecimal v, byte[] result, final int offset, int length) {
         int signum = v.signum();
@@ -602,7 +602,7 @@ public class PhTypeUtil {
     private static void checkForSufficientLength(byte[] b, int offset, int requiredLength) {
         if (b.length < offset + requiredLength) {
             throw new RuntimeException(
-                "Expected length of at least " + requiredLength + " bytes, but had " + (b.length - offset));
+                    "Expected length of at least " + requiredLength + " bytes, but had " + (b.length - offset));
         }
     }
 

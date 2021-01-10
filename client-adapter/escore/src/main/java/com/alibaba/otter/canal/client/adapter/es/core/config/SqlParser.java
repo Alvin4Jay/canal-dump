@@ -91,7 +91,7 @@ public class SqlParser {
     /**
      * 解析字段
      *
-     * @param expr sql expr
+     * @param expr      sql expr
      * @param fieldItem 字段属性
      */
     private static void visitColumn(SQLExpr expr, FieldItem fieldItem) {
@@ -156,10 +156,10 @@ public class SqlParser {
     /**
      * 解析表
      *
-     * @param schemaItem 视图对象
+     * @param schemaItem     视图对象
      * @param sqlTableSource sqlTableSource
-     * @param tableItems 表对象列表
-     * @param tableItemTmp 表对象(临时)
+     * @param tableItems     表对象列表
+     * @param tableItemTmp   表对象(临时)
      */
     private static void visitSelectTable(SchemaItem schemaItem, SQLTableSource sqlTableSource,
                                          List<TableItem> tableItems, TableItem tableItemTmp) {
@@ -211,7 +211,7 @@ public class SqlParser {
     /**
      * 解析on条件
      *
-     * @param expr sql expr
+     * @param expr      sql expr
      * @param tableItem 表对象
      */
     private static void visitOnCondition(SQLExpr expr, TableItem tableItem) {
@@ -231,7 +231,7 @@ public class SqlParser {
             FieldItem rightFieldItem = new FieldItem();
             visitColumn(sqlBinaryOpExpr.getRight(), rightFieldItem);
             if (rightFieldItem.getColumnItems().size() != 1 || rightFieldItem.isMethod()
-                || rightFieldItem.isBinaryOp()) {
+                    || rightFieldItem.isBinaryOp()) {
                 throw new UnsupportedOperationException("Unsupported for complex of on-condition");
             }
             tableItem.getRelationFields().add(new RelationFieldsPair(leftFieldItem, rightFieldItem));

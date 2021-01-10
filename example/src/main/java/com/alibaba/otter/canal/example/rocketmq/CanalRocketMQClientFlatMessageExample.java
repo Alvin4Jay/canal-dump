@@ -18,30 +18,30 @@ import com.alibaba.otter.canal.protocol.FlatMessage;
  */
 public class CanalRocketMQClientFlatMessageExample extends AbstractRocektMQTest {
 
-    protected final static Logger           logger  = LoggerFactory.getLogger(CanalRocketMQClientFlatMessageExample.class);
+    protected final static Logger logger = LoggerFactory.getLogger(CanalRocketMQClientFlatMessageExample.class);
 
-    private RocketMQCanalConnector          connector;
+    private RocketMQCanalConnector connector;
 
-    private static volatile boolean         running = false;
+    private static volatile boolean running = false;
 
-    private Thread                          thread  = null;
+    private Thread thread = null;
 
     private Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler() {
 
-                                                        public void uncaughtException(Thread t, Throwable e) {
-                                                            logger.error("parse events has an error", e);
-                                                        }
-                                                    };
+        public void uncaughtException(Thread t, Throwable e) {
+            logger.error("parse events has an error", e);
+        }
+    };
 
-    public CanalRocketMQClientFlatMessageExample(String nameServers, String topic, String groupId){
+    public CanalRocketMQClientFlatMessageExample(String nameServers, String topic, String groupId) {
         connector = new RocketMQCanalConnector(nameServers, topic, groupId, 500, true);
     }
 
     public static void main(String[] args) {
         try {
             final CanalRocketMQClientFlatMessageExample rocketMQClientExample = new CanalRocketMQClientFlatMessageExample(nameServers,
-                topic,
-                groupId);
+                    topic,
+                    groupId);
             logger.info("## Start the rocketmq consumer: {}-{}", topic, groupId);
             rocketMQClientExample.start();
             logger.info("## The canal rocketmq consumer is running now ......");

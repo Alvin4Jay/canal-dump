@@ -10,11 +10,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.alibaba.otter.canal.protocol.position.LogPosition;
+
 @Ignore
 public class FileMixedLogPositionManagerTest extends AbstractLogPositionManagerTest {
 
-    private static final String tmp     = System.getProperty("java.io.tmpdir", "/tmp");
-    private static final File   dataDir = new File(tmp, "canal");
+    private static final String tmp = System.getProperty("java.io.tmpdir", "/tmp");
+    private static final File dataDir = new File(tmp, "canal");
 
     @Before
     public void setUp() {
@@ -30,16 +31,16 @@ public class FileMixedLogPositionManagerTest extends AbstractLogPositionManagerT
         MemoryLogPositionManager memoryLogPositionManager = new MemoryLogPositionManager();
 
         FileMixedLogPositionManager logPositionManager = new FileMixedLogPositionManager(dataDir,
-            1000,
-            memoryLogPositionManager);
+                1000,
+                memoryLogPositionManager);
         logPositionManager.start();
 
         LogPosition position2 = doTest(logPositionManager);
         sleep(1500);
 
         FileMixedLogPositionManager logPositionManager2 = new FileMixedLogPositionManager(dataDir,
-            1000,
-            memoryLogPositionManager);
+                1000,
+                memoryLogPositionManager);
         logPositionManager2.start();
 
         LogPosition getPosition2 = logPositionManager2.getLatestIndexBy(destination);

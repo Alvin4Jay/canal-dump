@@ -1,14 +1,13 @@
 package com.alibaba.otter.canal.protocol;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 import com.alibaba.otter.canal.common.utils.CanalToStringStyle;
 import com.alibaba.otter.canal.protocol.CanalEntry.Entry;
 import com.google.protobuf.ByteString;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author zebin.xuzb @ 2012-6-19
@@ -16,31 +15,31 @@ import com.google.protobuf.ByteString;
  */
 public class Message implements Serializable {
 
-    private static final long      serialVersionUID = 1234034768477580009L;
-    private long                   id;
-    private List<CanalEntry.Entry> entries          = new ArrayList<CanalEntry.Entry>();
+    private static final long serialVersionUID = 1234034768477580009L;
+    private long id;
+    private List<CanalEntry.Entry> entries = new ArrayList<>();
     // row data for performance, see:
     // https://github.com/alibaba/canal/issues/726
-    private boolean                raw              = true;
-    private List<ByteString>       rawEntries       = new ArrayList<ByteString>();
+    private boolean raw = true;
+    private List<ByteString> rawEntries = new ArrayList<>();
 
-    public Message(long id, List<Entry> entries){
+    public Message(long id, List<Entry> entries) {
         this.id = id;
-        this.entries = entries == null ? new ArrayList<Entry>() : entries;
+        this.entries = entries == null ? new ArrayList<>() : entries;
         this.raw = false;
     }
 
-    public Message(long id, boolean raw, List entries){
+    public Message(long id, boolean raw, List entries) {
         this.id = id;
         if (raw) {
-            this.rawEntries = entries == null ? new ArrayList<ByteString>() : entries;
+            this.rawEntries = entries == null ? new ArrayList<>() : entries;
         } else {
-            this.entries = entries == null ? new ArrayList<Entry>() : entries;
+            this.entries = entries == null ? new ArrayList<>() : entries;
         }
         this.raw = raw;
     }
 
-    public Message(long id){
+    public Message(long id) {
         this.id = id;
     }
 
@@ -84,6 +83,7 @@ public class Message implements Serializable {
         this.raw = raw;
     }
 
+    @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, CanalToStringStyle.DEFAULT_STYLE);
     }

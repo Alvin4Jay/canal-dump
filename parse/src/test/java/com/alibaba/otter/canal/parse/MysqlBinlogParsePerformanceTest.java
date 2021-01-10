@@ -121,7 +121,7 @@ public class MysqlBinlogParsePerformanceTest {
     }
 
     private static void sendBinlogDump(MysqlConnector connector, String binlogfilename, Long binlogPosition, int slaveId)
-                                                                                                                         throws IOException {
+            throws IOException {
         BinlogDumpCommandPacket binlogDumpCmd = new BinlogDumpCommandPacket();
         binlogDumpCmd.binlogFileName = binlogfilename;
         binlogDumpCmd.binlogPosition = binlogPosition;
@@ -171,7 +171,7 @@ public class MysqlBinlogParsePerformanceTest {
     }
 
     public static void parseOneRow(RowsLogEvent event, RowsLogBuffer buffer, BitSet cols, boolean isAfter)
-                                                                                                          throws UnsupportedEncodingException {
+            throws UnsupportedEncodingException {
         TableMapLogEvent map = event.getTable();
         if (map == null) {
             throw new RuntimeException("not found TableMap with tid=" + event.getTableId());

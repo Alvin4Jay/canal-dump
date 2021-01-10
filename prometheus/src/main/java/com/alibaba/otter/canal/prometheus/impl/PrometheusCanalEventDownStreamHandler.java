@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class PrometheusCanalEventDownStreamHandler extends AbstractCanalEventDownStreamHandler<List<Event>> {
 
-    private final AtomicLong latestExecuteTime  = new AtomicLong(System.currentTimeMillis());
+    private final AtomicLong latestExecuteTime = new AtomicLong(System.currentTimeMillis());
     private final AtomicLong transactionCounter = new AtomicLong(0L);
 
     @Override

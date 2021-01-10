@@ -36,10 +36,10 @@ public class NodeServerServiceImpl implements NodeServerService {
 
     public void save(NodeServer nodeServer) {
         int cnt = NodeServer.find.query()
-            .where()
-            .eq("ip", nodeServer.getIp())
-            .eq("adminPort", nodeServer.getAdminPort())
-            .findCount();
+                .where()
+                .eq("ip", nodeServer.getIp())
+                .eq("adminPort", nodeServer.getAdminPort())
+                .findCount();
         if (cnt > 0) {
             throw new ServiceException("节点信息已存在");
         }
@@ -66,11 +66,11 @@ public class NodeServerServiceImpl implements NodeServerService {
 
     public void update(NodeServer nodeServer) {
         int cnt = NodeServer.find.query()
-            .where()
-            .eq("ip", nodeServer.getIp())
-            .eq("adminPort", nodeServer.getAdminPort())
-            .ne("id", nodeServer.getId())
-            .findCount();
+                .where()
+                .eq("ip", nodeServer.getIp())
+                .eq("adminPort", nodeServer.getAdminPort())
+                .ne("id", nodeServer.getId())
+                .findCount();
         if (cnt > 0) {
             throw new ServiceException("节点信息已存在");
         }
@@ -135,10 +135,10 @@ public class NodeServerServiceImpl implements NodeServerService {
         pager.setCount((long) count);
 
         List<NodeServer> nodeServers = query.order()
-            .asc("id")
-            .setFirstRow(pager.getOffset().intValue())
-            .setMaxRows(pager.getSize())
-            .findList();
+                .asc("id")
+                .setFirstRow(pager.getOffset().intValue())
+                .setMaxRows(pager.getSize())
+                .findList();
         pager.setItems(nodeServers);
 
         if (nodeServers.isEmpty()) {
@@ -178,8 +178,8 @@ public class NodeServerServiceImpl implements NodeServerService {
             return "";
         }
         return SimpleAdminConnectors.execute(nodeServer.getIp(),
-            nodeServer.getAdminPort(),
-            adminConnector -> adminConnector.canalLog(100));
+                nodeServer.getAdminPort(),
+                adminConnector -> adminConnector.canalLog(100));
     }
 
     public boolean remoteOperation(Long id, String option) {

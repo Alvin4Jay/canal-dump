@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.alibaba.otter.canal.common.zookeeper.ZkClientx;
 import com.alibaba.otter.canal.common.zookeeper.ZookeeperPathUtils;
 import com.alibaba.otter.canal.protocol.position.LogPosition;
+
 @Ignore
 public class MixedLogPositionManagerTest extends AbstractLogPositionManagerTest {
 

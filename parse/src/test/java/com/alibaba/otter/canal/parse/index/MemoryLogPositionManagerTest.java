@@ -2,6 +2,7 @@ package com.alibaba.otter.canal.parse.index;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
 @Ignore
 public class MemoryLogPositionManagerTest extends AbstractLogPositionManagerTest {
 

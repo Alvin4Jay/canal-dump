@@ -14,7 +14,7 @@ import java.util.Date;
  * @version 1.0.0
  */
 public enum Type {
-                  DEFAULT, STRING, INTEGER, LONG, SHORT, BOOLEAN, FLOAT, DOUBLE, BIGDECIMAL, DATE, BYTE, BYTES;
+    DEFAULT, STRING, INTEGER, LONG, SHORT, BOOLEAN, FLOAT, DOUBLE, BIGDECIMAL, DATE, BYTE, BYTES;
 
     private static Logger logger = LoggerFactory.getLogger(Type.class);
 

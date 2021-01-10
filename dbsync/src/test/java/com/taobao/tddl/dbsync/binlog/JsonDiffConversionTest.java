@@ -11,26 +11,26 @@ import org.junit.rules.Timeout;
 public class JsonDiffConversionTest {
 
     @Rule
-    public final ExpectedException thrown        = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     @SuppressWarnings("deprecation")
     @Rule
-    public final Timeout           globalTimeout = new Timeout(10000);
+    public final Timeout globalTimeout = new Timeout(10000);
 
     /* testedClasses: JsonDiffConversion */
     // Test written by Diffblue Cover.
     @Test
     public void print_json_diffInputNotNullPositiveNotNullZeroNotNullOutputIllegalArgumentException()
-                                                                                                     throws InvocationTargetException {
+            throws InvocationTargetException {
 
         // Arrange
         final LogBuffer buffer = new LogBuffer();
         buffer.position = 28;
         buffer.semival = 0;
-        final byte[] myByteArray = { (byte) 3, (byte) 3, (byte) 67, (byte) 67, (byte) 67, (byte) 67, (byte) 67,
+        final byte[] myByteArray = {(byte) 3, (byte) 3, (byte) 67, (byte) 67, (byte) 67, (byte) 67, (byte) 67,
                 (byte) 66, (byte) 67, (byte) 66, (byte) 67, (byte) 66, (byte) 67, (byte) 67, (byte) 67, (byte) 66,
                 (byte) 67, (byte) 66, (byte) 67, (byte) 66, (byte) 67, (byte) 67, (byte) 67, (byte) 66, (byte) 67,
-                (byte) 67, (byte) 67, (byte) 66, (byte) 2, (byte) 66 };
+                (byte) 67, (byte) 67, (byte) 66, (byte) 2, (byte) 66};
         buffer.buffer = myByteArray;
         buffer.limit = -1_000_000_065;
         buffer.origin = 1_000_000_096;
@@ -49,10 +49,10 @@ public class JsonDiffConversionTest {
             Assert.assertNotNull(buffer);
             Assert.assertEquals(30, buffer.position);
             Assert.assertEquals(0, buffer.semival);
-            Assert.assertArrayEquals(new byte[] { (byte) 3, (byte) 3, (byte) 67, (byte) 67, (byte) 67, (byte) 67,
+            Assert.assertArrayEquals(new byte[]{(byte) 3, (byte) 3, (byte) 67, (byte) 67, (byte) 67, (byte) 67,
                     (byte) 67, (byte) 66, (byte) 67, (byte) 66, (byte) 67, (byte) 66, (byte) 67, (byte) 67, (byte) 67,
                     (byte) 66, (byte) 67, (byte) 66, (byte) 67, (byte) 66, (byte) 67, (byte) 67, (byte) 67, (byte) 66,
-                    (byte) 67, (byte) 67, (byte) 67, (byte) 66, (byte) 2, (byte) 66 }, buffer.buffer);
+                    (byte) 67, (byte) 67, (byte) 67, (byte) 66, (byte) 2, (byte) 66}, buffer.buffer);
             Assert.assertEquals(-1_000_000_065, buffer.limit);
             Assert.assertEquals(1_000_000_096, buffer.origin);
             throw ex;
@@ -62,16 +62,16 @@ public class JsonDiffConversionTest {
     // Test written by Diffblue Cover.
     @Test
     public void print_json_diffInputNotNullZeroNotNullZeroNotNullOutputIllegalArgumentException()
-                                                                                                 throws InvocationTargetException {
+            throws InvocationTargetException {
 
         // Arrange
         final LogBuffer buffer = new LogBuffer();
         buffer.position = 28;
         buffer.semival = 0;
-        final byte[] myByteArray = { (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2,
+        final byte[] myByteArray = {(byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2,
                 (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2,
                 (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2,
-                (byte) 3, (byte) 2 };
+                (byte) 3, (byte) 2};
         buffer.buffer = myByteArray;
         buffer.limit = 31;
         buffer.origin = 0;
@@ -90,10 +90,10 @@ public class JsonDiffConversionTest {
             Assert.assertNotNull(buffer);
             Assert.assertEquals(29, buffer.position);
             Assert.assertEquals(0, buffer.semival);
-            Assert.assertArrayEquals(new byte[] { (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2,
+            Assert.assertArrayEquals(new byte[]{(byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2,
                     (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2,
                     (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2, (byte) 2,
-                    (byte) 2, (byte) 3, (byte) 2 }, buffer.buffer);
+                    (byte) 2, (byte) 3, (byte) 2}, buffer.buffer);
             Assert.assertEquals(31, buffer.limit);
             Assert.assertEquals(0, buffer.origin);
             throw ex;
@@ -103,16 +103,16 @@ public class JsonDiffConversionTest {
     // Test written by Diffblue Cover.
     @Test
     public void print_json_diffInputNotNullZeroNotNullZeroNotNullOutputIllegalArgumentException2()
-                                                                                                  throws InvocationTargetException {
+            throws InvocationTargetException {
 
         // Arrange
         final LogBuffer buffer = new LogBuffer();
         buffer.position = 15;
         buffer.semival = 0;
-        final byte[] myByteArray = { (byte) 1, (byte) 1, (byte) 0, (byte) 0, (byte) 1, (byte) 1, (byte) 1, (byte) 1,
+        final byte[] myByteArray = {(byte) 1, (byte) 1, (byte) 0, (byte) 0, (byte) 1, (byte) 1, (byte) 1, (byte) 1,
                 (byte) 1, (byte) 1, (byte) 0, (byte) 1, (byte) 1, (byte) 1, (byte) 1, (byte) 0, (byte) 1, (byte) 1,
                 (byte) 0, (byte) 0, (byte) 1, (byte) 1, (byte) 1, (byte) 1, (byte) 1, (byte) 1, (byte) 1, (byte) 0,
-                (byte) 1, (byte) 1 };
+                (byte) 1, (byte) 1};
         buffer.buffer = myByteArray;
         buffer.limit = -1_215_751_986;
         buffer.origin = 1_215_752_002;
@@ -131,10 +131,10 @@ public class JsonDiffConversionTest {
             Assert.assertNotNull(buffer);
             Assert.assertEquals(16, buffer.position);
             Assert.assertEquals(0, buffer.semival);
-            Assert.assertArrayEquals(new byte[] { (byte) 1, (byte) 1, (byte) 0, (byte) 0, (byte) 1, (byte) 1, (byte) 1,
+            Assert.assertArrayEquals(new byte[]{(byte) 1, (byte) 1, (byte) 0, (byte) 0, (byte) 1, (byte) 1, (byte) 1,
                     (byte) 1, (byte) 1, (byte) 1, (byte) 0, (byte) 1, (byte) 1, (byte) 1, (byte) 1, (byte) 0, (byte) 1,
                     (byte) 1, (byte) 0, (byte) 0, (byte) 1, (byte) 1, (byte) 1, (byte) 1, (byte) 1, (byte) 1, (byte) 1,
-                    (byte) 0, (byte) 1, (byte) 1 }, buffer.buffer);
+                    (byte) 0, (byte) 1, (byte) 1}, buffer.buffer);
             Assert.assertEquals(-1_215_751_986, buffer.limit);
             Assert.assertEquals(1_215_752_002, buffer.origin);
             throw ex;
@@ -144,16 +144,16 @@ public class JsonDiffConversionTest {
     // Test written by Diffblue Cover.
     @Test
     public void print_json_diffInputNotNullZeroNotNullZeroNotNullOutputIllegalArgumentException3()
-                                                                                                  throws InvocationTargetException {
+            throws InvocationTargetException {
 
         // Arrange
         final LogBuffer buffer = new LogBuffer();
         buffer.position = 27;
         buffer.semival = 0;
-        final byte[] myByteArray = { (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
+        final byte[] myByteArray = {(byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
                 (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
                 (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                (byte) 1, (byte) 0 };
+                (byte) 1, (byte) 0};
         buffer.buffer = myByteArray;
         buffer.limit = 31;
         buffer.origin = -1;
@@ -172,10 +172,10 @@ public class JsonDiffConversionTest {
             Assert.assertNotNull(buffer);
             Assert.assertEquals(29, buffer.position);
             Assert.assertEquals(0, buffer.semival);
-            Assert.assertArrayEquals(new byte[] { (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
+            Assert.assertArrayEquals(new byte[]{(byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
                     (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
                     (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-                    (byte) 0, (byte) 1, (byte) 0 }, buffer.buffer);
+                    (byte) 0, (byte) 1, (byte) 0}, buffer.buffer);
             Assert.assertEquals(31, buffer.limit);
             Assert.assertEquals(-1, buffer.origin);
             throw ex;
@@ -195,10 +195,10 @@ public class JsonDiffConversionTest {
 
         // Act
         final StringBuilder actual = JsonDiffConversion.print_json_diff(buffer,
-            len,
-            columnName,
-            columnIndex,
-            charsetName);
+                len,
+                columnName,
+                columnIndex,
+                charsetName);
 
         // Assert result
         Assert.assertNotNull(actual);

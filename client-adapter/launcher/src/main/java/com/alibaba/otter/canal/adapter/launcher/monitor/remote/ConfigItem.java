@@ -8,11 +8,11 @@ package com.alibaba.otter.canal.adapter.launcher.monitor.remote;
  */
 public class ConfigItem {
 
-    private Long   id;
+    private Long id;
     private String category;
     private String name;
     private String content;
-    private long   modifiedTime;
+    private long modifiedTime;
 
     public Long getId() {
         return id;

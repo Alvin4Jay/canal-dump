@@ -28,21 +28,22 @@ import com.google.common.base.Preconditions;
  */
 public class ParserCollector extends Collector implements InstanceRegistry {
 
-    private static final Logger                              logger                = LoggerFactory.getLogger(ParserCollector.class);
-    private static final long                                NANO_PER_MILLI        = 1000 * 1000L;
-    private static final String                              PUBLISH_BLOCKING      = "canal_instance_publish_blocking_time";
-    private static final String                              RECEIVED_BINLOG       = "canal_instance_received_binlog_bytes";
-    private static final String                              PARSER_MODE           = "canal_instance_parser_mode";
-    private static final String                              MODE_LABEL            = "parallel";
-    private static final String                              PARSER_LABEL          = "parser";
-    private static final String                              PUBLISH_BLOCKING_HELP = "Publish blocking time of dump thread in milliseconds";
-    private static final String                              RECEIVED_BINLOG_HELP  = "Received binlog bytes";
-    private static final String                              MODE_HELP             = "Parser mode(parallel/serial) of instance";
-    private final List<String>                               modeLabels            = Arrays.asList(DEST, MODE_LABEL);
-    private final List<String>                               parserLabels          = Arrays.asList(DEST, PARSER_LABEL);
-    private final ConcurrentMap<String, ParserMetricsHolder> instances             = new ConcurrentHashMap<>();
+    private static final Logger logger = LoggerFactory.getLogger(ParserCollector.class);
+    private static final long NANO_PER_MILLI = 1000 * 1000L;
+    private static final String PUBLISH_BLOCKING = "canal_instance_publish_blocking_time";
+    private static final String RECEIVED_BINLOG = "canal_instance_received_binlog_bytes";
+    private static final String PARSER_MODE = "canal_instance_parser_mode";
+    private static final String MODE_LABEL = "parallel";
+    private static final String PARSER_LABEL = "parser";
+    private static final String PUBLISH_BLOCKING_HELP = "Publish blocking time of dump thread in milliseconds";
+    private static final String RECEIVED_BINLOG_HELP = "Received binlog bytes";
+    private static final String MODE_HELP = "Parser mode(parallel/serial) of instance";
+    private final List<String> modeLabels = Arrays.asList(DEST, MODE_LABEL);
+    private final List<String> parserLabels = Arrays.asList(DEST, PARSER_LABEL);
+    private final ConcurrentMap<String, ParserMetricsHolder> instances = new ConcurrentHashMap<>();
 
-    private ParserCollector() {}
+    private ParserCollector() {
+    }
 
     private static class SingletonHolder {
         private static final ParserCollector SINGLETON = new ParserCollector();
@@ -64,11 +65,10 @@ public class ParserCollector extends Collector implements InstanceRegistry {
         for (ParserMetricsHolder emh : instances.values()) {
             if (emh instanceof GroupParserMetricsHolder) {
                 GroupParserMetricsHolder group = (GroupParserMetricsHolder) emh;
-                for (ParserMetricsHolder semh :  group.holders) {
+                for (ParserMetricsHolder semh : group.holders) {
                     singleCollect(bytesCounter, blockingCounter, modeGauge, semh);
                 }
-            }
-            else {
+            } else {
                 singleCollect(bytesCounter, blockingCounter, modeGauge, emh);
             }
         }
@@ -94,9 +94,9 @@ public class ParserCollector extends Collector implements InstanceRegistry {
         ParserMetricsHolder holder;
         CanalEventParser parser = instance.getEventParser();
         if (parser instanceof AbstractMysqlEventParser) {
-            holder = singleHolder(destination, (AbstractMysqlEventParser)parser, "0");
+            holder = singleHolder(destination, (AbstractMysqlEventParser) parser, "0");
         } else if (parser instanceof GroupEventParser) {
-            holder = groupHolder(destination, (GroupEventParser)parser);
+            holder = groupHolder(destination, (GroupEventParser) parser);
         } else {
             throw new IllegalArgumentException("CanalEventParser must be either AbstractMysqlEventParser or GroupEventParser.");
         }
@@ -123,10 +123,10 @@ public class ParserCollector extends Collector implements InstanceRegistry {
         List<CanalEventParser> parsers = group.getEventParsers();
         GroupParserMetricsHolder groupHolder = new GroupParserMetricsHolder();
         int num = parsers.size();
-        for (int i = 0; i < num; i ++) {
+        for (int i = 0; i < num; i++) {
             CanalEventParser parser = parsers.get(i);
             if (parser instanceof AbstractMysqlEventParser) {
-                ParserMetricsHolder single = singleHolder(destination, (AbstractMysqlEventParser)parser, Integer.toString(i + 1));
+                ParserMetricsHolder single = singleHolder(destination, (AbstractMysqlEventParser) parser, Integer.toString(i + 1));
                 groupHolder.holders.add(single);
             } else {
                 logger.warn("Null or non AbstractMysqlEventParser, ignore.");
@@ -145,10 +145,10 @@ public class ParserCollector extends Collector implements InstanceRegistry {
         private List<String> parserLabelValues;
         private List<String> modeLabelValues;
         // metrics for single parser
-        private AtomicLong   receivedBinlogBytes;
-        private AtomicLong   eventsPublishBlockingTime;
+        private AtomicLong receivedBinlogBytes;
+        private AtomicLong eventsPublishBlockingTime;
         // parser mode
-        private boolean      isParallel;
+        private boolean isParallel;
     }
 
     private class GroupParserMetricsHolder extends ParserMetricsHolder {

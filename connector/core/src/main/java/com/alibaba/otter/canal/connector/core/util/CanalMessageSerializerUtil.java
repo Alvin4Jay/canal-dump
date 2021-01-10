@@ -63,7 +63,7 @@ public class CanalMessageSerializerUtil {
                         CanalPacket.Messages.Builder messageBuilder = CanalPacket.Messages.newBuilder();
                         for (CanalEntry.Entry entry : data.getEntries()) {
                             if (filterTransactionEntry
-                                && (entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONBEGIN || entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONEND)) {
+                                    && (entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONBEGIN || entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONEND)) {
                                 continue;
                             }
 
@@ -97,7 +97,7 @@ public class CanalMessageSerializerUtil {
                 switch (p.getType()) {
                     case MESSAGES: {
                         if (!p.getCompression().equals(CanalPacket.Compression.NONE)
-                            && !p.getCompression().equals(CanalPacket.Compression.COMPRESSIONCOMPATIBLEPROTO2)) {
+                                && !p.getCompression().equals(CanalPacket.Compression.COMPRESSIONCOMPATIBLEPROTO2)) {
                             throw new CanalClientException("compression is not supported in this connector");
                         }
 

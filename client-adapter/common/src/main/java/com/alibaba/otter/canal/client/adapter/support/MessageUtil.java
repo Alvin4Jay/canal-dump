@@ -23,7 +23,7 @@ public class MessageUtil {
         List<Dml> dmls = new ArrayList<Dml>(entries.size());
         for (CanalEntry.Entry entry : entries) {
             if (entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONBEGIN
-                || entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONEND) {
+                    || entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONEND) {
                 continue;
             }
 
@@ -32,7 +32,7 @@ public class MessageUtil {
                 rowChange = CanalEntry.RowChange.parseFrom(entry.getStoreValue());
             } catch (Exception e) {
                 throw new RuntimeException("ERROR ## parser of eromanga-event has an error , data:" + entry.toString(),
-                    e);
+                        e);
             }
 
             CanalEntry.EventType eventType = rowChange.getEventType();
@@ -58,7 +58,7 @@ public class MessageUtil {
                 int i = 0;
                 for (CanalEntry.RowData rowData : rowChange.getRowDatasList()) {
                     if (eventType != CanalEntry.EventType.INSERT && eventType != CanalEntry.EventType.UPDATE
-                        && eventType != CanalEntry.EventType.DELETE) {
+                            && eventType != CanalEntry.EventType.DELETE) {
                         continue;
                     }
 
@@ -81,11 +81,11 @@ public class MessageUtil {
                             row.put(column.getName(), null);
                         } else {
                             row.put(column.getName(),
-                                JdbcTypeUtil.typeConvert(dml.getTable(),
-                                    column.getName(),
-                                    column.getValue(),
-                                    column.getSqlType(),
-                                    column.getMysqlType()));
+                                    JdbcTypeUtil.typeConvert(dml.getTable(),
+                                            column.getName(),
+                                            column.getValue(),
+                                            column.getSqlType(),
+                                            column.getMysqlType()));
                         }
                         // 获取update为true的字段
                         if (column.getUpdated()) {
@@ -104,11 +104,11 @@ public class MessageUtil {
                                     rowOld.put(column.getName(), null);
                                 } else {
                                     rowOld.put(column.getName(),
-                                        JdbcTypeUtil.typeConvert(dml.getTable(),
-                                            column.getName(),
-                                            column.getValue(),
-                                            column.getSqlType(),
-                                            column.getMysqlType()));
+                                            JdbcTypeUtil.typeConvert(dml.getTable(),
+                                                    column.getName(),
+                                                    column.getValue(),
+                                                    column.getSqlType(),
+                                                    column.getMysqlType()));
                                 }
                             }
                         }

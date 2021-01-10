@@ -40,8 +40,8 @@ public class CanalRabbitMQProducer extends AbstractMQProducer implements CanalMQ
 
     private static final Logger logger = LoggerFactory.getLogger(CanalRabbitMQProducer.class);
 
-    private Connection          connect;
-    private Channel             channel;
+    private Connection connect;
+    private Channel channel;
 
     @Override
     public void init(Properties properties) {
@@ -61,10 +61,10 @@ public class CanalRabbitMQProducer extends AbstractMQProducer implements CanalMQ
         }
 
         if (mqProperties.getAliyunAccessKey().length() > 0 && mqProperties.getAliyunSecretKey().length() > 0
-            && mqProperties.getAliyunUid() > 0) {
+                && mqProperties.getAliyunUid() > 0) {
             factory.setCredentialsProvider(new AliyunCredentialsProvider(mqProperties.getAliyunAccessKey(),
-                mqProperties.getAliyunSecretKey(),
-                mqProperties.getAliyunUid()));
+                    mqProperties.getAliyunSecretKey(),
+                    mqProperties.getAliyunUid()));
         } else {
             factory.setUsername(rabbitMQProperties.getUsername());
             factory.setPassword(rabbitMQProperties.getPassword());
@@ -111,8 +111,8 @@ public class CanalRabbitMQProducer extends AbstractMQProducer implements CanalMQ
             if (!StringUtils.isEmpty(destination.getDynamicTopic())) {
                 // 动态topic
                 Map<String, Message> messageMap = MQMessageUtils.messageTopics(message,
-                    destination.getTopic(),
-                    destination.getDynamicTopic());
+                        destination.getTopic(),
+                        destination.getDynamicTopic());
 
                 for (Map.Entry<String, com.alibaba.otter.canal.protocol.Message> entry : messageMap.entrySet()) {
                     final String topicName = entry.getKey().replace('.', '_');

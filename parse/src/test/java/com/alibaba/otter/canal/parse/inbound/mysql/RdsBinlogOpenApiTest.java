@@ -20,8 +20,8 @@ public class RdsBinlogOpenApiTest {
 
     @Test
     public void testSimple() throws Throwable {
-        Date startTime = DateUtils.parseDate("2018-08-10 12:00:00", new String[] { "yyyy-MM-dd HH:mm:ss" });
-        Date endTime = DateUtils.parseDate("2018-08-11 12:00:00", new String[] { "yyyy-MM-dd HH:mm:ss" });
+        Date startTime = DateUtils.parseDate("2018-08-10 12:00:00", new String[]{"yyyy-MM-dd HH:mm:ss"});
+        Date endTime = DateUtils.parseDate("2018-08-11 12:00:00", new String[]{"yyyy-MM-dd HH:mm:ss"});
         String url = "https://rds.aliyuncs.com/";
         String ak = "";
         String sk = "";

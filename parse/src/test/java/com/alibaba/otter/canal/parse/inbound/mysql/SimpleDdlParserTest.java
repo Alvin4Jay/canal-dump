@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.alibaba.otter.canal.parse.inbound.mysql.ddl.DdlResult;
 import com.alibaba.otter.canal.parse.inbound.mysql.ddl.SimpleDdlParser;
 import com.alibaba.otter.canal.protocol.CanalEntry.EventType;
+
 @Ignore
 public class SimpleDdlParserTest {
 

@@ -16,7 +16,7 @@ public class Reply323Packet extends PacketWithHeaderPacket {
 
     public byte[] toBytes() throws IOException {
         if (seed == null) {
-            return new byte[] { (byte) 0 };
+            return new byte[]{(byte) 0};
         } else {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ByteHelper.writeNullTerminated(seed, out);

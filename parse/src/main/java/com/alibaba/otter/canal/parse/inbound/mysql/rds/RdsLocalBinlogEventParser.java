@@ -22,23 +22,23 @@ import com.alibaba.otter.canal.protocol.position.LogPosition;
 
 /**
  * 基于rds binlog备份文件的复制
- * 
+ *
  * @author agapple 2017年10月15日 下午1:27:36
  * @since 1.0.25
  */
 public class RdsLocalBinlogEventParser extends LocalBinlogEventParser implements CanalEventParser, LocalBinLogConnection.FileParserListener {
 
-    private String              url;                // openapi地址
-    private String              accesskey;          // 云账号的ak
-    private String              secretkey;          // 云账号sk
-    private String              instanceId;         // rds实例id
-    private Long                startTime;
-    private Long                endTime;
+    private String url;                // openapi地址
+    private String accesskey;          // 云账号的ak
+    private String secretkey;          // 云账号sk
+    private String instanceId;         // rds实例id
+    private Long startTime;
+    private Long endTime;
     private BinlogDownloadQueue binlogDownloadQueue;
     private ParseFinishListener finishListener;
-    private int                 batchFileSize;
+    private int batchFileSize;
 
-    public RdsLocalBinlogEventParser(){
+    public RdsLocalBinlogEventParser() {
     }
 
     public void start() throws CanalParseException {
@@ -64,11 +64,11 @@ public class RdsLocalBinlogEventParser extends LocalBinlogEventParser implements
 
             startTime = startTimeInMill;
             List<BinlogFile> binlogFiles = RdsBinlogOpenApi.listBinlogFiles(url,
-                accesskey,
-                secretkey,
-                instanceId,
-                new Date(startTime),
-                new Date(endTime));
+                    accesskey,
+                    secretkey,
+                    instanceId,
+                    new Date(startTime),
+                    new Date(endTime));
             if (binlogFiles.isEmpty()) {
                 throw new CanalParseException("start timestamp : " + startTimeInMill + " binlog files is empty");
             }
@@ -182,23 +182,23 @@ public class RdsLocalBinlogEventParser extends LocalBinlogEventParser implements
                 String fileIndex = journalName.substring(sepIdx + 1);
                 int index = NumberUtils.toInt(fileIndex) + 1;
                 String newJournalName = journalName.substring(0, sepIdx) + "."
-                                        + StringUtils.leftPad(String.valueOf(index), fileIndex.length(), "0");
+                        + StringUtils.leftPad(String.valueOf(index), fileIndex.length(), "0");
                 newLogPosition.setPostion(new EntryPosition(newJournalName,
-                    4L,
-                    position.getTimestamp(),
-                    position.getServerId()));
+                        4L,
+                        position.getTimestamp(),
+                        position.getServerId()));
                 newLogPosition.setIdentity(logPosition.getIdentity());
                 logPositionManager.persistLogPosition(destination, newLogPosition);
             }
 
             if (binlogDownloadQueue.isLastFile(fileName)) {
                 logger.warn("last file : " + fileName + " , timestamp : " + timestamp
-                            + " , all file parse complete, switch to mysql parser!");
+                        + " , all file parse complete, switch to mysql parser!");
                 finishListener.onFinish();
                 return;
             } else {
                 logger.warn("parse local binlog file : " + fileName + " , timestamp : " + timestamp
-                            + " , try the next binlog !");
+                        + " , try the next binlog !");
             }
             binlogDownloadQueue.prepare();
         } catch (Exception e) {

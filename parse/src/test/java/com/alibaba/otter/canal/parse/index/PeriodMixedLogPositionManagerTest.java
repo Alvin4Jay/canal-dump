@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.alibaba.otter.canal.common.zookeeper.ZkClientx;
 import com.alibaba.otter.canal.common.zookeeper.ZookeeperPathUtils;
 import com.alibaba.otter.canal.protocol.position.LogPosition;
+
 @Ignore
 public class PeriodMixedLogPositionManagerTest extends AbstractLogPositionManagerTest {
 
@@ -32,8 +33,8 @@ public class PeriodMixedLogPositionManagerTest extends AbstractLogPositionManage
         ZooKeeperLogPositionManager zookeeperLogPositionManager = new ZooKeeperLogPositionManager(zkclientx);
 
         PeriodMixedLogPositionManager logPositionManager = new PeriodMixedLogPositionManager(memoryLogPositionManager,
-            zookeeperLogPositionManager,
-            1000L);
+                zookeeperLogPositionManager,
+                1000L);
 
         logPositionManager.start();
 
@@ -41,8 +42,8 @@ public class PeriodMixedLogPositionManagerTest extends AbstractLogPositionManage
         sleep(1500);
 
         PeriodMixedLogPositionManager logPositionManager2 = new PeriodMixedLogPositionManager(memoryLogPositionManager,
-            zookeeperLogPositionManager,
-            1000L);
+                zookeeperLogPositionManager,
+                1000L);
         logPositionManager2.start();
 
         LogPosition getPosition2 = logPositionManager2.getLatestIndexBy(destination);

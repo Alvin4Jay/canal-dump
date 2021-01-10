@@ -9,7 +9,7 @@ import com.alibaba.otter.canal.store.model.Events;
 
 /**
  * canel数据存储接口
- * 
+ *
  * @author jianghang 2012-6-14 下午08:44:52
  * @version 1.0.0
  */
@@ -54,7 +54,7 @@ public interface CanalEventStore<T> extends CanalLifeCycle, CanalStoreScavenge {
      * 获取指定大小的数据，阻塞等待其操作完成或者时间超时
      */
     Events<T> get(Position start, int batchSize, long timeout, TimeUnit unit) throws InterruptedException,
-                                                                             CanalStoreException;
+            CanalStoreException;
 
     /**
      * 根据指定位置，获取一个指定大小的数据
@@ -78,7 +78,7 @@ public interface CanalEventStore<T> extends CanalLifeCycle, CanalStoreScavenge {
 
     /**
      * 删除指定seqId之前的数据
-     * 
+     *
      * @Since 1.1.4
      */
     void ack(Position position, Long seqId) throws CanalStoreException;

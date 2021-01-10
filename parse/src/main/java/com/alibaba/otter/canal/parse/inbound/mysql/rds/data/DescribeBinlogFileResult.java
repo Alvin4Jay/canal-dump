@@ -7,11 +7,11 @@ package com.alibaba.otter.canal.parse.inbound.mysql.rds.data;
 public class DescribeBinlogFileResult {
 
     private RdsItem Items;
-    private long    PageNumber;
-    private long    TotalRecordCount;
-    private long    TotalFileSize;
-    private String  RequestId;
-    private long    PageRecordCount;
+    private long PageNumber;
+    private long TotalRecordCount;
+    private long TotalFileSize;
+    private String RequestId;
+    private long PageRecordCount;
 
     public RdsItem getItems() {
         return Items;

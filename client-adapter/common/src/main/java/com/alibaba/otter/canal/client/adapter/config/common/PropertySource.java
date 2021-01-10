@@ -34,23 +34,23 @@ import org.springframework.util.ObjectUtils;
  * sources to the enclosing {@code Environment}.
  *
  * @author Chris Beams
- * @since 3.1
  * @see PropertySources
  * @see MutablePropertySources
  * @see PropertySource
+ * @since 3.1
  */
 public abstract class PropertySource<T> {
 
-    protected final Log    logger = LogFactory.getLog(getClass());
+    protected final Log logger = LogFactory.getLog(getClass());
 
     protected final String name;
 
-    protected final T      source;
+    protected final T source;
 
     /**
      * Create a new {@code PropertySource} with the given name and source object.
      */
-    public PropertySource(String name, T source){
+    public PropertySource(String name, T source) {
         Assert.hasText(name, "Property source name must contain at least one character");
         Assert.notNull(source, "Property source must not be null");
         this.name = name;
@@ -65,7 +65,7 @@ public abstract class PropertySource<T> {
      * that never query an actual source but rather return hard-coded values.
      */
     @SuppressWarnings("unchecked")
-    public PropertySource(String name){
+    public PropertySource(String name) {
         this(name, (T) new Object());
     }
 
@@ -116,7 +116,7 @@ public abstract class PropertySource<T> {
     @Override
     public boolean equals(Object obj) {
         return (this == obj || (obj instanceof PropertySource
-                                && ObjectUtils.nullSafeEquals(this.name, ((PropertySource<?>) obj).name)));
+                && ObjectUtils.nullSafeEquals(this.name, ((PropertySource<?>) obj).name)));
     }
 
     /**
@@ -144,7 +144,7 @@ public abstract class PropertySource<T> {
     public String toString() {
         if (logger.isDebugEnabled()) {
             return getClass().getSimpleName() + "@" + System.identityHashCode(this) + " {name='" + this.name
-                   + "', properties=" + this.source + "}";
+                    + "', properties=" + this.source + "}";
         } else {
             return getClass().getSimpleName() + " {name='" + this.name + "'}";
         }
@@ -169,14 +169,14 @@ public abstract class PropertySource<T> {
      *     assert !sources.contains(PropertySource.named("sourceC"));
      * }
      * </pre>
-     *
+     * <p>
      * The returned {@code PropertySource} will throw
      * {@code UnsupportedOperationException} if any methods other than
      * {@code equals(Object)}, {@code hashCode()}, and {@code toString()} are
      * called.
      *
      * @param name the name of the comparison {@code PropertySource} to be created
-     *     and returned.
+     *             and returned.
      */
     public static PropertySource<?> named(String name) {
         return new ComparisonPropertySource(name);
@@ -196,7 +196,7 @@ public abstract class PropertySource<T> {
      */
     public static class StubPropertySource extends PropertySource<Object> {
 
-        public StubPropertySource(String name){
+        public StubPropertySource(String name) {
             super(name, new Object());
         }
 
@@ -216,7 +216,7 @@ public abstract class PropertySource<T> {
 
         private static final String USAGE_ERROR = "ComparisonPropertySource instances are for use with collection comparison only";
 
-        public ComparisonPropertySource(String name){
+        public ComparisonPropertySource(String name) {
             super(name);
         }
 

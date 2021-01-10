@@ -21,13 +21,13 @@ import com.alibaba.otter.canal.client.adapter.support.Util;
 
 public class HbaseConfigMonitor {
 
-    private static final Logger   logger      = LoggerFactory.getLogger(HbaseConfigMonitor.class);
+    private static final Logger logger = LoggerFactory.getLogger(HbaseConfigMonitor.class);
 
-    private static final String   adapterName = "hbase";
+    private static final String adapterName = "hbase";
 
-    private HbaseAdapter          hbaseAdapter;
+    private HbaseAdapter hbaseAdapter;
 
-    private Properties            envProperties;
+    private Properties envProperties;
 
     private FileAlterationMonitor fileMonitor;
 
@@ -37,7 +37,7 @@ public class HbaseConfigMonitor {
         File confDir = Util.getConfDirPath(adapterName);
         try {
             FileAlterationObserver observer = new FileAlterationObserver(confDir,
-                FileFilterUtils.and(FileFilterUtils.fileFileFilter(), FileFilterUtils.suffixFileFilter("yml")));
+                    FileFilterUtils.and(FileFilterUtils.fileFileFilter(), FileFilterUtils.suffixFileFilter("yml")));
             FileListener listener = new FileListener();
             observer.addListener(listener);
             fileMonitor = new FileAlterationMonitor(3000, observer);
@@ -65,7 +65,7 @@ public class HbaseConfigMonitor {
                 // 加载新增的配置文件
                 String configContent = MappingConfigsLoader.loadConfig(adapterName + File.separator + file.getName());
                 MappingConfig config = YmlConfigBinder
-                    .bindYmlToObj(null, configContent, MappingConfig.class, null, envProperties);
+                        .bindYmlToObj(null, configContent, MappingConfig.class, null, envProperties);
                 if (config == null) {
                     return;
                 }
@@ -86,13 +86,13 @@ public class HbaseConfigMonitor {
                 if (hbaseAdapter.getHbaseMapping().containsKey(file.getName())) {
                     // 加载配置文件
                     String configContent = MappingConfigsLoader
-                        .loadConfig(adapterName + File.separator + file.getName());
+                            .loadConfig(adapterName + File.separator + file.getName());
                     if (configContent == null) {
                         onFileDelete(file);
                         return;
                     }
                     MappingConfig config = YmlConfigBinder
-                        .bindYmlToObj(null, configContent, MappingConfig.class, null, envProperties);
+                            .bindYmlToObj(null, configContent, MappingConfig.class, null, envProperties);
                     if (config == null) {
                         return;
                     }
@@ -125,9 +125,9 @@ public class HbaseConfigMonitor {
         private void addConfigToCache(File file, MappingConfig config) {
             hbaseAdapter.getHbaseMapping().put(file.getName(), config);
             Map<String, MappingConfig> configMap = hbaseAdapter.getMappingConfigCache()
-                .computeIfAbsent(StringUtils.trimToEmpty(config.getDestination()) + "."
-                                 + config.getHbaseMapping().getDatabase() + "." + config.getHbaseMapping().getTable(),
-                    k1 -> new HashMap<>());
+                    .computeIfAbsent(StringUtils.trimToEmpty(config.getDestination()) + "."
+                                    + config.getHbaseMapping().getDatabase() + "." + config.getHbaseMapping().getTable(),
+                            k1 -> new HashMap<>());
             configMap.put(file.getName(), config);
         }
 

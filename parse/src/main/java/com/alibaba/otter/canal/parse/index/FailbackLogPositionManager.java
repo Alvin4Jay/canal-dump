@@ -16,12 +16,12 @@ import com.alibaba.otter.canal.protocol.position.LogPosition;
  */
 public class FailbackLogPositionManager extends AbstractLogPositionManager {
 
-    private final static Logger           logger = LoggerFactory.getLogger(FailbackLogPositionManager.class);
+    private final static Logger logger = LoggerFactory.getLogger(FailbackLogPositionManager.class);
 
     private final CanalLogPositionManager primary;
     private final CanalLogPositionManager secondary;
 
-    public FailbackLogPositionManager(CanalLogPositionManager primary, CanalLogPositionManager secondary){
+    public FailbackLogPositionManager(CanalLogPositionManager primary, CanalLogPositionManager secondary) {
         if (primary == null) {
             throw new NullPointerException("nul primary LogPositionManager");
         }
@@ -74,9 +74,9 @@ public class FailbackLogPositionManager extends AbstractLogPositionManager {
             primary.persistLogPosition(destination, logPosition);
         } catch (CanalParseException e) {
             logger.warn("persistLogPosition use primary log position manager exception. destination: {}, logPosition: {}",
-                destination,
-                logPosition,
-                e);
+                    destination,
+                    logPosition,
+                    e);
             secondary.persistLogPosition(destination, logPosition);
         }
     }

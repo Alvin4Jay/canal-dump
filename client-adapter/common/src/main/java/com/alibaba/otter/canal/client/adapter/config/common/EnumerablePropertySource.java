@@ -27,11 +27,11 @@ import org.springframework.util.ObjectUtils;
  */
 public abstract class EnumerablePropertySource<T> extends PropertySource<T> {
 
-    public EnumerablePropertySource(String name, T source){
+    public EnumerablePropertySource(String name, T source) {
         super(name, source);
     }
 
-    protected EnumerablePropertySource(String name){
+    protected EnumerablePropertySource(String name) {
         super(name);
     }
 

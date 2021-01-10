@@ -22,7 +22,7 @@ public class YmlConfigBinder {
      * 将当前内容绑定到指定对象
      *
      * @param content yml内容
-     * @param clazz 指定对象类型
+     * @param clazz   指定对象类型
      * @return 对象
      */
     public static <T> T bindYmlToObj(String content, Class<T> clazz) {
@@ -33,7 +33,7 @@ public class YmlConfigBinder {
      * 将当前内容绑定到指定对象并指定内容编码格式
      *
      * @param content yml内容
-     * @param clazz 指定对象类型
+     * @param clazz   指定对象类型
      * @param charset yml内容编码格式
      * @return 对象
      */
@@ -44,9 +44,9 @@ public class YmlConfigBinder {
     /**
      * 将当前内容指定前缀部分绑定到指定对象
      *
-     * @param prefix 指定前缀
+     * @param prefix  指定前缀
      * @param content yml内容
-     * @param clazz 指定对象类型
+     * @param clazz   指定对象类型
      * @return 对象
      */
     public static <T> T bindYmlToObj(String prefix, String content, Class<T> clazz) {
@@ -56,9 +56,9 @@ public class YmlConfigBinder {
     /**
      * 将当前内容指定前缀部分绑定到指定对象并指定内容编码格式
      *
-     * @param prefix 指定前缀
+     * @param prefix  指定前缀
      * @param content yml内容
-     * @param clazz 指定对象类型
+     * @param clazz   指定对象类型
      * @param charset yml内容编码格式
      * @return 对象
      */
@@ -73,9 +73,9 @@ public class YmlConfigBinder {
      * zkServers: 192.168.0.1:2181,192.168.0.1:2181,192.168.0.1:2181 注: 假设绑定的类中
      * zkServers 属性是 List<String> 对象, 则会自动映射成List
      *
-     * @param prefix 指定前缀
+     * @param prefix  指定前缀
      * @param content yml内容
-     * @param clazz 指定对象类型
+     * @param clazz   指定对象类型
      * @param charset yml内容编码格式
      * @return 对象
      */

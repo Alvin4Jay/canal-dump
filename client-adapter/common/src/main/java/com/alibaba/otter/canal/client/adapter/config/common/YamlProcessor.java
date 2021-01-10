@@ -22,15 +22,15 @@ import org.yaml.snakeyaml.reader.UnicodeReader;
  */
 public abstract class YamlProcessor {
 
-    private final Log             logger           = LogFactory.getLog(getClass());
+    private final Log logger = LogFactory.getLog(getClass());
 
-    private ResolutionMethod      resolutionMethod = ResolutionMethod.OVERRIDE;
+    private ResolutionMethod resolutionMethod = ResolutionMethod.OVERRIDE;
 
-    private Resource[]            resources        = new Resource[0];
+    private Resource[] resources = new Resource[0];
 
     private List<DocumentMatcher> documentMatchers = Collections.emptyList();
 
-    private boolean               matchDefault     = true;
+    private boolean matchDefault = true;
 
     /**
      * A map of document matchers allowing callers to selectively use only some of
@@ -47,14 +47,14 @@ public abstract class YamlProcessor {
      * url:http://foo.bar.com
      * name: My Cool App
      * </pre>
-     *
+     * <p>
      * when mapped with
      *
      * <pre class="code">
      * setDocumentMatchers(properties -> ("prod"
      *     .equals(properties.getProperty("environment")) ? MatchStatus.FOUND : MatchStatus.NOT_FOUND));
      * </pre>
-     *
+     * <p>
      * would end up as
      *
      * <pre class="code">
@@ -142,7 +142,7 @@ public abstract class YamlProcessor {
                 }
                 if (logger.isDebugEnabled()) {
                     logger.debug(
-                        "Loaded " + count + " document" + (count > 1 ? "s" : "") + " from YAML resource: " + resource);
+                            "Loaded " + count + " document" + (count > 1 ? "s" : "") + " from YAML resource: " + resource);
                 }
             } finally {
                 reader.close();
@@ -155,7 +155,7 @@ public abstract class YamlProcessor {
 
     private void handleProcessError(Resource resource, IOException ex) {
         if (this.resolutionMethod != ResolutionMethod.FIRST_FOUND
-            && this.resolutionMethod != ResolutionMethod.OVERRIDE_AND_IGNORE) {
+                && this.resolutionMethod != ResolutionMethod.OVERRIDE_AND_IGNORE) {
             throw new IllegalStateException(ex);
         }
         if (logger.isWarnEnabled()) {
@@ -305,9 +305,9 @@ public abstract class YamlProcessor {
          * Process the given representation of the parsing results.
          *
          * @param properties the properties to process (as a flattened representation
-         *     with indexed keys in case of a collection or map)
-         * @param map the result map (preserving the original value structure in the
-         *     YAML document)
+         *                   with indexed keys in case of a collection or map)
+         * @param map        the result map (preserving the original value structure in the
+         *                   YAML document)
          */
         void process(Properties properties, Map<String, Object> map);
     }
@@ -331,20 +331,20 @@ public abstract class YamlProcessor {
      */
     public enum MatchStatus {
 
-                             /**
-                              * A match was found.
-                              */
-                             FOUND,
+        /**
+         * A match was found.
+         */
+        FOUND,
 
-                             /**
-                              * No match was found.
-                              */
-                             NOT_FOUND,
+        /**
+         * No match was found.
+         */
+        NOT_FOUND,
 
-                             /**
-                              * The matcher should not be considered.
-                              */
-                             ABSTAIN;
+        /**
+         * The matcher should not be considered.
+         */
+        ABSTAIN;
 
         /**
          * Compare two {@link MatchStatus} items, returning the most specific status.
@@ -359,20 +359,20 @@ public abstract class YamlProcessor {
      */
     public enum ResolutionMethod {
 
-                                  /**
-                                   * Replace values from earlier in the list.
-                                   */
-                                  OVERRIDE,
+        /**
+         * Replace values from earlier in the list.
+         */
+        OVERRIDE,
 
-                                  /**
-                                   * Replace values from earlier in the list, ignoring any failures.
-                                   */
-                                  OVERRIDE_AND_IGNORE,
+        /**
+         * Replace values from earlier in the list, ignoring any failures.
+         */
+        OVERRIDE_AND_IGNORE,
 
-                                  /**
-                                   * Take the first resource in the list that exists and use just that.
-                                   */
-                                  FIRST_FOUND
+        /**
+         * Take the first resource in the list that exists and use just that.
+         */
+        FIRST_FOUND
     }
 
     /**
@@ -381,7 +381,7 @@ public abstract class YamlProcessor {
     protected static class StrictMapAppenderConstructor extends Constructor {
 
         // Declared as public for use in subclasses
-        public StrictMapAppenderConstructor(){
+        public StrictMapAppenderConstructor() {
             super();
         }
 
@@ -391,9 +391,9 @@ public abstract class YamlProcessor {
                 return super.constructMapping(node);
             } catch (IllegalStateException ex) {
                 throw new ParserException("while parsing MappingNode",
-                    node.getStartMark(),
-                    ex.getMessage(),
-                    node.getEndMark());
+                        node.getStartMark(),
+                        ex.getMessage(),
+                        node.getEndMark());
             }
         }
 

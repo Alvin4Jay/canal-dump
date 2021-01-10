@@ -21,36 +21,36 @@ import java.util.concurrent.TimeoutException;
 
 public class RabbitMQCanalConnector implements CanalMQConnector {
 
-    private static final Logger                 logger              = LoggerFactory
-        .getLogger(RabbitMQCanalConnector.class);
+    private static final Logger logger = LoggerFactory
+            .getLogger(RabbitMQCanalConnector.class);
 
     // 链接地址
-    private String                              nameServer;
+    private String nameServer;
 
     // 主机名
-    private String                              vhost;
+    private String vhost;
 
-    private String                              queueName;
+    private String queueName;
 
     // 一些鉴权信息
-    private String                              accessKey;
-    private String                              secretKey;
-    private Long                                resourceOwnerId;
-    private String                              username;
-    private String                              password;
+    private String accessKey;
+    private String secretKey;
+    private Long resourceOwnerId;
+    private String username;
+    private String password;
 
-    private boolean                             flatMessage;
+    private boolean flatMessage;
 
-    private Connection                          connect;
-    private Channel                             channel;
+    private Connection connect;
+    private Channel channel;
 
 
-    private long                                batchProcessTimeout = 60 * 1000;
+    private long batchProcessTimeout = 60 * 1000;
     private BlockingQueue<ConsumerBatchMessage> messageBlockingQueue;
-    private volatile ConsumerBatchMessage       lastGetBatchMessage = null;
+    private volatile ConsumerBatchMessage lastGetBatchMessage = null;
 
     public RabbitMQCanalConnector(String nameServer, String vhost, String queueName, String accessKey, String secretKey,
-                                  String username, String password, Long resourceOwnerId, boolean flatMessage){
+                                  String username, String password, Long resourceOwnerId, boolean flatMessage) {
         this.nameServer = nameServer;
         this.vhost = vhost;
         this.queueName = queueName;

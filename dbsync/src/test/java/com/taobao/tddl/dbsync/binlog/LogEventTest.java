@@ -9,11 +9,11 @@ import org.junit.rules.Timeout;
 public class LogEventTest {
 
     @Rule
-    public final ExpectedException thrown        = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     @SuppressWarnings("deprecation")
     @Rule
-    public final Timeout           globalTimeout = new Timeout(10000);
+    public final Timeout globalTimeout = new Timeout(10000);
 
     /* testedClasses: LogEvent */
     // Test written by Diffblue Cover.

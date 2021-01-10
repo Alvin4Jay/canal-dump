@@ -29,10 +29,10 @@ import com.alibaba.otter.canal.client.adapter.support.Util;
  */
 public class RdbEtlService extends AbstractEtlService {
 
-    private DataSource    targetDS;
+    private DataSource targetDS;
     private MappingConfig config;
 
-    public RdbEtlService(DataSource targetDS, MappingConfig config){
+    public RdbEtlService(DataSource targetDS, MappingConfig config) {
         super("RDB", config);
         this.targetDS = targetDS;
         this.config = config;
@@ -85,7 +85,7 @@ public class RdbEtlService extends AbstractEtlService {
                     StringBuilder insertSql = new StringBuilder();
                     insertSql.append("INSERT INTO ").append(SyncUtil.getDbTableName(dbMapping)).append(" (");
                     columnsMap
-                        .forEach((targetColumnName, srcColumnName) -> insertSql.append(targetColumnName).append(","));
+                            .forEach((targetColumnName, srcColumnName) -> insertSql.append(targetColumnName).append(","));
 
                     int len = insertSql.length();
                     insertSql.delete(len - 1, len).append(") VALUES (");
@@ -96,7 +96,7 @@ public class RdbEtlService extends AbstractEtlService {
                     len = insertSql.length();
                     insertSql.delete(len - 1, len).append(")");
                     try (Connection connTarget = targetDS.getConnection();
-                            PreparedStatement pstmt = connTarget.prepareStatement(insertSql.toString())) {
+                         PreparedStatement pstmt = connTarget.prepareStatement(insertSql.toString())) {
                         connTarget.setAutoCommit(false);
 
                         while (rs.next()) {
@@ -107,7 +107,7 @@ public class RdbEtlService extends AbstractEtlService {
                             // 删除数据
                             Map<String, Object> pkVal = new LinkedHashMap<>();
                             StringBuilder deleteSql = new StringBuilder(
-                                "DELETE FROM " + SyncUtil.getDbTableName(dbMapping) + " WHERE ");
+                                    "DELETE FROM " + SyncUtil.getDbTableName(dbMapping) + " WHERE ");
                             appendCondition(dbMapping, deleteSql, pkVal, rs);
                             try (PreparedStatement pstmt2 = connTarget.prepareStatement(deleteSql.toString())) {
                                 int k = 1;

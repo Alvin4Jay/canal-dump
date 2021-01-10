@@ -132,7 +132,7 @@ public abstract class AbstractResource implements Resource {
         long lastModified = getFileForLastModifiedCheck().lastModified();
         if (lastModified == 0L) {
             throw new FileNotFoundException(
-                getDescription() + " cannot be resolved in the file system for resolving its last-modified timestamp");
+                    getDescription() + " cannot be resolved in the file system for resolving its last-modified timestamp");
         }
         return lastModified;
     }
@@ -144,8 +144,8 @@ public abstract class AbstractResource implements Resource {
      *
      * @return the File to use for timestamp checking (never {@code null})
      * @throws FileNotFoundException if the resource cannot be resolved as an
-     *     absolute file path, i.e. is not available in a file system
-     * @throws IOException in case of general resolution/reading failures
+     *                               absolute file path, i.e. is not available in a file system
+     * @throws IOException           in case of general resolution/reading failures
      */
     protected File getFileForLastModifiedCheck() throws IOException {
         return getFile();
@@ -188,7 +188,7 @@ public abstract class AbstractResource implements Resource {
     public boolean equals(Object obj) {
         return (obj == this
                 || (obj instanceof org.springframework.core.io.Resource
-                    && ((org.springframework.core.io.Resource) obj).getDescription().equals(getDescription())));
+                && ((org.springframework.core.io.Resource) obj).getDescription().equals(getDescription())));
     }
 
     /**

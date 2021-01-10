@@ -9,27 +9,27 @@ import com.alibaba.otter.canal.store.model.Event;
 
 /**
  * 基于归并排序的sink处理
- * 
+ *
  * <pre>
  * 几点设计说明：
  * 1. 多库合并时，需要控制不满足groupSize的条件，就会阻塞其他库的合并操作.  (比如刚启动时会所有通道正常工作才开始合并，或者中间过程出现主备切换)
- * 2. 库解析出现问题，但没有进行主备切换，此时需要通过{@linkplain CanalEventDownStreamHandler}进行定时监听合并数据的产生时间间隔 
+ * 2. 库解析出现问题，但没有进行主备切换，此时需要通过{@linkplain CanalEventDownStreamHandler}进行定时监听合并数据的产生时间间隔
  *    a. 因为一旦库解析异常，就不会再sink数据，此时groupSize就会一直缺少，就会阻塞其他库的合并，也就是不会有数据写入到store中
  * </pre>
- * 
+ *
  * @author jianghang 2012-10-15 下午09:54:18
  * @version 1.0.0
  */
 public class GroupEventSink extends EntryEventSink {
 
-    private int          groupSize;
+    private int groupSize;
     private GroupBarrier barrier;  // 归并排序需要预先知道组的大小，用于判断是否组内所有的sink都已经开始正常取数据
 
-    public GroupEventSink(){
+    public GroupEventSink() {
         this(1);
     }
 
-    public GroupEventSink(int groupSize){
+    public GroupEventSink(int groupSize) {
         super();
         this.groupSize = groupSize;
     }

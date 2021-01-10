@@ -33,11 +33,11 @@ public class MigrateMap {
 
     final static class MigrateConcurrentMap<K, V> implements ConcurrentMap<K, V> {
 
-        private final LoadingCache<K, V>  computingCache;
+        private final LoadingCache<K, V> computingCache;
 
         private final ConcurrentMap<K, V> cacheView;
 
-        MigrateConcurrentMap(LoadingCache<K, V> computingCache){
+        MigrateConcurrentMap(LoadingCache<K, V> computingCache) {
             this.computingCache = computingCache;
             this.cacheView = computingCache.asMap();
         }

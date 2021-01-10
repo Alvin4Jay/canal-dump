@@ -6,6 +6,7 @@ package com.alibaba.otter.canal.client.rabbitmq;
 
 import com.alibaba.mq.amqp.utils.UserUtils;
 import com.rabbitmq.client.impl.CredentialsProvider;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 

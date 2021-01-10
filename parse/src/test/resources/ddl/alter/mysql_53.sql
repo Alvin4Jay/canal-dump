@@ -1,12 +1,14 @@
-CREATE TABLE `tb_gcekkribdm` (
-  `col_xpuntwyhls` int(253) unsigned zerofill DEFAULT NULL,
-  `col_doacvjtxfj` text CHARACTER SET utf8,
-  `col_vbxxcedehr` varbinary(72) DEFAULT '\0',
-  `col_spnkzcnaaj` tinyint(221) unsigned zerofill DEFAULT NULL,
-  `col_lctlnulyqs` varchar(141) CHARACTER SET utf8 DEFAULT '',
-  `col_vdafmpnlcj` timestamp NULL DEFAULT NULL,
-  `col_pwwnuhvonf` bit(1) DEFAULT NULL,
-  `col_wpdnfgwkmm` float(253,19) NOT NULL,
+CREATE TABLE `tb_gcekkribdm`
+(
+    `col_xpuntwyhls` int(253) unsigned zerofill DEFAULT NULL,
+    `col_doacvjtxfj` text CHARACTER SET utf8,
+    `col_vbxxcedehr` varbinary(72) DEFAULT '\0',
+    `col_spnkzcnaaj` tinyint(221) unsigned zerofill DEFAULT NULL,
+    `col_lctlnulyqs` varchar(141) CHARACTER SET utf8 DEFAULT '',
+    `col_vdafmpnlcj` timestamp NULL DEFAULT NULL,
+    `col_pwwnuhvonf` bit(1)                          DEFAULT NULL,
+    `col_wpdnfgwkmm` float(253, 19
+) NOT NULL,
   `col_hmbydpntpk` set('enum_or_set_0','enum_or_set_1','enum_or_set_2') CHARACTER SET utf8 DEFAULT 'enum_or_set_0',
   `col_kahmeuqzzo` mediumtext,
   `col_mrruauiuzg` mediumblob,

@@ -4,7 +4,7 @@ import com.alibaba.otter.canal.instance.manager.model.Canal;
 
 /**
  * 对应canal的配置
- * 
+ *
  * @author jianghang 2012-7-4 下午03:09:17
  * @version 1.0.0
  */

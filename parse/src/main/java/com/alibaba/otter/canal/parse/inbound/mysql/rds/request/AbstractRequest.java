@@ -53,24 +53,24 @@ public abstract class AbstractRequest<T> {
      */
     private static final String MAC_NAME = "HmacSHA1";
 
-    private String              accessKeyId;
+    private String accessKeyId;
 
-    private String              accessKeySecret;
+    private String accessKeySecret;
 
     /**
      * api 版本
      */
-    private String              version;
+    private String version;
 
-    private String              endPoint = "rds.aliyuncs.com";
+    private String endPoint = "rds.aliyuncs.com";
 
-    private String              protocol = "http";
+    private String protocol = "http";
 
     public void setProtocol(String protocol) {
         this.protocol = protocol;
     }
 
-    private int                 timeout = (int) TimeUnit.MINUTES.toMillis(1);
+    private int timeout = (int) TimeUnit.MINUTES.toMillis(1);
 
     private Map<String, String> treeMap = new TreeMap();
 
@@ -101,7 +101,7 @@ public abstract class AbstractRequest<T> {
      * 使用 HMAC-SHA1 签名方法对对encryptText进行签名
      *
      * @param encryptText 被签名的字符串
-     * @param encryptKey 密钥
+     * @param encryptKey  密钥
      * @return
      * @throws Exception
      */
@@ -203,24 +203,24 @@ public abstract class AbstractRequest<T> {
             }
         }).build();
         SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,
-            new String[] { "TLSv1" },
-            null,
-            SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+                new String[]{"TLSv1"},
+                null,
+                SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         Registry registry = RegistryBuilder.create()
-            .register("http", PlainConnectionSocketFactory.INSTANCE)
-            .register("https", sslsf)
-            .build();
+                .register("http", PlainConnectionSocketFactory.INSTANCE)
+                .register("https", sslsf)
+                .build();
         HttpClientConnectionManager httpClientConnectionManager = new PoolingHttpClientConnectionManager(registry);
         CloseableHttpClient httpClient = HttpClientBuilder.create()
-            .setMaxConnPerRoute(50)
-            .setMaxConnTotal(100)
-            .setConnectionManager(httpClientConnectionManager)
-            .build();
+                .setMaxConnPerRoute(50)
+                .setMaxConnTotal(100)
+                .setConnectionManager(httpClientConnectionManager)
+                .build();
         RequestConfig requestConfig = RequestConfig.custom()
-            .setConnectTimeout(timeout)
-            .setConnectionRequestTimeout(timeout)
-            .setSocketTimeout(timeout)
-            .build();
+                .setConnectTimeout(timeout)
+                .setConnectionRequestTimeout(timeout)
+                .setSocketTimeout(timeout)
+                .build();
         getMethod.setConfig(requestConfig);
         HttpResponse response = httpClient.execute(getMethod);
         int statusCode = response.getStatusLine().getStatusCode();

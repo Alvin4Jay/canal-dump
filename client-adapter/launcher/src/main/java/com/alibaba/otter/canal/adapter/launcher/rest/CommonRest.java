@@ -36,19 +36,19 @@ import com.alibaba.otter.canal.client.adapter.support.Result;
 @RestController
 public class CommonRest {
 
-    private static Logger                 logger           = LoggerFactory.getLogger(CommonRest.class);
+    private static Logger logger = LoggerFactory.getLogger(CommonRest.class);
 
-    private static final String           ETL_LOCK_ZK_NODE = "/sync-etl/";
+    private static final String ETL_LOCK_ZK_NODE = "/sync-etl/";
 
     private ExtensionLoader<OuterAdapter> loader;
 
     @Resource
-    private SyncSwitch                    syncSwitch;
+    private SyncSwitch syncSwitch;
     @Resource
-    private EtlLock                       etlLock;
+    private EtlLock etlLock;
 
     @Resource
-    private AdapterCanalConfig            adapterCanalConfig;
+    private AdapterCanalConfig adapterCanalConfig;
 
     @PostConstruct
     public void init() {
@@ -58,9 +58,9 @@ public class CommonRest {
     /**
      * ETL curl http://127.0.0.1:8081/etl/rdb/oracle1/mytest_user.yml -X POST
      *
-     * @param type 类型 hbase, es
-     * @param key adapter key
-     * @param task 任务名对应配置文件名 mytest_user.yml
+     * @param type   类型 hbase, es
+     * @param key    adapter key
+     * @param task   任务名对应配置文件名 mytest_user.yml
      * @param params etl where条件参数, 为空全部导入
      */
     @PostMapping("/etl/{type}/{key}/{task}")
@@ -113,8 +113,8 @@ public class CommonRest {
     /**
      * ETL curl http://127.0.0.1:8081/etl/hbase/mytest_person2.yml -X POST
      *
-     * @param type 类型 hbase, es
-     * @param task 任务名对应配置文件名 mytest_person2.yml
+     * @param type   类型 hbase, es
+     * @param task   任务名对应配置文件名 mytest_person2.yml
      * @param params etl where条件参数, 为空全部导入
      */
     @PostMapping("/etl/{type}/{task}")
@@ -127,7 +127,7 @@ public class CommonRest {
      * 统计总数 curl http://127.0.0.1:8081/count/rdb/oracle1/mytest_user.yml
      *
      * @param type 类型 hbase, es
-     * @param key adapter key
+     * @param key  adapter key
      * @param task 任务名对应配置文件名 mytest_person2.yml
      * @return
      */
@@ -176,7 +176,7 @@ public class CommonRest {
      * 实例同步开关 curl http://127.0.0.1:8081/syncSwitch/example/off -X PUT
      *
      * @param destination 实例名称
-     * @param status 开关状态: off on
+     * @param status      开关状态: off on
      * @return
      */
     @PutMapping("/syncSwitch/{destination}/{status}")

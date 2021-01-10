@@ -115,7 +115,7 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
  * <td>The sql_mode variable. See the section "SQL Modes" in the MySQL manual,
  * and see mysql_priv.h for a list of the possible flags. Currently
  * (2007-10-04), the following flags are available:
- * 
+ *
  * <pre>
  *     MODE_REAL_AS_FLOAT==0x1
  *     MODE_PIPES_AS_CONCAT==0x2
@@ -150,7 +150,7 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
  *     MODE_HIGH_NOT_PRECEDENCE==0x40000000
  *     MODE_PAD_CHAR_TO_FULL_LENGTH==0x80000000
  * </pre>
- * 
+ * <p>
  * All these flags are replicated from the server. However, all flags except
  * MODE_NO_DIR_IN_CREATE are honored by the slave; the slave always preserves
  * its old value of MODE_NO_DIR_IN_CREATE. For a rationale, see comment in
@@ -250,10 +250,10 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
  * understood by a new slave. See Q_CHARSET_DATABASE_CODE in the table above.
  * When adding new status vars, please don't forget to update the
  * MAX_SIZE_LOG_EVENT_STATUS, and update function code_name
- * 
- * @see mysql-5.1.6/sql/logevent.cc - Query_log_event
+ *
  * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
  * @version 1.0
+ * @see mysql-5.1.6/sql/logevent.cc - Query_log_event
  */
 public class QueryLogEvent extends LogEvent {
 
@@ -262,7 +262,7 @@ public class QueryLogEvent extends LogEvent {
      * can carry. It can redefined within a range [1..
      * OVER_MAX_DBS_IN_EVENT_MTS].
      */
-    public static final int MAX_DBS_IN_EVENT_MTS      = 16;
+    public static final int MAX_DBS_IN_EVENT_MTS = 16;
 
     /**
      * When the actual number of databases exceeds MAX_DBS_IN_EVENT_MTS the
@@ -271,10 +271,10 @@ public class QueryLogEvent extends LogEvent {
      */
     public static final int OVER_MAX_DBS_IN_EVENT_MTS = 254;
 
-    public static final int SYSTEM_CHARSET_MBMAXLEN   = 3;
-    public static final int NAME_CHAR_LEN             = 64;
+    public static final int SYSTEM_CHARSET_MBMAXLEN = 3;
+    public static final int NAME_CHAR_LEN = 64;
     /* Field/table name length */
-    public static final int NAME_LEN                  = (NAME_CHAR_LEN * SYSTEM_CHARSET_MBMAXLEN);
+    public static final int NAME_LEN = (NAME_CHAR_LEN * SYSTEM_CHARSET_MBMAXLEN);
 
     /**
      * Max number of possible extra bytes in a replication event compared to a
@@ -282,81 +282,81 @@ public class QueryLogEvent extends LogEvent {
      * log_event status vars estimation:
      */
     public static final int MAX_SIZE_LOG_EVENT_STATUS = (1 + 4 /* type, flags2 */
-                                                         + 1 + 8 /*
-                                                                  * type,
-                                                                  * sql_mode
-                                                                  */
-                                                         + 1 + 1 + 255/*
-                                                                       * type,
-                                                                       * length
-                                                                       * ,
-                                                                       * catalog
-                                                                       */
-                                                         + 1 + 4 /*
-                                                                  * type,
-                                                                  * auto_increment
-                                                                  */
-                                                         + 1 + 6 /*
-                                                                  * type,
-                                                                  * charset
-                                                                  */
-                                                         + 1 + 1 + 255 /*
-                                                                        * type,
-                                                                        * length
-                                                                        * ,
-                                                                        * time_zone
-                                                                        */
-                                                         + 1 + 2 /*
-                                                                  * type,
-                                                                  * lc_time_names_number
-                                                                  */
-                                                         + 1 + 2 /*
-                                                                  * type,
-                                                                  * charset_database_number
-                                                                  */
-                                                         + 1 + 8 /*
-                                                                  * type,
-                                                                  * table_map_for_update
-                                                                  */
-                                                         + 1 + 4 /*
-                                                                  * type,
-                                                                  * master_data_written
-                                                                  */
-                                                         /*
-                                                          * type, db_1, db_2,
-                                                          * ...
-                                                          */
-                                                         /* type, microseconds */
-                                                         /*
-                                                          * MariaDb type,
-                                                          * sec_part of NOW()
-                                                          */
-                                                         + 1 + (MAX_DBS_IN_EVENT_MTS * (1 + NAME_LEN)) + 3 /*
-                                                                                                            * type
-                                                                                                            * ,
-                                                                                                            * microseconds
-                                                                                                            */+ 1 + 32
-                                                         * 3 + 1 + 60/*
-                                                                      * type ,
-                                                                      * user_len
-                                                                      * , user ,
-                                                                      * host_len
-                                                                      * , host
-                                                                      */)
-                                                        + 1 + 1 /*
-                                                                 * type,
-                                                                 * explicit_def
-                                                                 * ..ts
-                                                                 */+ 1 + 8 /*
-                                                                            * type,
-                                                                            * xid
-                                                                            * of
-                                                                            * DDL
-                                                                            */+ 1 + 2 /*
-                                                                                       * type
-                                                                                       * ,
-                                                                                       * default_collation_for_utf8mb4_number
-                                                                                       */+ 1 /* sql_require_primary_key */;
+            + 1 + 8 /*
+     * type,
+     * sql_mode
+     */
+            + 1 + 1 + 255/*
+     * type,
+     * length
+     * ,
+     * catalog
+     */
+            + 1 + 4 /*
+     * type,
+     * auto_increment
+     */
+            + 1 + 6 /*
+     * type,
+     * charset
+     */
+            + 1 + 1 + 255 /*
+     * type,
+     * length
+     * ,
+     * time_zone
+     */
+            + 1 + 2 /*
+     * type,
+     * lc_time_names_number
+     */
+            + 1 + 2 /*
+     * type,
+     * charset_database_number
+     */
+            + 1 + 8 /*
+     * type,
+     * table_map_for_update
+     */
+            + 1 + 4 /*
+     * type,
+     * master_data_written
+     */
+            /*
+             * type, db_1, db_2,
+             * ...
+             */
+            /* type, microseconds */
+            /*
+             * MariaDb type,
+             * sec_part of NOW()
+             */
+            + 1 + (MAX_DBS_IN_EVENT_MTS * (1 + NAME_LEN)) + 3 /*
+     * type
+     * ,
+     * microseconds
+     */ + 1 + 32
+            * 3 + 1 + 60/*
+     * type ,
+     * user_len
+     * , user ,
+     * host_len
+     * , host
+     */)
+            + 1 + 1 /*
+     * type,
+     * explicit_def
+     * ..ts
+     */ + 1 + 8 /*
+     * type,
+     * xid
+     * of
+     * DDL
+     */ + 1 + 2 /*
+     * type
+     * ,
+     * default_collation_for_utf8mb4_number
+     */ + 1 /* sql_require_primary_key */;
     /**
      * Fixed data part:
      * <ul>
@@ -400,45 +400,49 @@ public class QueryLogEvent extends LogEvent {
      * </ul>
      * Source : http://forge.mysql.com/wiki/MySQL_Internals_Binary_Log
      */
-    private String          user;
-    private String          host;
+    private String user;
+    private String host;
 
     /* using byte for query string */
-    protected String        query;
-    protected String        catalog;
-    protected final String  dbname;
+    protected String query;
+    protected String catalog;
+    protected final String dbname;
 
-    /** The number of seconds the query took to run on the master. */
+    /**
+     * The number of seconds the query took to run on the master.
+     */
     // The time in seconds that the statement took to execute. Only useful for
     // inspection by the DBA
-    private final long      execTime;
-    private final int       errorCode;
-    private final long      sessionId;                                                                                     /* thread_id */
+    private final long execTime;
+    private final int errorCode;
+    private final long sessionId;                                                                                     /* thread_id */
 
     /**
      * 'flags2' is a second set of flags (on top of those in Log_event), for
      * session variables. These are thd->options which is & against a mask
      * (OPTIONS_WRITTEN_TO_BIN_LOG).
      */
-    private long            flags2;
+    private long flags2;
 
-    /** In connections sql_mode is 32 bits now but will be 64 bits soon */
-    private long            sql_mode;
+    /**
+     * In connections sql_mode is 32 bits now but will be 64 bits soon
+     */
+    private long sql_mode;
 
-    private long            autoIncrementIncrement    = -1;
-    private long            autoIncrementOffset       = -1;
+    private long autoIncrementIncrement = -1;
+    private long autoIncrementOffset = -1;
 
-    private int             clientCharset             = -1;
-    private int             clientCollation           = -1;
-    private int             serverCollation           = -1;
-    private int             tvSec                     = -1;
-    private BigInteger      ddlXid                    = BigInteger.valueOf(-1L);
-    private String          charsetName;
+    private int clientCharset = -1;
+    private int clientCollation = -1;
+    private int serverCollation = -1;
+    private int tvSec = -1;
+    private BigInteger ddlXid = BigInteger.valueOf(-1L);
+    private String charsetName;
 
-    private String          timezone;
+    private String timezone;
 
     public QueryLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent)
-                                                                                                        throws IOException{
+            throws IOException {
         super(header);
 
         final int commonHeaderLen = descriptionEvent.commonHeaderLen;
@@ -506,8 +510,8 @@ public class QueryLogEvent extends LogEvent {
                 query = buffer.getFixString(queryLen, charsetName);
             } else {
                 logger.warn("unsupported character set in query log: " + "\n    ID = " + clientCharset + ", Charset = "
-                            + CharsetConversion.getCharset(clientCharset) + ", Collation = "
-                            + CharsetConversion.getCollation(clientCharset));
+                        + CharsetConversion.getCharset(clientCharset) + ", Collation = "
+                        + CharsetConversion.getCollation(clientCharset));
 
                 query = buffer.getFixString(queryLen);
             }
@@ -517,26 +521,26 @@ public class QueryLogEvent extends LogEvent {
     }
 
     /* query event post-header */
-    public static final int Q_THREAD_ID_OFFSET                = 0;
-    public static final int Q_EXEC_TIME_OFFSET                = 4;
-    public static final int Q_DB_LEN_OFFSET                   = 8;
-    public static final int Q_ERR_CODE_OFFSET                 = 9;
-    public static final int Q_STATUS_VARS_LEN_OFFSET          = 11;
-    public static final int Q_DATA_OFFSET                     = QUERY_HEADER_LEN;
+    public static final int Q_THREAD_ID_OFFSET = 0;
+    public static final int Q_EXEC_TIME_OFFSET = 4;
+    public static final int Q_DB_LEN_OFFSET = 8;
+    public static final int Q_ERR_CODE_OFFSET = 9;
+    public static final int Q_STATUS_VARS_LEN_OFFSET = 11;
+    public static final int Q_DATA_OFFSET = QUERY_HEADER_LEN;
 
     /* these are codes, not offsets; not more than 256 values (1 byte). */
-    public static final int Q_FLAGS2_CODE                     = 0;
-    public static final int Q_SQL_MODE_CODE                   = 1;
+    public static final int Q_FLAGS2_CODE = 0;
+    public static final int Q_SQL_MODE_CODE = 1;
 
     /**
      * Q_CATALOG_CODE is catalog with end zero stored; it is used only by MySQL
      * 5.0.x where 0<=x<=3. We have to keep it to be able to replicate these old
      * masters.
      */
-    public static final int Q_CATALOG_CODE                    = 2;
-    public static final int Q_AUTO_INCREMENT                  = 3;
-    public static final int Q_CHARSET_CODE                    = 4;
-    public static final int Q_TIME_ZONE_CODE                  = 5;
+    public static final int Q_CATALOG_CODE = 2;
+    public static final int Q_AUTO_INCREMENT = 3;
+    public static final int Q_CHARSET_CODE = 4;
+    public static final int Q_TIME_ZONE_CODE = 5;
 
     /**
      * Q_CATALOG_NZ_CODE is catalog withOUT end zero stored; it is used by MySQL
@@ -546,35 +550,35 @@ public class QueryLogEvent extends LogEvent {
      * would crash (segfault etc) because it would expect a 0 when there is
      * none.
      */
-    public static final int Q_CATALOG_NZ_CODE                 = 6;
+    public static final int Q_CATALOG_NZ_CODE = 6;
 
-    public static final int Q_LC_TIME_NAMES_CODE              = 7;
+    public static final int Q_LC_TIME_NAMES_CODE = 7;
 
-    public static final int Q_CHARSET_DATABASE_CODE           = 8;
+    public static final int Q_CHARSET_DATABASE_CODE = 8;
 
-    public static final int Q_TABLE_MAP_FOR_UPDATE_CODE       = 9;
+    public static final int Q_TABLE_MAP_FOR_UPDATE_CODE = 9;
 
-    public static final int Q_MASTER_DATA_WRITTEN_CODE        = 10;
+    public static final int Q_MASTER_DATA_WRITTEN_CODE = 10;
 
-    public static final int Q_INVOKER                         = 11;
+    public static final int Q_INVOKER = 11;
 
     /**
      * Q_UPDATED_DB_NAMES status variable collects of the updated databases
      * total number and their names to be propagated to the slave in order to
      * facilitate the parallel applying of the Query events.
      */
-    public static final int Q_UPDATED_DB_NAMES                = 12;
+    public static final int Q_UPDATED_DB_NAMES = 12;
 
-    public static final int Q_MICROSECONDS                    = 13;
+    public static final int Q_MICROSECONDS = 13;
     /**
      * A old (unused now) code for Query_log_event status similar to
      * G_COMMIT_TS.
      */
-    public static final int Q_COMMIT_TS                       = 14;
+    public static final int Q_COMMIT_TS = 14;
     /**
      * A code for Query_log_event status, similar to G_COMMIT_TS2.
      */
-    public static final int Q_COMMIT_TS2                      = 15;
+    public static final int Q_COMMIT_TS2 = 15;
     /**
      * The master connection @@session.explicit_defaults_for_timestamp which is
      * recorded for queries, CREATE and ALTER table that is defined with a
@@ -586,22 +590,22 @@ public class QueryLogEvent extends LogEvent {
     /**
      * The variable carries xid info of 2pc-aware (recoverable) DDL queries.
      */
-    public static final int Q_DDL_LOGGED_WITH_XID             = 17;
+    public static final int Q_DDL_LOGGED_WITH_XID = 17;
     /**
      * This variable stores the default collation for the utf8mb4 character set.
      * Used to support cross-version replication.
      */
-    public static final int Q_DEFAULT_COLLATION_FOR_UTF8MB4   = 18;
+    public static final int Q_DEFAULT_COLLATION_FOR_UTF8MB4 = 18;
 
     /**
      * Replicate sql_require_primary_key.
      */
-    public static final int Q_SQL_REQUIRE_PRIMARY_KEY         = 19;
+    public static final int Q_SQL_REQUIRE_PRIMARY_KEY = 19;
 
     /**
      * FROM MariaDB 5.5.34
      */
-    public static final int Q_HRNOW                           = 128;
+    public static final int Q_HRNOW = 128;
 
     private final void unpackVariables(LogBuffer buffer, final int end) throws IOException {
         int code = -1;
@@ -613,7 +617,7 @@ public class QueryLogEvent extends LogEvent {
                         break;
                     case Q_SQL_MODE_CODE:
                         sql_mode = buffer.getLong64(); // QQ: Fix when sql_mode
-                                                       // is ulonglong
+                        // is ulonglong
                         break;
                     case Q_CATALOG_NZ_CODE:
                         catalog = buffer.getString();
@@ -707,7 +711,7 @@ public class QueryLogEvent extends LogEvent {
                          * order of code
                          */
                         logger.error("Query_log_event has unknown status vars (first has code: " + code
-                                     + "), skipping the rest of them");
+                                + "), skipping the rest of them");
                         break; // Break loop
                 }
             }
@@ -807,7 +811,7 @@ public class QueryLogEvent extends LogEvent {
 
     /**
      * Returns the charsetID value.
-     * 
+     *
      * @return Returns the charsetID.
      */
     public final int getClientCharset() {
@@ -816,7 +820,7 @@ public class QueryLogEvent extends LogEvent {
 
     /**
      * Returns the clientCollationId value.
-     * 
+     *
      * @return Returns the clientCollationId.
      */
     public final int getClientCollation() {
@@ -825,7 +829,7 @@ public class QueryLogEvent extends LogEvent {
 
     /**
      * Returns the serverCollationId value.
-     * 
+     *
      * @return Returns the serverCollationId.
      */
     public final int getServerCollation() {
@@ -890,8 +894,8 @@ public class QueryLogEvent extends LogEvent {
     }
 
     /* FLAGS2 values that can be represented inside the binlog */
-    public static final int OPTION_AUTO_IS_NULL          = 1 << 14;
-    public static final int OPTION_NOT_AUTOCOMMIT        = 1 << 19;
+    public static final int OPTION_AUTO_IS_NULL = 1 << 14;
+    public static final int OPTION_NOT_AUTOCOMMIT = 1 << 19;
     public static final int OPTION_NO_FOREIGN_KEY_CHECKS = 1 << 26;
     public static final int OPTION_RELAXED_UNIQUE_CHECKS = 1 << 27;
 

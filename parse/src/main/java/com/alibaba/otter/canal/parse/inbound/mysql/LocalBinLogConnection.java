@@ -25,24 +25,24 @@ import com.taobao.tddl.dbsync.binlog.event.QueryLogEvent;
 
 /**
  * local bin log connection (not real connection)
- * 
+ *
  * @author yuanzu Date: 12-9-27 Time: 下午6:14
  */
 public class LocalBinLogConnection implements ErosaConnection {
 
-    private static final Logger logger     = LoggerFactory.getLogger(LocalBinLogConnection.class);
-    private BinLogFileQueue     binlogs    = null;
-    private boolean             needWait;
-    private String              directory;
-    private int                 bufferSize = 16 * 1024;
-    private boolean             running    = false;
-    private long                serverId;
-    private FileParserListener  parserListener;
+    private static final Logger logger = LoggerFactory.getLogger(LocalBinLogConnection.class);
+    private BinLogFileQueue binlogs = null;
+    private boolean needWait;
+    private String directory;
+    private int bufferSize = 16 * 1024;
+    private boolean running = false;
+    private long serverId;
+    private FileParserListener parserListener;
 
-    public LocalBinLogConnection(){
+    public LocalBinLogConnection() {
     }
 
-    public LocalBinLogConnection(String directory, boolean needWait){
+    public LocalBinLogConnection(String directory, boolean needWait) {
         this.needWait = needWait;
         this.directory = directory;
     }

@@ -28,18 +28,18 @@ import com.alibaba.otter.canal.common.utils.BooleanMutex;
 @Component
 public class SyncSwitch {
 
-    private static final String                    SYN_SWITCH_ZK_NODE = "/sync-switch/";
+    private static final String SYN_SWITCH_ZK_NODE = "/sync-switch/";
 
-    private static final Map<String, BooleanMutex> LOCAL_LOCK         = new ConcurrentHashMap<>();
+    private static final Map<String, BooleanMutex> LOCAL_LOCK = new ConcurrentHashMap<>();
 
-    private static final Map<String, BooleanMutex> DISTRIBUTED_LOCK   = new ConcurrentHashMap<>();
+    private static final Map<String, BooleanMutex> DISTRIBUTED_LOCK = new ConcurrentHashMap<>();
 
-    private Mode                                   mode               = Mode.LOCAL;
+    private Mode mode = Mode.LOCAL;
 
     @Resource
-    private AdapterCanalConfig                     adapterCanalConfig;
+    private AdapterCanalConfig adapterCanalConfig;
     @Resource
-    private CuratorClient                          curatorClient;
+    private CuratorClient curatorClient;
 
     @PostConstruct
     public void init() {
@@ -134,10 +134,10 @@ public class SyncSwitch {
                 String path = SYN_SWITCH_ZK_NODE + destination;
                 try {
                     curatorClient.getCurator()
-                        .create()
-                        .creatingParentContainersIfNeeded()
-                        .withMode(CreateMode.PERSISTENT)
-                        .forPath(path, "off".getBytes(StandardCharsets.UTF_8));
+                            .create()
+                            .creatingParentContainersIfNeeded()
+                            .withMode(CreateMode.PERSISTENT)
+                            .forPath(path, "off".getBytes(StandardCharsets.UTF_8));
                 } catch (Exception e) {
                     curatorClient.getCurator().setData().forPath(path, "off".getBytes(StandardCharsets.UTF_8));
                 }
@@ -158,10 +158,10 @@ public class SyncSwitch {
                 String path = SYN_SWITCH_ZK_NODE + destination;
                 try {
                     curatorClient.getCurator()
-                        .create()
-                        .creatingParentContainersIfNeeded()
-                        .withMode(CreateMode.PERSISTENT)
-                        .forPath(path, "on".getBytes(StandardCharsets.UTF_8));
+                            .create()
+                            .creatingParentContainersIfNeeded()
+                            .withMode(CreateMode.PERSISTENT)
+                            .forPath(path, "on".getBytes(StandardCharsets.UTF_8));
                 } catch (Exception e) {
                     curatorClient.getCurator().setData().forPath(path, "on".getBytes(StandardCharsets.UTF_8));
                 }

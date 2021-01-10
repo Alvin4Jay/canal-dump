@@ -23,11 +23,11 @@ import com.google.common.collect.MigrateMap;
 
 public class MixedMetaManager extends MemoryMetaManager implements CanalMetaManager {
 
-    private ExecutorService      executor;
+    private ExecutorService executor;
     private ZooKeeperMetaManager zooKeeperMetaManager;
     @SuppressWarnings("serial")
-    private final Position       nullCursor = new Position() {
-                                            };
+    private final Position nullCursor = new Position() {
+    };
 
     public void start() {
         super.start();
@@ -105,7 +105,7 @@ public class MixedMetaManager extends MemoryMetaManager implements CanalMetaMana
     }
 
     public void updateCursor(final ClientIdentity clientIdentity, final Position position)
-                                                                                          throws CanalMetaManagerException {
+            throws CanalMetaManagerException {
         super.updateCursor(clientIdentity, position);
 
         // 异步刷新
@@ -128,7 +128,7 @@ public class MixedMetaManager extends MemoryMetaManager implements CanalMetaMana
     }
 
     public Long addBatch(final ClientIdentity clientIdentity, final PositionRange positionRange)
-                                                                                                throws CanalMetaManagerException {
+            throws CanalMetaManagerException {
         final Long batchId = super.addBatch(clientIdentity, positionRange);
         // 异步刷新
         executor.submit(new Runnable() {
@@ -141,7 +141,7 @@ public class MixedMetaManager extends MemoryMetaManager implements CanalMetaMana
     }
 
     public void addBatch(final ClientIdentity clientIdentity, final PositionRange positionRange, final Long batchId)
-                                                                                                                    throws CanalMetaManagerException {
+            throws CanalMetaManagerException {
         super.addBatch(clientIdentity, positionRange, batchId);
         // 异步刷新
         executor.submit(new Runnable() {
@@ -153,7 +153,7 @@ public class MixedMetaManager extends MemoryMetaManager implements CanalMetaMana
     }
 
     public PositionRange removeBatch(final ClientIdentity clientIdentity, final Long batchId)
-                                                                                             throws CanalMetaManagerException {
+            throws CanalMetaManagerException {
         PositionRange positionRange = super.removeBatch(clientIdentity, batchId);
         // 异步刷新
         executor.submit(new Runnable() {

@@ -60,7 +60,7 @@ public class ES6xAdapter extends ESAdapter {
         ESSyncConfig config = esSyncConfig.get(task);
         ESSyncConfig.ESMapping mapping = config.getEsMapping();
         SearchResponse response = this.esConnection.new ESSearchRequest(mapping.get_index(), mapping.get_type()).size(0)
-            .getResponse();
+                .getResponse();
 
         long rowCount = response.getHits().getTotalHits();
         Map<String, Object> res = new LinkedHashMap<>();

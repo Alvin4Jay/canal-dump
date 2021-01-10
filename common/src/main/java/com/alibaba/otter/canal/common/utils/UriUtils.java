@@ -17,11 +17,11 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class UriUtils {
 
-    private final static String SPLIT            = "&";
-    private final static String EQUAL            = "=";
+    private final static String SPLIT = "&";
+    private final static String EQUAL = "=";
     private final static String DEFAULT_ENCODING = "ISO_8859_1";
 
-    private UriUtils(){
+    private UriUtils() {
     }
 
     public static Map<String, String> parseQuery(final String uriString) {

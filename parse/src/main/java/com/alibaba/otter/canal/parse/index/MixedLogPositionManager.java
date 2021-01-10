@@ -16,14 +16,14 @@ import com.alibaba.otter.canal.protocol.position.LogPosition;
  */
 public class MixedLogPositionManager extends AbstractLogPositionManager {
 
-    private final Logger                      logger = LoggerFactory.getLogger(MixedLogPositionManager.class);
+    private final Logger logger = LoggerFactory.getLogger(MixedLogPositionManager.class);
 
-    private final MemoryLogPositionManager    memoryLogPositionManager;
+    private final MemoryLogPositionManager memoryLogPositionManager;
     private final ZooKeeperLogPositionManager zooKeeperLogPositionManager;
 
-    private final ExecutorService             executor;
+    private final ExecutorService executor;
 
-    public MixedLogPositionManager(ZkClientx zkClient){
+    public MixedLogPositionManager(ZkClientx zkClient) {
         if (zkClient == null) {
             throw new NullPointerException("null zkClient");
         }

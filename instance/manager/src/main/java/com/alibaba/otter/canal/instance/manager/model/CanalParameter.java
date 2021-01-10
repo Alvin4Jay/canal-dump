@@ -18,118 +18,122 @@ import com.alibaba.otter.canal.common.utils.CanalToStringStyle;
  */
 public class CanalParameter implements Serializable {
 
-    private static final long        serialVersionUID                   = -5893459662315430900L;
-    private Long                     canalId;
+    private static final long serialVersionUID = -5893459662315430900L;
+    private Long canalId;
 
     // 相关参数
-    private RunMode                  runMode                            = RunMode.EMBEDDED;          // 运行模式：嵌入式/服务式
-    private ClusterMode              clusterMode                        = ClusterMode.STANDALONE;    // 集群模式：单机/冷备/热备份
+    private RunMode runMode = RunMode.EMBEDDED;          // 运行模式：嵌入式/服务式
+    private ClusterMode clusterMode = ClusterMode.STANDALONE;    // 集群模式：单机/冷备/热备份
 
-    private Long                     zkClusterId;                                                    // zk集群id，为管理方便
-    private List<String>             zkClusters;                                                     // zk集群地址
+    private Long zkClusterId;                                                    // zk集群id，为管理方便
+    private List<String> zkClusters;                                                     // zk集群地址
 
-    private String                   dataDir                            = "../conf";                 // 默认本地文件数据的目录默认是conf
+    private String dataDir = "../conf";                 // 默认本地文件数据的目录默认是conf
     // meta相关参数
-    private MetaMode                 metaMode                           = MetaMode.MEMORY;           // meta机制
-    private Integer                  metaFileFlushPeriod                = 1000;                      // meta刷新间隔
+    private MetaMode metaMode = MetaMode.MEMORY;           // meta机制
+    private Integer metaFileFlushPeriod = 1000;                      // meta刷新间隔
 
     // storage存储
-    private Integer                  transactionSize                    = 1024;                      // 支持处理的transaction事务大小
-    private StorageMode              storageMode                        = StorageMode.MEMORY;        // 存储机制
-    private BatchMode                storageBatchMode                   = BatchMode.MEMSIZE;         // 基于大小返回结果
-    private Integer                  memoryStorageBufferSize            = 16 * 1024;                 // 内存存储的buffer大小
-    private Integer                  memoryStorageBufferMemUnit         = 1024;                      // 内存存储的buffer内存占用单位，默认为1kb
-    private Boolean                  memoryStorageRawEntry              = Boolean.TRUE;              // 内存存储的对象是否启用raw的ByteString模式
-    private String                   fileStorageDirectory;                                           // 文件存储的目录位置
-    private Integer                  fileStorageStoreCount;                                          // 每个文件store存储的记录数
-    private Integer                  fileStorageRollverCount;                                        // store文件的个数
-    private Integer                  fileStoragePercentThresold;                                     // 整个store存储占disk硬盘的百分比，超过百分比及时条数还未满也不写入
-    private StorageScavengeMode      storageScavengeMode                = StorageScavengeMode.ON_ACK;
-    private String                   scavengeSchdule;                                                // 调度规则
+    private Integer transactionSize = 1024;                      // 支持处理的transaction事务大小
+    private StorageMode storageMode = StorageMode.MEMORY;        // 存储机制
+    private BatchMode storageBatchMode = BatchMode.MEMSIZE;         // 基于大小返回结果
+    private Integer memoryStorageBufferSize = 16 * 1024;                 // 内存存储的buffer大小
+    private Integer memoryStorageBufferMemUnit = 1024;                      // 内存存储的buffer内存占用单位，默认为1kb
+    private Boolean memoryStorageRawEntry = Boolean.TRUE;              // 内存存储的对象是否启用raw的ByteString模式
+    private String fileStorageDirectory;                                           // 文件存储的目录位置
+    private Integer fileStorageStoreCount;                                          // 每个文件store存储的记录数
+    private Integer fileStorageRollverCount;                                        // store文件的个数
+    private Integer fileStoragePercentThresold;                                     // 整个store存储占disk硬盘的百分比，超过百分比及时条数还未满也不写入
+    private StorageScavengeMode storageScavengeMode = StorageScavengeMode.ON_ACK;
+    private String scavengeSchdule;                                                // 调度规则
 
     // replcation相关参数
-    private SourcingType             sourcingType                       = SourcingType.MYSQL;        // 数据来源类型
-    private String                   localBinlogDirectory;                                           // 本地localBinlog目录
-    private HAMode                   haMode                             = HAMode.HEARTBEAT;          // ha机制
+    private SourcingType sourcingType = SourcingType.MYSQL;        // 数据来源类型
+    private String localBinlogDirectory;                                           // 本地localBinlog目录
+    private HAMode haMode = HAMode.HEARTBEAT;          // ha机制
     // 网络链接参数
-    private Integer                  port                               = 11111;                     // 服务端口，独立运行时需要配置
-    private Integer                  defaultConnectionTimeoutInSeconds  = 30;                        // sotimeout
-    private Integer                  receiveBufferSize                  = 64 * 1024;
-    private Integer                  sendBufferSize                     = 64 * 1024;
+    private Integer port = 11111;                     // 服务端口，独立运行时需要配置
+    private Integer defaultConnectionTimeoutInSeconds = 30;                        // sotimeout
+    private Integer receiveBufferSize = 64 * 1024;
+    private Integer sendBufferSize = 64 * 1024;
     // 编码信息
-    private Byte                     connectionCharsetNumber            = (byte) 33;
-    private String                   connectionCharset                  = "UTF-8";
+    private Byte connectionCharsetNumber = (byte) 33;
+    private String connectionCharset = "UTF-8";
 
     // 数据库信息
-    private List<InetSocketAddress>  dbAddresses;                                                    // 数据库链接信息
+    private List<InetSocketAddress> dbAddresses;                                                    // 数据库链接信息
     private List<List<DataSourcing>> groupDbAddresses;                                               // 数据库链接信息，包含多组信息
-    private String                   dbUsername;                                                     // 数据库用户
-    private String                   dbPassword;                                                     // 数据库密码
+    private String dbUsername;                                                     // 数据库用户
+    private String dbPassword;                                                     // 数据库密码
 
     // binlog链接信息
-    private IndexMode                indexMode;
-    private List<String>             positions;                                                      // 数据库positions信息
-    private String                   defaultDatabaseName;                                            // 默认链接的数据库schmea
-    private Long                     slaveId;                                                        // 链接到mysql的slaveId
-    private Integer                  fallbackIntervalInSeconds          = 60;                        // 数据库发生切换查找时回退的时间
+    private IndexMode indexMode;
+    private List<String> positions;                                                      // 数据库positions信息
+    private String defaultDatabaseName;                                            // 默认链接的数据库schmea
+    private Long slaveId;                                                        // 链接到mysql的slaveId
+    private Integer fallbackIntervalInSeconds = 60;                        // 数据库发生切换查找时回退的时间
 
     // 心跳检查信息
-    private Boolean                  detectingEnable                    = true;                      // 是否开启心跳语句
-    private Boolean                  heartbeatHaEnable                  = false;                     // 是否开启基于心跳检查的ha功能
-    private String                   detectingSQL;                                                   // 心跳sql
-    private Integer                  detectingIntervalInSeconds         = 3;                         // 检测频率
-    private Integer                  detectingTimeoutThresholdInSeconds = 30;                        // 心跳超时时间
-    private Integer                  detectingRetryTimes                = 3;                         // 心跳检查重试次数
+    private Boolean detectingEnable = true;                      // 是否开启心跳语句
+    private Boolean heartbeatHaEnable = false;                     // 是否开启基于心跳检查的ha功能
+    private String detectingSQL;                                                   // 心跳sql
+    private Integer detectingIntervalInSeconds = 3;                         // 检测频率
+    private Integer detectingTimeoutThresholdInSeconds = 30;                        // 心跳超时时间
+    private Integer detectingRetryTimes = 3;                         // 心跳检查重试次数
 
     // tddl/diamond 配置信息
-    private String                   app;
-    private String                   group;
+    private String app;
+    private String group;
     // media配置信息
-    private String                   mediaGroup;
+    private String mediaGroup;
     // metaq 存储配置信息
-    private String                   metaqStoreUri;
+    private String metaqStoreUri;
 
     // ddl同步支持，隔离dml/ddl
-    private Boolean                  ddlIsolation                       = Boolean.FALSE;             // 是否将ddl单条返回
-    private Boolean                  filterTableError                   = Boolean.FALSE;             // 是否忽略表解析异常
-    private String                   blackFilter                        = null;                      // 匹配黑名单,忽略解析
+    private Boolean ddlIsolation = Boolean.FALSE;             // 是否将ddl单条返回
+    private Boolean filterTableError = Boolean.FALSE;             // 是否忽略表解析异常
+    private String blackFilter = null;                      // 匹配黑名单,忽略解析
 
-    private Boolean                  tsdbEnable                         = Boolean.FALSE;             // 是否开启tableMetaTSDB
-    private String                   tsdbJdbcUrl;
-    private String                   tsdbJdbcUserName;
-    private String                   tsdbJdbcPassword;
-    private Integer                  tsdbSnapshotInterval               = 24;
-    private Integer                  tsdbSnapshotExpire                 = 360;
-    private String                   rdsAccesskey;
-    private String                   rdsSecretkey;
-    private String                   rdsInstanceId;
-    private Boolean                  gtidEnable                         = Boolean.FALSE;             // 是否开启gtid
+    private Boolean tsdbEnable = Boolean.FALSE;             // 是否开启tableMetaTSDB
+    private String tsdbJdbcUrl;
+    private String tsdbJdbcUserName;
+    private String tsdbJdbcPassword;
+    private Integer tsdbSnapshotInterval = 24;
+    private Integer tsdbSnapshotExpire = 360;
+    private String rdsAccesskey;
+    private String rdsSecretkey;
+    private String rdsInstanceId;
+    private Boolean gtidEnable = Boolean.FALSE;             // 是否开启gtid
     // ================================== 兼容字段处理
-    private InetSocketAddress        masterAddress;                                                  // 主库信息
-    private String                   masterUsername;                                                 // 帐号
-    private String                   masterPassword;                                                 // 密码
+    private InetSocketAddress masterAddress;                                                  // 主库信息
+    private String masterUsername;                                                 // 帐号
+    private String masterPassword;                                                 // 密码
 
-    private InetSocketAddress        standbyAddress;                                                 // 备库信息
-    private String                   standbyUsername;                                                // 帐号
-    private String                   standbyPassword;
-    private String                   masterLogfileName                  = null;                      // master起始位置
-    private Long                     masterLogfileOffest                = null;
-    private Long                     masterTimestamp                    = null;
-    private String                   standbyLogfileName                 = null;                      // standby起始位置
-    private Long                     standbyLogfileOffest               = null;
-    private Long                     standbyTimestamp                   = null;
-    private Boolean                  parallel                           = Boolean.FALSE;
+    private InetSocketAddress standbyAddress;                                                 // 备库信息
+    private String standbyUsername;                                                // 帐号
+    private String standbyPassword;
+    private String masterLogfileName = null;                      // master起始位置
+    private Long masterLogfileOffest = null;
+    private Long masterTimestamp = null;
+    private String standbyLogfileName = null;                      // standby起始位置
+    private Long standbyLogfileOffest = null;
+    private Long standbyTimestamp = null;
+    private Boolean parallel = Boolean.FALSE;
 
     //自定义alarmHandler类全路径
-    private String                   alarmHandlerClass                  = null;
+    private String alarmHandlerClass = null;
     //自定义alarmHandler插件文件夹路径
-    private String                   alarmHandlerPluginDir              = null;
+    private String alarmHandlerPluginDir = null;
 
     public static enum RunMode {
 
-        /** 嵌入式 */
+        /**
+         * 嵌入式
+         */
         EMBEDDED,
-        /** 服务式 */
+        /**
+         * 服务式
+         */
         SERVICE;
 
         public boolean isEmbedded() {
@@ -143,11 +147,17 @@ public class CanalParameter implements Serializable {
 
     public static enum ClusterMode {
 
-        /** 嵌入式 */
+        /**
+         * 嵌入式
+         */
         STANDALONE,
-        /** 冷备 */
+        /**
+         * 冷备
+         */
         STANDBY,
-        /** 热备 */
+        /**
+         * 热备
+         */
         ACTIVE;
 
         public boolean isStandalone() {
@@ -165,9 +175,13 @@ public class CanalParameter implements Serializable {
 
     public static enum HAMode {
 
-        /** 心跳检测 */
+        /**
+         * 心跳检测
+         */
         HEARTBEAT,
-        /** otter media */
+        /**
+         * otter media
+         */
         MEDIA;
 
         public boolean isHeartBeat() {
@@ -181,11 +195,17 @@ public class CanalParameter implements Serializable {
     }
 
     public static enum StorageMode {
-        /** 内存存储模式 */
+        /**
+         * 内存存储模式
+         */
         MEMORY,
-        /** 文件存储模式 */
+        /**
+         * 文件存储模式
+         */
         FILE,
-        /** 混合模式，内存+文件 */
+        /**
+         * 混合模式，内存+文件
+         */
         MIXED;
 
         public boolean isMemory() {
@@ -203,13 +223,21 @@ public class CanalParameter implements Serializable {
     }
 
     public static enum StorageScavengeMode {
-        /** 在存储满的时候触发 */
+        /**
+         * 在存储满的时候触发
+         */
         ON_FULL,
-        /** 在每次有ack请求时触发 */
+        /**
+         * 在每次有ack请求时触发
+         */
         ON_ACK,
-        /** 定时触发，需要外部控制 */
+        /**
+         * 定时触发，需要外部控制
+         */
         ON_SCHEDULE,
-        /** 不做任何操作，由外部进行清理 */
+        /**
+         * 不做任何操作，由外部进行清理
+         */
         NO_OP;
 
         public boolean isOnFull() {
@@ -230,13 +258,21 @@ public class CanalParameter implements Serializable {
     }
 
     public static enum SourcingType {
-        /** mysql DB */
+        /**
+         * mysql DB
+         */
         MYSQL,
-        /** localBinLog */
+        /**
+         * localBinLog
+         */
         LOCALBINLOG,
-        /** oracle DB */
+        /**
+         * oracle DB
+         */
         ORACLE,
-        /** 多库合并模式 */
+        /**
+         * 多库合并模式
+         */
         GROUP;
 
         public boolean isMysql() {
@@ -257,13 +293,21 @@ public class CanalParameter implements Serializable {
     }
 
     public static enum MetaMode {
-        /** 内存存储模式 */
+        /**
+         * 内存存储模式
+         */
         MEMORY,
-        /** 文件存储模式 */
+        /**
+         * 文件存储模式
+         */
         ZOOKEEPER,
-        /** 混合模式，内存+文件 */
+        /**
+         * 混合模式，内存+文件
+         */
         MIXED,
-        /** 本地文件存储模式 */
+        /**
+         * 本地文件存储模式
+         */
         LOCAL_FILE;
 
         public boolean isMemory() {
@@ -284,15 +328,25 @@ public class CanalParameter implements Serializable {
     }
 
     public static enum IndexMode {
-        /** 内存存储模式 */
+        /**
+         * 内存存储模式
+         */
         MEMORY,
-        /** 文件存储模式 */
+        /**
+         * 文件存储模式
+         */
         ZOOKEEPER,
-        /** 混合模式，内存+文件 */
+        /**
+         * 混合模式，内存+文件
+         */
         MIXED,
-        /** 基于meta信息 */
+        /**
+         * 基于meta信息
+         */
         META,
-        /** 基于内存+meta的failback实现 */
+        /**
+         * 基于内存+meta的failback实现
+         */
         MEMORY_META_FAILBACK;
 
         public boolean isMemory() {
@@ -317,10 +371,14 @@ public class CanalParameter implements Serializable {
     }
 
     public static enum BatchMode {
-        /** 对象数量 */
+        /**
+         * 对象数量
+         */
         ITEMSIZE,
 
-        /** 内存大小 */
+        /**
+         * 内存大小
+         */
         MEMSIZE;
 
         public boolean isItemSize() {
@@ -341,14 +399,14 @@ public class CanalParameter implements Serializable {
     public static class DataSourcing implements Serializable {
 
         private static final long serialVersionUID = -1770648468678085234L;
-        private SourcingType      type;
+        private SourcingType type;
         private InetSocketAddress dbAddress;
 
-        public DataSourcing(){
+        public DataSourcing() {
 
         }
 
-        public DataSourcing(SourcingType type, InetSocketAddress dbAddress){
+        public DataSourcing(SourcingType type, InetSocketAddress dbAddress) {
             this.type = type;
             this.dbAddress = dbAddress;
         }

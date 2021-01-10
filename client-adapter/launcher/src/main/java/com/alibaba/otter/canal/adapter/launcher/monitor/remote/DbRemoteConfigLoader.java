@@ -33,18 +33,18 @@ import com.google.common.base.Joiner;
  */
 public class DbRemoteConfigLoader implements RemoteConfigLoader {
 
-    private static final Logger      logger                    = LoggerFactory.getLogger(DbRemoteConfigLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(DbRemoteConfigLoader.class);
 
-    private DruidDataSource          dataSource;
+    private DruidDataSource dataSource;
 
-    private AdapterConfigHolder      remoteAdapterConfigHolder = AdapterConfigHolder.getInstance();
+    private AdapterConfigHolder remoteAdapterConfigHolder = AdapterConfigHolder.getInstance();
 
-    private ScheduledExecutorService executor                  = Executors.newScheduledThreadPool(2,
-        new NamedThreadFactory("remote-adapter-config-scan"));
+    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(2,
+            new NamedThreadFactory("remote-adapter-config-scan"));
 
-    private RemoteAdapterMonitor     remoteAdapterMonitor      = new RemoteAdapterMonitorImpl();
+    private RemoteAdapterMonitor remoteAdapterMonitor = new RemoteAdapterMonitorImpl();
 
-    public DbRemoteConfigLoader(String driverName, String jdbcUrl, String jdbcUsername, String jdbcPassword){
+    public DbRemoteConfigLoader(String driverName, String jdbcUrl, String jdbcUsername, String jdbcPassword) {
         dataSource = new DruidDataSource();
         if (StringUtils.isEmpty(driverName)) {
             driverName = "com.mysql.jdbc.Driver";
@@ -94,8 +94,8 @@ public class DbRemoteConfigLoader implements RemoteConfigLoader {
     private ConfigItem getRemoteAdapterConfig() {
         String sql = "select name, content, modified_time from canal_config where id=2";
         try (Connection conn = dataSource.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             if (rs.next()) {
                 ConfigItem configItem = new ConfigItem();
                 configItem.setId(2L);
@@ -118,8 +118,8 @@ public class DbRemoteConfigLoader implements RemoteConfigLoader {
     private void overrideLocalCanalConfig(String content) {
 
         try (OutputStreamWriter writer = new OutputStreamWriter(
-            new FileOutputStream(CommonUtils.getConfPath() + "application.yml"),
-            StandardCharsets.UTF_8)) {
+                new FileOutputStream(CommonUtils.getConfPath() + "application.yml"),
+                StandardCharsets.UTF_8)) {
             writer.write(content);
             writer.flush();
         } catch (Exception e) {
@@ -147,8 +147,8 @@ public class DbRemoteConfigLoader implements RemoteConfigLoader {
         Map<String, ConfigItem> remoteConfigStatus = new HashMap<>();
         String sql = "select id, category, name, modified_time from canal_adapter_config";
         try (Connection conn = dataSource.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 ConfigItem configItem = new ConfigItem();
                 configItem.setId(rs.getLong("id"));
@@ -166,7 +166,7 @@ public class DbRemoteConfigLoader implements RemoteConfigLoader {
 
             for (ConfigItem remoteConfigStat : remoteConfigStatus.values()) {
                 ConfigItem currentConfig = remoteAdapterConfigHolder.getAdapterConfigs()
-                    .get(remoteConfigStat.getCategory() + "/" + remoteConfigStat.getName());
+                        .get(remoteConfigStat.getCategory() + "/" + remoteConfigStat.getName());
                 if (currentConfig == null) {
                     // 新增
                     changedIds.add(remoteConfigStat.getId());
@@ -179,10 +179,10 @@ public class DbRemoteConfigLoader implements RemoteConfigLoader {
             }
             if (!changedIds.isEmpty()) {
                 String contentsSql = "select id, category, name, content, modified_time from canal_adapter_config  where id in ("
-                                     + Joiner.on(",").join(changedIds) + ")";
+                        + Joiner.on(",").join(changedIds) + ")";
                 try (Connection conn = dataSource.getConnection();
-                        Statement stmt = conn.createStatement();
-                        ResultSet rs = stmt.executeQuery(contentsSql)) {
+                     Statement stmt = conn.createStatement();
+                     ResultSet rs = stmt.executeQuery(contentsSql)) {
                     while (rs.next()) {
                         ConfigItem configItemNew = new ConfigItem();
                         configItemNew.setId(rs.getLong("id"));
@@ -192,7 +192,7 @@ public class DbRemoteConfigLoader implements RemoteConfigLoader {
                         configItemNew.setModifiedTime(rs.getTimestamp("modified_time").getTime());
 
                         remoteAdapterConfigHolder.getAdapterConfigs()
-                            .put(configItemNew.getCategory() + "/" + configItemNew.getName(), configItemNew);
+                                .put(configItemNew.getCategory() + "/" + configItemNew.getName(), configItemNew);
                         remoteAdapterMonitor.onModify(configItemNew);
                     }
 
@@ -206,7 +206,7 @@ public class DbRemoteConfigLoader implements RemoteConfigLoader {
             if (!remoteConfigStatus.containsKey(configItem.getCategory() + "/" + configItem.getName())) {
                 // 删除
                 remoteAdapterConfigHolder.getAdapterConfigs()
-                    .remove(configItem.getCategory() + "/" + configItem.getName());
+                        .remove(configItem.getCategory() + "/" + configItem.getName());
                 remoteAdapterMonitor.onDelete(configItem.getCategory() + "/" + configItem.getName());
             }
         }

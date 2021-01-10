@@ -13,14 +13,14 @@ import com.alibaba.otter.canal.parse.driver.mysql.utils.ByteHelper;
  */
 public class BinlogDumpGTIDCommandPacket extends CommandPacket {
 
-    public static final int BINLOG_DUMP_NON_BLOCK   = 0x01;
+    public static final int BINLOG_DUMP_NON_BLOCK = 0x01;
     public static final int BINLOG_THROUGH_POSITION = 0x02;
-    public static final int BINLOG_THROUGH_GTID     = 0x04;
+    public static final int BINLOG_THROUGH_GTID = 0x04;
 
-    public long             slaveServerId;
-    public GTIDSet          gtidSet;
+    public long slaveServerId;
+    public GTIDSet gtidSet;
 
-    public BinlogDumpGTIDCommandPacket(){
+    public BinlogDumpGTIDCommandPacket() {
         setCommand((byte) 0x1e);
     }
 

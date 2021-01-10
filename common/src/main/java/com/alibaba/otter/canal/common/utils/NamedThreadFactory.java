@@ -13,34 +13,34 @@ import org.slf4j.LoggerFactory;
  */
 public class NamedThreadFactory implements ThreadFactory {
 
-    private static final Logger           logger                   = LoggerFactory.getLogger(NamedThreadFactory.class);
-    final private static String           DEFAULT_NAME             = "canal-worker";
-    final private String                  name;
-    final private boolean                 daemon;
-    final private ThreadGroup             group;
-    final private AtomicInteger           threadNumber             = new AtomicInteger(0);
+    private static final Logger logger = LoggerFactory.getLogger(NamedThreadFactory.class);
+    final private static String DEFAULT_NAME = "canal-worker";
+    final private String name;
+    final private boolean daemon;
+    final private ThreadGroup group;
+    final private AtomicInteger threadNumber = new AtomicInteger(0);
     final static UncaughtExceptionHandler uncaughtExceptionHandler = new UncaughtExceptionHandler() {
 
-                                                                       public void uncaughtException(Thread t,
-                                                                                                     Throwable e) {
-                                                                           if (e instanceof InterruptedException
-                                                                               || (e.getCause() != null && e.getCause() instanceof InterruptedException)) {
-                                                                               return;
-                                                                           }
+        public void uncaughtException(Thread t,
+                                      Throwable e) {
+            if (e instanceof InterruptedException
+                    || (e.getCause() != null && e.getCause() instanceof InterruptedException)) {
+                return;
+            }
 
-                                                                           logger.error("from " + t.getName(), e);
-                                                                       }
-                                                                   };
+            logger.error("from " + t.getName(), e);
+        }
+    };
 
-    public NamedThreadFactory(){
+    public NamedThreadFactory() {
         this(DEFAULT_NAME, true);
     }
 
-    public NamedThreadFactory(String name){
+    public NamedThreadFactory(String name) {
         this(name, true);
     }
 
-    public NamedThreadFactory(String name, boolean daemon){
+    public NamedThreadFactory(String name, boolean daemon) {
         this.name = name;
         this.daemon = daemon;
         SecurityManager s = System.getSecurityManager();

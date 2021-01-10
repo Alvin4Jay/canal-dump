@@ -11,7 +11,7 @@ import com.alibaba.otter.canal.protocol.position.PositionRange;
 
 /**
  * meta信息管理器
- * 
+ *
  * @author jianghang 2012-6-14 下午09:28:48
  * @author zebin.xuzb
  * @version 1.0.0
@@ -68,7 +68,7 @@ public interface CanalMetaManager extends CanalLifeCycle {
      * 指定batchId，插入batch数据
      */
     void addBatch(ClientIdentity clientIdentity, PositionRange positionRange, Long batchId)
-                                                                                           throws CanalMetaManagerException;
+            throws CanalMetaManagerException;
 
     /**
      * 根据唯一messageId，查找对应的数据起始信息

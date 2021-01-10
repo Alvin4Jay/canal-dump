@@ -9,7 +9,7 @@ dbMapping:
   targetTable: mytest2.user
   targetPk:
     id: id
-#  mapAll: true
+  #  mapAll: true
   targetColumns:
     id:
     name:

@@ -2,7 +2,7 @@ package com.taobao.tddl.dbsync.binlog;
 
 /**
  * Implements binlog position.
- * 
+ *
  * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
  * @version 1.0
  */
@@ -12,24 +12,24 @@ public class LogPosition implements Cloneable, Comparable<LogPosition> {
     protected String fileName;
 
     /* position in file */
-    protected long   position;
+    protected long position;
 
     /**
      * Binlog position init.
-     * 
+     *
      * @param fileName file name for binlog files: mysql-bin.000001
      */
-    public LogPosition(String fileName){
+    public LogPosition(String fileName) {
         this.fileName = fileName;
         this.position = 0L;
     }
 
     /**
      * Binlog position init.
-     * 
+     *
      * @param fileName file name for binlog files: mysql-bin.000001
      */
-    public LogPosition(String fileName, final long position){
+    public LogPosition(String fileName, final long position) {
         this.fileName = fileName;
         this.position = position;
     }
@@ -37,7 +37,7 @@ public class LogPosition implements Cloneable, Comparable<LogPosition> {
     /**
      * Binlog position copy init.
      */
-    public LogPosition(LogPosition source){
+    public LogPosition(LogPosition source) {
         this.fileName = source.fileName;
         this.position = source.position;
     }
@@ -74,7 +74,7 @@ public class LogPosition implements Cloneable, Comparable<LogPosition> {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(LogPosition o) {
@@ -88,7 +88,7 @@ public class LogPosition implements Cloneable, Comparable<LogPosition> {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object obj) {
@@ -101,7 +101,7 @@ public class LogPosition implements Cloneable, Comparable<LogPosition> {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     public String toString() {

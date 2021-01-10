@@ -27,25 +27,25 @@ import com.alibaba.otter.canal.client.adapter.support.DatasourceConfig;
 @RefreshScope
 public class CanalAdapterService {
 
-    private static final Logger logger  = LoggerFactory.getLogger(CanalAdapterService.class);
+    private static final Logger logger = LoggerFactory.getLogger(CanalAdapterService.class);
 
-    private CanalAdapterLoader  adapterLoader;
-
-    @Resource
-    private ContextRefresher    contextRefresher;
+    private CanalAdapterLoader adapterLoader;
 
     @Resource
-    private AdapterCanalConfig  adapterCanalConfig;
+    private ContextRefresher contextRefresher;
+
     @Resource
-    private Environment         env;
+    private AdapterCanalConfig adapterCanalConfig;
+    @Resource
+    private Environment env;
 
     // 注入bean保证优先注册
     @Resource
-    private SpringContext       springContext;
+    private SpringContext springContext;
     @Resource
-    private SyncSwitch          syncSwitch;
+    private SyncSwitch syncSwitch;
 
-    private volatile boolean    running = false;
+    private volatile boolean running = false;
 
     @PostConstruct
     public synchronized void init() {

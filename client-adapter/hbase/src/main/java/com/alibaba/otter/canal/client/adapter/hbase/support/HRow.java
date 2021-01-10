@@ -11,13 +11,13 @@ import java.util.List;
  */
 public class HRow {
 
-    private byte[]      rowKey;
+    private byte[] rowKey;
     private List<HCell> cells = new ArrayList<>();
 
-    public HRow(){
+    public HRow() {
     }
 
-    public HRow(byte[] rowKey){
+    public HRow(byte[] rowKey) {
         this.rowKey = rowKey;
     }
 
@@ -48,10 +48,10 @@ public class HRow {
         private String qualifier;
         private byte[] value;
 
-        public HCell(){
+        public HCell() {
         }
 
-        public HCell(String family, String qualifier, byte[] value){
+        public HCell(String family, String qualifier, byte[] value) {
             this.family = family;
             this.qualifier = qualifier;
             this.value = value;

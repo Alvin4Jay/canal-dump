@@ -9,10 +9,10 @@ public abstract class PacketWithHeaderPacket implements IPacket {
 
     protected HeaderPacket header;
 
-    protected PacketWithHeaderPacket(){
+    protected PacketWithHeaderPacket() {
     }
 
-    protected PacketWithHeaderPacket(HeaderPacket header){
+    protected PacketWithHeaderPacket(HeaderPacket header) {
         setHeader(header);
     }
 

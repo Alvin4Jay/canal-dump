@@ -17,7 +17,7 @@ import com.alibaba.otter.canal.store.model.Events;
 public class DummyEventStore implements CanalEventStore<Event> {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    private static final String messgae     = "{0} [{1}:{2}:{3}]";
+    private static final String messgae = "{0} [{1}:{2}:{3}]";
 
     public void ack(Position position) throws CanalStoreException {
 
@@ -32,7 +32,7 @@ public class DummyEventStore implements CanalEventStore<Event> {
     }
 
     public Events get(Position start, int batchSize, long timeout, TimeUnit unit) throws InterruptedException,
-                                                                                 CanalStoreException {
+            CanalStoreException {
         return null;
     }
 
@@ -97,8 +97,8 @@ public class DummyEventStore implements CanalEventStore<Event> {
 
             } else {
                 System.out.println(MessageFormat.format(messgae,
-                    new Object[] { Thread.currentThread().getName(), data.getJournalName(),
-                            String.valueOf(data.getPosition()), format.format(date) }));
+                        new Object[]{Thread.currentThread().getName(), data.getJournalName(),
+                                String.valueOf(data.getPosition()), format.format(date)}));
             }
         }
     }
@@ -117,8 +117,8 @@ public class DummyEventStore implements CanalEventStore<Event> {
 
             } else {
                 System.out.println(MessageFormat.format(messgae,
-                    new Object[] { Thread.currentThread().getName(), data.getJournalName(),
-                            String.valueOf(data.getPosition()), format.format(date) }));
+                        new Object[]{Thread.currentThread().getName(), data.getJournalName(),
+                                String.valueOf(data.getPosition()), format.format(date)}));
             }
         }
         return true;
@@ -140,8 +140,8 @@ public class DummyEventStore implements CanalEventStore<Event> {
 
             } else {
                 System.out.println(MessageFormat.format(messgae,
-                    new Object[] { Thread.currentThread().getName(), data.getJournalName(),
-                            String.valueOf(data.getPosition()), format.format(date) }));
+                        new Object[]{Thread.currentThread().getName(), data.getJournalName(),
+                                String.valueOf(data.getPosition()), format.format(date)}));
             }
 
         }

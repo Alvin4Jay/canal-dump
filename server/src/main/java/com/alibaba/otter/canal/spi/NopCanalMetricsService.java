@@ -9,7 +9,8 @@ public class NopCanalMetricsService implements CanalMetricsService {
 
     public static final NopCanalMetricsService NOP = new NopCanalMetricsService();
 
-    private NopCanalMetricsService() {}
+    private NopCanalMetricsService() {
+    }
 
     @Override
     public void initialize() {

@@ -4,7 +4,7 @@ import com.alibaba.otter.canal.common.AbstractCanalLifeCycle;
 
 /**
  * 默认的实现
- * 
+ *
  * @author jianghang 2013-10-8 下午8:35:29
  * @since 1.0.12
  */

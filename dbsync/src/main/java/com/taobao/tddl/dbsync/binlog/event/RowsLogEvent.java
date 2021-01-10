@@ -10,7 +10,7 @@ import com.taobao.tddl.dbsync.binlog.event.TableMapLogEvent.ColumnInfo;
 
 /**
  * Common base class for all row-containing log events.
- * 
+ *
  * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
  * @version 1.0
  */
@@ -54,17 +54,19 @@ public abstract class RowsLogEvent extends LogEvent {
      * </ul>
      * Source : http://forge.mysql.com/wiki/MySQL_Internals_Binary_Log
      */
-    private final long       tableId;                           /* Table ID */
+    private final long tableId;                           /* Table ID */
     private TableMapLogEvent table;                             /*
-                                                                  * The table
-                                                                  * the rows
-                                                                  * belong to
-                                                                  */
+     * The table
+     * the rows
+     * belong to
+     */
 
-    /** Bitmap denoting columns available */
-    protected final int      columnLen;
-    protected final boolean  partial;
-    protected final BitSet   columns;
+    /**
+     * Bitmap denoting columns available
+     */
+    protected final int columnLen;
+    protected final boolean partial;
+    protected final BitSet columns;
 
     /**
      * Bitmap for columns available in the after image, if present. These fields
@@ -72,16 +74,18 @@ public abstract class RowsLogEvent extends LogEvent {
      * the before image COLS vector and the after image COLS vector is the same:
      * the number of columns of the table on the master.
      */
-    protected final BitSet   changeColumns;
+    protected final BitSet changeColumns;
 
-    protected int            jsonColumnCount         = 0;
+    protected int jsonColumnCount = 0;
 
-    /** XXX: Don't handle buffer in another thread. */
-    private final LogBuffer  rowsBuf;                           /*
-                                                                  * The rows in
-                                                                  * packed
-                                                                  * format
-                                                                  */
+    /**
+     * XXX: Don't handle buffer in another thread.
+     */
+    private final LogBuffer rowsBuf;                           /*
+     * The rows in
+     * packed
+     * format
+     */
 
     /**
      * enum enum_flag These definitions allow you to combine the flags into an
@@ -89,35 +93,41 @@ public abstract class RowsLogEvent extends LogEvent {
      * conversion from an enum-constant to an integer is accepted by the
      * compiler, which is then used to set the real set of flags.
      */
-    private final int        flags;
+    private final int flags;
 
-    /** Last event of a statement */
-    public static final int  STMT_END_F              = 1;
+    /**
+     * Last event of a statement
+     */
+    public static final int STMT_END_F = 1;
 
-    /** Value of the OPTION_NO_FOREIGN_KEY_CHECKS flag in thd->options */
-    public static final int  NO_FOREIGN_KEY_CHECKS_F = (1 << 1);
+    /**
+     * Value of the OPTION_NO_FOREIGN_KEY_CHECKS flag in thd->options
+     */
+    public static final int NO_FOREIGN_KEY_CHECKS_F = (1 << 1);
 
-    /** Value of the OPTION_RELAXED_UNIQUE_CHECKS flag in thd->options */
-    public static final int  RELAXED_UNIQUE_CHECKS_F = (1 << 2);
+    /**
+     * Value of the OPTION_RELAXED_UNIQUE_CHECKS flag in thd->options
+     */
+    public static final int RELAXED_UNIQUE_CHECKS_F = (1 << 2);
 
     /**
      * Indicates that rows in this event are complete, that is contain values
      * for all columns of the table.
      */
-    public static final int  COMPLETE_ROWS_F         = (1 << 3);
+    public static final int COMPLETE_ROWS_F = (1 << 3);
 
     /* RW = "RoWs" */
-    public static final int  RW_MAPID_OFFSET         = 0;
-    public static final int  RW_FLAGS_OFFSET         = 6;
-    public static final int  RW_VHLEN_OFFSET         = 8;
-    public static final int  RW_V_TAG_LEN            = 1;
-    public static final int  RW_V_EXTRAINFO_TAG      = 0;
+    public static final int RW_MAPID_OFFSET = 0;
+    public static final int RW_FLAGS_OFFSET = 6;
+    public static final int RW_VHLEN_OFFSET = 8;
+    public static final int RW_V_TAG_LEN = 1;
+    public static final int RW_V_EXTRAINFO_TAG = 0;
 
-    public RowsLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent){
+    public RowsLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent) {
         this(header, buffer, descriptionEvent, false);
     }
 
-    public RowsLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent, boolean partial){
+    public RowsLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent, boolean partial) {
         super(header);
 
         final int commonHeaderLen = descriptionEvent.commonHeaderLen;
@@ -140,7 +150,7 @@ public abstract class RowsLogEvent extends LogEvent {
             headerLen -= 2;
             int start = buffer.position();
             int end = start + headerLen;
-            for (int i = start; i < end;) {
+            for (int i = start; i < end; ) {
                 switch (buffer.getUint8(i++)) {
                     case RW_V_EXTRAINFO_TAG:
                         // int infoLen = buffer.getUint8();
@@ -150,7 +160,7 @@ public abstract class RowsLogEvent extends LogEvent {
                         assert (buffer.getUint8() == val); // EXTRA_ROW_INFO_FORMAT_OFFSET
                         for (int j = 0; j < val; j++) {
                             assert (buffer.getUint8() == val); // EXTRA_ROW_INFO_HDR_BYTES
-                                                               // + i
+                            // + i
                         }
                         break;
                     default:
@@ -166,7 +176,7 @@ public abstract class RowsLogEvent extends LogEvent {
         columns = buffer.getBitmap(columnLen);
 
         if (header.type == UPDATE_ROWS_EVENT_V1 || header.type == UPDATE_ROWS_EVENT
-            || header.type == PARTIAL_UPDATE_ROWS_EVENT) {
+                || header.type == PARTIAL_UPDATE_ROWS_EVENT) {
             changeColumns = buffer.getBitmap(columnLen);
         } else {
             changeColumns = columns;

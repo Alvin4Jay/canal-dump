@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.alibaba.otter.canal.client.adapter.rdb.RdbAdapter;
 import com.alibaba.otter.canal.client.adapter.support.Dml;
+
 @Ignore
 public class OracleSyncTest {
 

@@ -22,10 +22,10 @@ import com.alibaba.otter.canal.protocol.CanalPacket.Packet;
 
 public class NettyUtils {
 
-    private static final Logger logger           = LoggerFactory.getLogger(NettyUtils.class);
-    public static int           HEADER_LENGTH    = 4;
-    public static Timer         hashedWheelTimer = new HashedWheelTimer();
-    public static int           VERSION          = 1;
+    private static final Logger logger = LoggerFactory.getLogger(NettyUtils.class);
+    public static int HEADER_LENGTH = 4;
+    public static Timer hashedWheelTimer = new HashedWheelTimer();
+    public static int VERSION = 1;
 
     public static void write(Channel channel, ByteBuffer body, ChannelFutureListener channelFutureListner) {
         byte[] header = ByteBuffer.allocate(HEADER_LENGTH).order(ByteOrder.BIG_ENDIAN).putInt(body.limit()).array();
@@ -37,7 +37,7 @@ public class NettyUtils {
             Channels.write(channel, new CompositeChannelBuffer(ByteOrder.BIG_ENDIAN, components));
         } else {
             Channels.write(channel, new CompositeChannelBuffer(ByteOrder.BIG_ENDIAN, components))
-                .addListener(channelFutureListner);
+                    .addListener(channelFutureListner);
         }
     }
 
@@ -52,13 +52,13 @@ public class NettyUtils {
 
     public static void ack(Channel channel, ChannelFutureListener channelFutureListner) {
         write(channel,
-            Packet.newBuilder()
-                .setType(CanalPacket.PacketType.ACK)
-                .setVersion(VERSION)
-                .setBody(Ack.newBuilder().build().toByteString())
-                .build()
-                .toByteArray(),
-            channelFutureListner);
+                Packet.newBuilder()
+                        .setType(CanalPacket.PacketType.ACK)
+                        .setVersion(VERSION)
+                        .setBody(Ack.newBuilder().build().toByteString())
+                        .build()
+                        .toByteArray(),
+                channelFutureListner);
     }
 
     public static void error(int errorCode, String errorMessage, Channel channel,
@@ -69,30 +69,30 @@ public class NettyUtils {
 
         logger.error("ErrotCode:{} , Caused by : \n{}", errorCode, errorMessage);
         write(channel,
-            Packet.newBuilder()
-                .setType(CanalPacket.PacketType.ACK)
-                .setVersion(VERSION)
-                .setBody(Ack.newBuilder().setErrorCode(errorCode).setErrorMessage(errorMessage).build().toByteString())
-                .build()
-                .toByteArray(),
-            channelFutureListener);
+                Packet.newBuilder()
+                        .setType(CanalPacket.PacketType.ACK)
+                        .setVersion(VERSION)
+                        .setBody(Ack.newBuilder().setErrorCode(errorCode).setErrorMessage(errorMessage).build().toByteString())
+                        .build()
+                        .toByteArray(),
+                channelFutureListener);
     }
 
     public static byte[] ackPacket() {
         return Packet.newBuilder()
-            .setType(CanalPacket.PacketType.ACK)
-            .setVersion(VERSION)
-            .setBody(Ack.newBuilder().build().toByteString())
-            .build()
-            .toByteArray();
+                .setType(CanalPacket.PacketType.ACK)
+                .setVersion(VERSION)
+                .setBody(Ack.newBuilder().build().toByteString())
+                .build()
+                .toByteArray();
     }
 
     public static byte[] errorPacket(int errorCode, String errorMessage) {
         return Packet.newBuilder()
-            .setType(CanalPacket.PacketType.ACK)
-            .setVersion(VERSION)
-            .setBody(Ack.newBuilder().setErrorCode(errorCode).setErrorMessage(errorMessage).build().toByteString())
-            .build()
-            .toByteArray();
+                .setType(CanalPacket.PacketType.ACK)
+                .setVersion(VERSION)
+                .setBody(Ack.newBuilder().setErrorCode(errorCode).setErrorMessage(errorMessage).build().toByteString())
+                .build()
+                .toByteArray();
     }
 }

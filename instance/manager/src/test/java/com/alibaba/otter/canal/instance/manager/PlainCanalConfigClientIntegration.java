@@ -11,10 +11,10 @@ public class PlainCanalConfigClientIntegration {
     @Test
     public void testSimple() {
         PlainCanalConfigClient client = new PlainCanalConfigClient("http://127.0.0.1:8089",
-            "admin",
-            "4ACFE3202A5FF5CF467898FC58AAB1D615029441",
-            "127.0.0.1",
-            11110);
+                "admin",
+                "4ACFE3202A5FF5CF467898FC58AAB1D615029441",
+                "127.0.0.1",
+                11110);
 
         PlainCanal plain = client.findServer(null);
         Assert.notNull(plain);

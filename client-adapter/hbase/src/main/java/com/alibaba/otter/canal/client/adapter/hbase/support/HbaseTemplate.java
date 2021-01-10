@@ -27,12 +27,12 @@ import org.slf4j.LoggerFactory;
  */
 public class HbaseTemplate {
 
-    private Logger        logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Configuration hbaseConfig;                                      // hbase配置对象
-    private Connection    conn;                                             // hbase连接
+    private Connection conn;                                             // hbase连接
 
-    public HbaseTemplate(Configuration hbaseConfig){
+    public HbaseTemplate(Configuration hbaseConfig) {
         this.hbaseConfig = hbaseConfig;
         initConn();
     }
@@ -103,7 +103,7 @@ public class HbaseTemplate {
      * 插入一行数据
      *
      * @param tableName 表名
-     * @param hRow 行数据对象
+     * @param hRow      行数据对象
      * @return 是否成功
      */
     public Boolean put(String tableName, HRow hRow) {
@@ -128,7 +128,7 @@ public class HbaseTemplate {
      * 批量插入
      *
      * @param tableName 表名
-     * @param rows 行数据对象集合
+     * @param rows      行数据对象集合
      * @return 是否成功
      */
     public Boolean puts(String tableName, List<HRow> rows) {
@@ -140,8 +140,8 @@ public class HbaseTemplate {
                 Put put = new Put(hRow.getRowKey());
                 for (HRow.HCell hCell : hRow.getCells()) {
                     put.addColumn(Bytes.toBytes(hCell.getFamily()),
-                        Bytes.toBytes(hCell.getQualifier()),
-                        hCell.getValue());
+                            Bytes.toBytes(hCell.getQualifier()),
+                            hCell.getValue());
                 }
                 puts.add(put);
             }
@@ -160,7 +160,7 @@ public class HbaseTemplate {
      * 批量删除数据
      *
      * @param tableName 表名
-     * @param rowKeys rowKey集合
+     * @param rowKeys   rowKey集合
      * @return 是否成功
      */
     public Boolean deletes(String tableName, Set<byte[]> rowKeys) {

@@ -17,6 +17,7 @@ public class ZooKeeperLogPositionManagerTest extends AbstractLogPositionManagerT
         String path = ZookeeperPathUtils.getDestinationPath(destination);
         zkclientx.deleteRecursive(path);
     }
+
     @After
     public void tearDown() {
         String path = ZookeeperPathUtils.getDestinationPath(destination);

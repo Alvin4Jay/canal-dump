@@ -58,7 +58,7 @@ public class MysqlBinlogEventPerformanceTest {
     }
 
     private static void sendBinlogDump(MysqlConnector connector, String binlogfilename, Long binlogPosition, int slaveId)
-                                                                                                                         throws IOException {
+            throws IOException {
         BinlogDumpCommandPacket binlogDumpCmd = new BinlogDumpCommandPacket();
         binlogDumpCmd.binlogFileName = binlogfilename;
         binlogDumpCmd.binlogPosition = binlogPosition;

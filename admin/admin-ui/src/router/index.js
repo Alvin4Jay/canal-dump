@@ -51,7 +51,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: '主页',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '主页', icon: 'dashboard' }
+      meta: {title: '主页', icon: 'dashboard'}
     }],
     hidden: true
   },
@@ -64,7 +64,7 @@ export const constantRoutes = [
       path: 'user',
       name: '用户信息',
       component: () => import('@/views/sys/UserInfo'),
-      meta: { title: '用户信息' }
+      meta: {title: '用户信息'}
     }],
     hidden: true
   },
@@ -74,71 +74,71 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/canalServer/nodeServers',
     name: 'Canal Server',
-    meta: { title: 'Canal Server', icon: 'example' },
+    meta: {title: 'Canal Server', icon: 'example'},
     children: [
       {
         path: 'canalClusters',
         name: 'Canal 集群管理',
         component: () => import('@/views/canalServer/CanalCluster'),
-        meta: { title: '集群管理', icon: 'tree' }
+        meta: {title: '集群管理', icon: 'tree'}
       },
       {
         path: 'nodeServers',
         name: 'Server 状态',
         component: () => import('@/views/canalServer/NodeServer'),
-        meta: { title: 'Server 管理', icon: 'form' }
+        meta: {title: 'Server 管理', icon: 'form'}
       },
       {
         path: 'nodeServer/config',
         name: 'Server 配置',
         component: () => import('@/views/canalServer/CanalConfig'),
-        meta: { title: 'Server 配置' },
+        meta: {title: 'Server 配置'},
         hidden: true
       },
       {
         path: 'canalInstances',
         name: 'Instance 管理',
         component: () => import('@/views/canalServer/CanalInstance'),
-        meta: { title: 'Instance 管理', icon: 'nested' }
+        meta: {title: 'Instance 管理', icon: 'nested'}
       },
       {
         path: 'canalInstance/add',
         name: '新建Instance配置',
         component: () => import('@/views/canalServer/CanalInstanceAdd'),
-        meta: { title: '新建Instance配置' },
+        meta: {title: '新建Instance配置'},
         hidden: true
       },
       {
         path: 'canalInstance/modify',
         name: '修改Instance配置',
         component: () => import('@/views/canalServer/CanalInstanceUpdate'),
-        meta: { title: '修改Instance配置' },
+        meta: {title: '修改Instance配置'},
         hidden: true
       },
       {
         path: 'nodeServer/log',
         name: 'Server 日志',
         component: () => import('@/views/canalServer/CanalLogDetail'),
-        meta: { title: 'Server 日志' },
+        meta: {title: 'Server 日志'},
         hidden: true
       },
       {
         path: 'canalInstance/log',
         name: 'Instance 日志',
         component: () => import('@/views/canalServer/CanalInstanceLogDetail'),
-        meta: { title: 'Instance 日志' },
+        meta: {title: 'Instance 日志'},
         hidden: true
       }
     ]
   },
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  {path: '*', redirect: '/404', hidden: true}
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({y: 0}),
   routes: constantRoutes
 })
 

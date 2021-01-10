@@ -17,11 +17,11 @@ import com.alibaba.otter.canal.store.helper.CanalEventUtils;
  */
 public class MetaLogPositionManager extends AbstractLogPositionManager {
 
-    private final static Logger    logger = LoggerFactory.getLogger(MetaLogPositionManager.class);
+    private final static Logger logger = LoggerFactory.getLogger(MetaLogPositionManager.class);
 
     private final CanalMetaManager metaManager;
 
-    public MetaLogPositionManager(CanalMetaManager metaManager){
+    public MetaLogPositionManager(CanalMetaManager metaManager) {
         if (metaManager == null) {
             throw new NullPointerException("null metaManager");
         }

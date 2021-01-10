@@ -60,9 +60,9 @@ public class RoleSyncJoinOneTest {
         esAdapter.getEsSyncService().sync(esSyncConfigs.values(), dml);
 
         GetResponse response = esAdapter.getEsConnection()
-            .getTransportClient()
-            .prepareGet("mytest_user", "_doc", "1")
-            .get();
+                .getTransportClient()
+                .prepareGet("mytest_user", "_doc", "1")
+                .get();
         Assert.assertEquals("admin", response.getSource().get("_role_name"));
     }
 
@@ -100,9 +100,9 @@ public class RoleSyncJoinOneTest {
         esAdapter.getEsSyncService().sync(esSyncConfigs.values(), dml);
 
         GetResponse response = esAdapter.getEsConnection()
-            .getTransportClient()
-            .prepareGet("mytest_user", "_doc", "1")
-            .get();
+                .getTransportClient()
+                .prepareGet("mytest_user", "_doc", "1")
+                .get();
         Assert.assertEquals("admin2", response.getSource().get("_role_name"));
     }
 
@@ -141,9 +141,9 @@ public class RoleSyncJoinOneTest {
         esAdapter.getEsSyncService().sync(esSyncConfigs.values(), dml);
 
         GetResponse response = esAdapter.getEsConnection()
-            .getTransportClient()
-            .prepareGet("mytest_user", "_doc", "1")
-            .get();
+                .getTransportClient()
+                .prepareGet("mytest_user", "_doc", "1")
+                .get();
         Assert.assertEquals("operator", response.getSource().get("_role_name"));
 
         Common.sqlExe(ds, "update user set role_id=1 where id=1");
@@ -169,9 +169,9 @@ public class RoleSyncJoinOneTest {
         esAdapter.getEsSyncService().sync(esSyncConfigs.values(), dml2);
 
         GetResponse response2 = esAdapter.getEsConnection()
-            .getTransportClient()
-            .prepareGet("mytest_user", "_doc", "1")
-            .get();
+                .getTransportClient()
+                .prepareGet("mytest_user", "_doc", "1")
+                .get();
         Assert.assertEquals("admin2", response2.getSource().get("_role_name"));
     }
 
@@ -204,9 +204,9 @@ public class RoleSyncJoinOneTest {
         esAdapter.getEsSyncService().sync(esSyncConfigs.values(), dml);
 
         GetResponse response = esAdapter.getEsConnection()
-            .getTransportClient()
-            .prepareGet("mytest_user", "_doc", "1")
-            .get();
+                .getTransportClient()
+                .prepareGet("mytest_user", "_doc", "1")
+                .get();
         Assert.assertNull(response.getSource().get("_role_name"));
     }
 }

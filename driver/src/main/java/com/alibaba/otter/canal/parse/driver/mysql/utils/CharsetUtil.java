@@ -7,14 +7,15 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * mysql collation转换mapping关系表
- * 
+ *
  * @author agapple 2018年11月5日 下午1:01:15
  * @since 1.1.2
  */
 public class CharsetUtil {
 
-    private static final String[]             INDEX_TO_CHARSET = new String[2048];
+    private static final String[] INDEX_TO_CHARSET = new String[2048];
     private static final Map<String, Integer> CHARSET_TO_INDEX = new HashMap<String, Integer>();
+
     static {
         INDEX_TO_CHARSET[1] = "big5";
         INDEX_TO_CHARSET[84] = "big5";
@@ -231,7 +232,7 @@ public class CharsetUtil {
 
     /**
      * 'utf8' COLLATE 'utf8_general_ci'
-     * 
+     *
      * @param charset
      * @return
      */

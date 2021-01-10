@@ -37,20 +37,20 @@ import com.google.protobuf.ByteString;
  */
 public class SimpleAdminConnector implements AdminConnector {
 
-    private static final Logger logger      = LoggerFactory.getLogger(SimpleAdminConnector.class);
-    private String              user;
-    private String              passwd;
-    private SocketAddress       address;
-    private int                 soTimeout   = 60000;                                              // milliseconds
-    private int                 idleTimeout = 60 * 60 * 1000;                                     // client和server之间的空闲链接超时的时间,默认为1小时
-    private final ByteBuffer    readHeader  = ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN);
-    private final ByteBuffer    writeHeader = ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN);
-    private SocketChannel       channel;
+    private static final Logger logger = LoggerFactory.getLogger(SimpleAdminConnector.class);
+    private String user;
+    private String passwd;
+    private SocketAddress address;
+    private int soTimeout = 60000;                                              // milliseconds
+    private int idleTimeout = 60 * 60 * 1000;                                     // client和server之间的空闲链接超时的时间,默认为1小时
+    private final ByteBuffer readHeader = ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN);
+    private final ByteBuffer writeHeader = ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN);
+    private SocketChannel channel;
     private ReadableByteChannel readableChannel;
     private WritableByteChannel writableChannel;
-    private volatile boolean    connected   = false;
+    private volatile boolean connected = false;
 
-    public SimpleAdminConnector(String ip, int port, String user, String passwd){
+    public SimpleAdminConnector(String ip, int port, String user, String passwd) {
         this.address = new InetSocketAddress(ip, port);
         this.user = user;
         this.passwd = passwd;
@@ -86,16 +86,16 @@ public class SimpleAdminConnector implements AdminConnector {
             }
 
             ClientAuth ca = ClientAuth.newBuilder()
-                .setUsername(user != null ? user : "")
-                .setPassword(ByteString.copyFromUtf8(newPasswd != null ? newPasswd : ""))
-                .setNetReadTimeout(idleTimeout)
-                .setNetWriteTimeout(idleTimeout)
-                .build();
+                    .setUsername(user != null ? user : "")
+                    .setPassword(ByteString.copyFromUtf8(newPasswd != null ? newPasswd : ""))
+                    .setNetReadTimeout(idleTimeout)
+                    .setNetWriteTimeout(idleTimeout)
+                    .build();
             writeWithHeader(Packet.newBuilder()
-                .setType(PacketType.CLIENTAUTHENTICATION)
-                .setBody(ca.toByteString())
-                .build()
-                .toByteArray());
+                    .setType(PacketType.CLIENTAUTHENTICATION)
+                    .setBody(ca.toByteString())
+                    .build()
+                    .toByteArray());
             //
             Packet ack = Packet.parseFrom(readNextPacket());
             if (ack.getType() != PacketType.ACK) {
@@ -211,10 +211,10 @@ public class SimpleAdminConnector implements AdminConnector {
     private String doServerAdmin(String action) {
         try {
             writeWithHeader(Packet.newBuilder()
-                .setType(PacketType.SERVER)
-                .setBody(ServerAdmin.newBuilder().setAction(action).build().toByteString())
-                .build()
-                .toByteArray());
+                    .setType(PacketType.SERVER)
+                    .setBody(ServerAdmin.newBuilder().setAction(action).build().toByteString())
+                    .build()
+                    .toByteArray());
 
             Packet p = Packet.parseFrom(readNextPacket());
             Ack ack = Ack.parseFrom(p.getBody());
@@ -231,14 +231,14 @@ public class SimpleAdminConnector implements AdminConnector {
     private String doInstanceAdmin(String destination, String action) {
         try {
             writeWithHeader(Packet.newBuilder()
-                .setType(PacketType.INSTANCE)
-                .setBody(InstanceAdmin.newBuilder()
-                    .setDestination(destination)
-                    .setAction(action)
+                    .setType(PacketType.INSTANCE)
+                    .setBody(InstanceAdmin.newBuilder()
+                            .setDestination(destination)
+                            .setAction(action)
+                            .build()
+                            .toByteString())
                     .build()
-                    .toByteString())
-                .build()
-                .toByteArray());
+                    .toByteArray());
 
             Packet p = Packet.parseFrom(readNextPacket());
             Ack ack = Ack.parseFrom(p.getBody());
@@ -255,17 +255,17 @@ public class SimpleAdminConnector implements AdminConnector {
     private String doLogAdmin(String type, String action, String destination, String file, int count) {
         try {
             writeWithHeader(Packet.newBuilder()
-                .setType(PacketType.LOG)
-                .setBody(LogAdmin.newBuilder()
-                    .setType(type)
-                    .setAction(action)
-                    .setDestination(destination == null ? "" : destination)
-                    .setFile(file == null ? "" : file)
-                    .setCount(count)
+                    .setType(PacketType.LOG)
+                    .setBody(LogAdmin.newBuilder()
+                            .setType(type)
+                            .setAction(action)
+                            .setDestination(destination == null ? "" : destination)
+                            .setFile(file == null ? "" : file)
+                            .setCount(count)
+                            .build()
+                            .toByteString())
                     .build()
-                    .toByteString())
-                .build()
-                .toByteArray());
+                    .toByteArray());
 
             Packet p = Packet.parseFrom(readNextPacket());
             Ack ack = Ack.parseFrom(p.getBody());

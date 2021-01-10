@@ -21,12 +21,12 @@ import com.alibaba.otter.canal.protocol.AdminPacket.ServerAdmin;
 public class SessionHandler extends SimpleChannelHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(SessionHandler.class);
-    private CanalAdmin          canalAdmin;
+    private CanalAdmin canalAdmin;
 
-    public SessionHandler(){
+    public SessionHandler() {
     }
 
-    public SessionHandler(CanalAdmin canalAdmin){
+    public SessionHandler(CanalAdmin canalAdmin) {
         this.canalAdmin = canalAdmin;
     }
 
@@ -60,7 +60,7 @@ public class SessionHandler extends SimpleChannelHandler {
                             break;
                         default:
                             byte[] errorBytes = AdminNettyUtils.errorPacket(301,
-                                MessageFormatter.format("ServerAdmin action={} is unknown", action).getMessage());
+                                    MessageFormatter.format("ServerAdmin action={} is unknown", action).getMessage());
                             AdminNettyUtils.write(ctx.getChannel(), errorBytes);
                             break;
                     }
@@ -88,7 +88,7 @@ public class SessionHandler extends SimpleChannelHandler {
                             break;
                         default:
                             byte[] errorBytes = AdminNettyUtils.errorPacket(301,
-                                MessageFormatter.format("InstanceAdmin action={} is unknown", action).getMessage());
+                                    MessageFormatter.format("InstanceAdmin action={} is unknown", action).getMessage());
                             AdminNettyUtils.write(ctx.getChannel(), errorBytes);
                             break;
                     }
@@ -118,7 +118,7 @@ public class SessionHandler extends SimpleChannelHandler {
                             break;
                         default:
                             byte[] errorBytes = AdminNettyUtils.errorPacket(301,
-                                MessageFormatter.format("LogAdmin type={} is unknown", type).getMessage());
+                                    MessageFormatter.format("LogAdmin type={} is unknown", type).getMessage());
                             AdminNettyUtils.write(ctx.getChannel(), errorBytes);
                             break;
                     }
@@ -126,23 +126,23 @@ public class SessionHandler extends SimpleChannelHandler {
                     break;
                 default:
                     byte[] errorBytes = AdminNettyUtils.errorPacket(300,
-                        MessageFormatter.format("packet type={} is NOT supported!", packet.getType()).getMessage());
+                            MessageFormatter.format("packet type={} is NOT supported!", packet.getType()).getMessage());
                     AdminNettyUtils.write(ctx.getChannel(), errorBytes);
                     break;
             }
         } catch (Throwable exception) {
             byte[] errorBytes = AdminNettyUtils.errorPacket(400,
-                MessageFormatter.format("something goes wrong with channel:{}, exception={}",
-                    ctx.getChannel(),
-                    ExceptionUtils.getStackTrace(exception)).getMessage());
+                    MessageFormatter.format("something goes wrong with channel:{}, exception={}",
+                            ctx.getChannel(),
+                            ExceptionUtils.getStackTrace(exception)).getMessage());
             AdminNettyUtils.write(ctx.getChannel(), errorBytes);
         }
     }
 
     public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
         logger.error("something goes wrong with channel:{}, exception={}",
-            ctx.getChannel(),
-            ExceptionUtils.getStackTrace(e.getCause()));
+                ctx.getChannel(),
+                ExceptionUtils.getStackTrace(e.getCause()));
 
         ctx.getChannel().close();
     }

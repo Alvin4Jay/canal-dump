@@ -23,10 +23,10 @@ public class SpringProfileDocumentMatcher implements YamlProcessor.DocumentMatch
 
     private String[] activeProfiles = new String[0];
 
-    public SpringProfileDocumentMatcher(){
+    public SpringProfileDocumentMatcher() {
     }
 
-    public SpringProfileDocumentMatcher(String... profiles){
+    public SpringProfileDocumentMatcher(String... profiles) {
         addActiveProfiles(profiles);
     }
 
@@ -67,7 +67,7 @@ public class SpringProfileDocumentMatcher implements YamlProcessor.DocumentMatch
 
     private ProfilesMatcher getProfilesMatcher() {
         return (this.activeProfiles.length != 0 ? new ActiveProfilesMatcher(
-            new HashSet<String>(Arrays.asList(this.activeProfiles))) : new EmptyProfilesMatcher());
+                new HashSet<String>(Arrays.asList(this.activeProfiles))) : new EmptyProfilesMatcher());
     }
 
     private Set<String> extractProfiles(List<String> profiles, ProfileType type) {
@@ -92,7 +92,7 @@ public class SpringProfileDocumentMatcher implements YamlProcessor.DocumentMatch
      */
     enum ProfileType {
 
-                      POSITIVE, NEGATIVE
+        POSITIVE, NEGATIVE
 
     }
 
@@ -120,7 +120,7 @@ public class SpringProfileDocumentMatcher implements YamlProcessor.DocumentMatch
 
         private final Set<String> activeProfiles;
 
-        ActiveProfilesMatcher(Set<String> activeProfiles){
+        ActiveProfilesMatcher(Set<String> activeProfiles) {
             this.activeProfiles = activeProfiles;
         }
 

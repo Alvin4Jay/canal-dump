@@ -22,8 +22,9 @@ public class GroupEventPaserTest {
 
     private static final String DETECTING_SQL = "insert into retl.xdual values(1,now()) on duplicate key update x=now()";
     private static final String MYSQL_ADDRESS = "127.0.0.1";
-    private static final String USERNAME      = "xxxxx";
-    private static final String PASSWORD      = "xxxxx";
+    private static final String USERNAME = "xxxxx";
+    private static final String PASSWORD = "xxxxx";
+
     @Ignore
     @Test
     public void testMysqlWithMysql() {

@@ -19,7 +19,7 @@ public class FastsqlSchemaTest {
     public void testSimple() throws FileNotFoundException, IOException {
         SchemaRepository repository = new SchemaRepository(JdbcConstants.MYSQL);
         String sql = "create table quniya4(name varchar(255) null,value varchar(255) null,id int not null,constraint quniya4_pk primary key (id));"
-                     + "alter table quniya4 modify id int not null first;";
+                + "alter table quniya4 modify id int not null first;";
         repository.console(sql);
 
         repository.setDefaultSchema("test");

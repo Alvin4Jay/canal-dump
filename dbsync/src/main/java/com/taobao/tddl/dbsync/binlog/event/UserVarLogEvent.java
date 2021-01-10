@@ -11,7 +11,7 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
  * User_var_log_event. Every time a query uses the value of a user variable, a
  * User_var_log_event is written before the Query_log_event, to set the user
  * variable.
- * 
+ *
  * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
  * @version 1.0
  */
@@ -38,32 +38,32 @@ public final class UserVarLogEvent extends LogEvent {
      * </ul>
      * Source : http://forge.mysql.com/wiki/MySQL_Internals_Binary_Log
      */
-    private final String       name;
+    private final String name;
     private final Serializable value;
-    private final int          type;
-    private final int          charsetNumber;
-    private final boolean      isNull;
+    private final int type;
+    private final int charsetNumber;
+    private final boolean isNull;
 
     /**
      * The following is for user defined functions
-     * 
+     *
      * @see mysql-5.1.60//include/mysql_com.h
      */
-    public static final int    STRING_RESULT          = 0;
-    public static final int    REAL_RESULT            = 1;
-    public static final int    INT_RESULT             = 2;
-    public static final int    ROW_RESULT             = 3;
-    public static final int    DECIMAL_RESULT         = 4;
+    public static final int STRING_RESULT = 0;
+    public static final int REAL_RESULT = 1;
+    public static final int INT_RESULT = 2;
+    public static final int ROW_RESULT = 3;
+    public static final int DECIMAL_RESULT = 4;
 
     /* User_var event data */
-    public static final int    UV_VAL_LEN_SIZE        = 4;
-    public static final int    UV_VAL_IS_NULL         = 1;
-    public static final int    UV_VAL_TYPE_SIZE       = 1;
-    public static final int    UV_NAME_LEN_SIZE       = 4;
-    public static final int    UV_CHARSET_NUMBER_SIZE = 4;
+    public static final int UV_VAL_LEN_SIZE = 4;
+    public static final int UV_VAL_IS_NULL = 1;
+    public static final int UV_VAL_TYPE_SIZE = 1;
+    public static final int UV_NAME_LEN_SIZE = 4;
+    public static final int UV_CHARSET_NUMBER_SIZE = 4;
 
     public UserVarLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent)
-                                                                                                          throws IOException{
+            throws IOException {
         super(header);
 
         /* The Post-Header is empty. The Variable Data part begins immediately. */
@@ -80,7 +80,7 @@ public final class UserVarLogEvent extends LogEvent {
             type = buffer.getInt8(); // UV_VAL_IS_NULL
             charsetNumber = (int) buffer.getUint32(); // buf + UV_VAL_TYPE_SIZE
             final int valueLen = (int) buffer.getUint32(); // buf +
-                                                           // UV_CHARSET_NUMBER_SIZE
+            // UV_CHARSET_NUMBER_SIZE
             final int limit = buffer.limit(); /* for restore */
             buffer.limit(buffer.position() + valueLen);
 

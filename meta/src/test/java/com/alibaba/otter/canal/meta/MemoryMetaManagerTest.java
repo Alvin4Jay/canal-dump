@@ -7,6 +7,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.alibaba.otter.canal.protocol.position.PositionRange;
+
 @Ignore
 public class MemoryMetaManagerTest extends AbstractMetaManagerTest {
 

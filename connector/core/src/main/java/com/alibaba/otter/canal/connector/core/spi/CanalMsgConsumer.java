@@ -17,10 +17,10 @@ public interface CanalMsgConsumer {
 
     /**
      * 初始化
-     * 
+     *
      * @param properties consumer properties
-     * @param topic topic/destination
-     * @param groupId mq group id
+     * @param topic      topic/destination
+     * @param groupId    mq group id
      */
     void init(Properties properties, String topic, String groupId);
 
@@ -31,9 +31,9 @@ public interface CanalMsgConsumer {
 
     /**
      * 批量拉取数据
-     * 
+     *
      * @param timeout 超时时间
-     * @param unit 时间单位
+     * @param unit    时间单位
      * @return Message列表
      */
     List<CommonMessage> getMessage(Long timeout, TimeUnit unit);

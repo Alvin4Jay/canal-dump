@@ -36,17 +36,17 @@ public class ESTest {
         for (String host : hostArray) {
             int i = host.indexOf(":");
             transportClient.addTransportAddress(new TransportAddress(InetAddress.getByName(host.substring(0, i)),
-                Integer.parseInt(host.substring(i + 1))));
+                    Integer.parseInt(host.substring(i + 1))));
         }
     }
 
     @Test
     public void test01() {
         SearchResponse response = transportClient.prepareSearch("test")
-            .setTypes("osm")
-            .setQuery(QueryBuilders.termQuery("_id", "1"))
-            .setSize(10000)
-            .get();
+                .setTypes("osm")
+                .setQuery(QueryBuilders.termQuery("_id", "1"))
+                .setSize(10000)
+                .get();
         for (SearchHit hit : response.getHits()) {
             System.out.println(hit.getSourceAsMap().get("data").getClass());
         }
@@ -67,7 +67,7 @@ public class ESTest {
 
         BulkRequestBuilder bulkRequestBuilder = transportClient.prepareBulk();
         bulkRequestBuilder
-            .add(transportClient.prepareIndex("test", "osm", "2_4").setRouting("2").setSource(esFieldData));
+                .add(transportClient.prepareIndex("test", "osm", "2_4").setRouting("2").setSource(esFieldData));
         commit(bulkRequestBuilder);
     }
 

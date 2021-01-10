@@ -16,7 +16,7 @@ public interface GTIDSet {
 
     /**
      * 更新当前实例
-     * 
+     *
      * @param str
      * @throws Exception
      */

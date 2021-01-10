@@ -10,26 +10,26 @@ import com.alibaba.otter.canal.parse.driver.mysql.utils.MSC;
 
 /**
  * MySQL Handshake Initialization Packet.<br>
- * 
+ *
  * @author fujohnwang
  * @since 1.0
  */
 public class HandshakeInitializationPacket extends PacketWithHeaderPacket {
 
-    public byte   protocolVersion = MSC.DEFAULT_PROTOCOL_VERSION;
+    public byte protocolVersion = MSC.DEFAULT_PROTOCOL_VERSION;
     public String serverVersion;
-    public long   threadId;
+    public long threadId;
     public byte[] seed;
-    public int    serverCapabilities;
-    public byte   serverCharsetNumber;
-    public int    serverStatus;
+    public int serverCapabilities;
+    public byte serverCharsetNumber;
+    public int serverStatus;
     public byte[] restOfScrambleBuff;
     public byte[] authPluginName;
 
-    public HandshakeInitializationPacket(){
+    public HandshakeInitializationPacket() {
     }
 
-    public HandshakeInitializationPacket(HeaderPacket header){
+    public HandshakeInitializationPacket(HeaderPacket header) {
         super(header);
     }
 

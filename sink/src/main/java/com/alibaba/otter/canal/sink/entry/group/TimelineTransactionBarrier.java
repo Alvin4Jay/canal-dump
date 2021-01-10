@@ -10,7 +10,7 @@ import com.alibaba.otter.canal.store.model.Event;
 
 /**
  * 相比于{@linkplain TimelineBarrier}，增加了按事务支持，会按照事务进行分库合并处理
- * 
+ *
  * @author jianghang 2012-10-18 下午05:18:38
  * @version 1.0.0
  */
@@ -18,10 +18,10 @@ public class TimelineTransactionBarrier extends TimelineBarrier {
 
     private ThreadLocal<Boolean> inTransaction = new ThreadLocal() {
 
-                                                   protected Object initialValue() {
-                                                       return false;
-                                                   }
-                                               };
+        protected Object initialValue() {
+            return false;
+        }
+    };
 
     /**
      * <pre>
@@ -31,9 +31,9 @@ public class TimelineTransactionBarrier extends TimelineBarrier {
      * 2: 非事务数据处理中
      * </pre>
      */
-    private AtomicInteger        txState       = new AtomicInteger(0);
+    private AtomicInteger txState = new AtomicInteger(0);
 
-    public TimelineTransactionBarrier(int groupSize){
+    public TimelineTransactionBarrier(int groupSize) {
         super(groupSize);
     }
 

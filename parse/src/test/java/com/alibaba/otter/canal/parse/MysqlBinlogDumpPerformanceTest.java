@@ -46,8 +46,8 @@ public class MysqlBinlogDumpPerformanceTest {
         controller.setEventSink(new AbstractCanalEventSinkTest<List<CanalEntry.Entry>>() {
 
             public boolean sink(List<CanalEntry.Entry> entrys, InetSocketAddress remoteAddress, String destination)
-                                                                                                                   throws CanalSinkException,
-                                                                                                                   InterruptedException {
+                    throws CanalSinkException,
+                    InterruptedException {
 
                 sum.addAndGet(entrys.size());
                 long current = sum.get();

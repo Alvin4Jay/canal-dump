@@ -33,11 +33,11 @@ public class CanalServerWithEmbedded_StandaloneTest extends BaseCanalServerWithE
 
         parameter.setSourcingType(SourcingType.MYSQL);
         parameter.setDbAddresses(Arrays.asList(new InetSocketAddress(MYSQL_ADDRESS, 3306),
-            new InetSocketAddress(MYSQL_ADDRESS, 3306)));
+                new InetSocketAddress(MYSQL_ADDRESS, 3306)));
         parameter.setDbUsername(USERNAME);
         parameter.setDbPassword(PASSWORD);
         parameter.setPositions(Arrays.asList("{\"journalName\":\"mysql-bin.000003\",\"position\":14217L,\"timestamp\":\"1505998863000\"}",
-            "{\"journalName\":\"mysql-bin.000003\",\"position\":14377L,\"timestamp\":\"1505998863000\"}"));
+                "{\"journalName\":\"mysql-bin.000003\",\"position\":14377L,\"timestamp\":\"1505998863000\"}"));
 
         parameter.setSlaveId(1234L);
 

@@ -32,46 +32,46 @@ import com.google.common.collect.Lists;
 
 /**
  * RocketMQ的连接
- * 
+ *
  * <pre>
  * 注意点:
  * 1. 相比于canal {@linkplain SimpleCanalConnector}, 这里get和ack操作不能有并发, 必须是一个线程执行get后，内存里执行完毕ack后再取下一个get
  * </pre>
- * 
+ *
  * @since 1.1.1
  */
 public class RocketMQCanalConnector implements CanalMQConnector {
 
-    private static final Logger                 logger               = LoggerFactory.getLogger(RocketMQCanalConnector.class);
-    private static final String                 CLOUD_ACCESS_CHANNEL = "cloud";
+    private static final Logger logger = LoggerFactory.getLogger(RocketMQCanalConnector.class);
+    private static final String CLOUD_ACCESS_CHANNEL = "cloud";
 
-    private String                              nameServer;
-    private String                              topic;
-    private String                              groupName;
-    private volatile boolean                    connected           = false;
-    private DefaultMQPushConsumer               rocketMQConsumer;
+    private String nameServer;
+    private String topic;
+    private String groupName;
+    private volatile boolean connected = false;
+    private DefaultMQPushConsumer rocketMQConsumer;
     private BlockingQueue<ConsumerBatchMessage> messageBlockingQueue;
-    private int                                 batchSize           = -1;
-    private long                                batchProcessTimeout = 60 * 1000;
-    private boolean                             flatMessage;
-    private volatile ConsumerBatchMessage       lastGetBatchMessage = null;
-    private String                              accessKey;
-    private String                              secretKey;
-    private String                              customizedTraceTopic;
-    private boolean                             enableMessageTrace = false;
-    private String                              accessChannel;
-    private String                              namespace;
+    private int batchSize = -1;
+    private long batchProcessTimeout = 60 * 1000;
+    private boolean flatMessage;
+    private volatile ConsumerBatchMessage lastGetBatchMessage = null;
+    private String accessKey;
+    private String secretKey;
+    private String customizedTraceTopic;
+    private boolean enableMessageTrace = false;
+    private String accessChannel;
+    private String namespace;
 
     public RocketMQCanalConnector(String nameServer, String topic, String groupName, String accessKey,
-        String secretKey, Integer batchSize, boolean flatMessage, boolean enableMessageTrace,
-        String customizedTraceTopic, String accessChannel, String namespace) {
+                                  String secretKey, Integer batchSize, boolean flatMessage, boolean enableMessageTrace,
+                                  String customizedTraceTopic, String accessChannel, String namespace) {
         this(nameServer, topic, groupName, accessKey, secretKey, batchSize, flatMessage, enableMessageTrace, customizedTraceTopic, accessChannel);
         this.namespace = namespace;
     }
 
     public RocketMQCanalConnector(String nameServer, String topic, String groupName, String accessKey,
-        String secretKey, Integer batchSize, boolean flatMessage, boolean enableMessageTrace,
-        String customizedTraceTopic, String accessChannel) {
+                                  String secretKey, Integer batchSize, boolean flatMessage, boolean enableMessageTrace,
+                                  String customizedTraceTopic, String accessChannel) {
         this(nameServer, topic, groupName, accessKey, secretKey, batchSize, flatMessage);
         this.enableMessageTrace = enableMessageTrace;
         this.customizedTraceTopic = customizedTraceTopic;
@@ -79,7 +79,7 @@ public class RocketMQCanalConnector implements CanalMQConnector {
     }
 
     public RocketMQCanalConnector(String nameServer, String topic, String groupName, Integer batchSize,
-                                  boolean flatMessage){
+                                  boolean flatMessage) {
         this.nameServer = nameServer;
         this.topic = topic;
         this.groupName = groupName;
@@ -89,7 +89,7 @@ public class RocketMQCanalConnector implements CanalMQConnector {
     }
 
     public RocketMQCanalConnector(String nameServer, String topic, String groupName, String accessKey,
-                                  String secretKey, Integer batchSize, boolean flatMessage){
+                                  String secretKey, Integer batchSize, boolean flatMessage) {
         this(nameServer, topic, groupName, batchSize, flatMessage);
         this.accessKey = accessKey;
         this.secretKey = secretKey;

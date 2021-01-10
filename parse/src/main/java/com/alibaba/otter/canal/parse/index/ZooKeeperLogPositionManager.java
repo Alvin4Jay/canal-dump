@@ -15,7 +15,7 @@ public class ZooKeeperLogPositionManager extends AbstractLogPositionManager {
 
     private final ZkClientx zkClientx;
 
-    public ZooKeeperLogPositionManager(ZkClientx zkClient){
+    public ZooKeeperLogPositionManager(ZkClientx zkClient) {
         if (zkClient == null) {
             throw new NullPointerException("null zkClient");
         }

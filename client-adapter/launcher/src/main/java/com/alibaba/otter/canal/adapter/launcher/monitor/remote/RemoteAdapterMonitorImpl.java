@@ -39,8 +39,8 @@ public class RemoteAdapterMonitorImpl implements RemoteAdapterMonitor {
         }
         String name = configItem.getName();
         try (OutputStreamWriter writer = new OutputStreamWriter(
-            new FileOutputStream(confPath + category + "/" + configItem.getName()),
-            StandardCharsets.UTF_8)) {
+                new FileOutputStream(confPath + category + "/" + configItem.getName()),
+                StandardCharsets.UTF_8)) {
             writer.write(configItem.getContent());
             writer.flush();
             logger.info("## Loaded remote adapter config: {}/{}", category, name);

@@ -27,31 +27,31 @@ import com.alibaba.otter.canal.client.kafka.protocol.KafkaMessage;
  */
 public class CanalKafkaOffsetClientExample {
 
-    protected final static Logger           logger  = LoggerFactory.getLogger(CanalKafkaOffsetClientExample.class);
+    protected final static Logger logger = LoggerFactory.getLogger(CanalKafkaOffsetClientExample.class);
 
-    private KafkaOffsetCanalConnector       connector;
+    private KafkaOffsetCanalConnector connector;
 
-    private static volatile boolean         running = false;
+    private static volatile boolean running = false;
 
-    private Thread                          thread  = null;
+    private Thread thread = null;
 
     private Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler() {
 
-                                                        public void uncaughtException(Thread t, Throwable e) {
-                                                            logger.error("parse events has an error", e);
-                                                        }
-                                                    };
+        public void uncaughtException(Thread t, Throwable e) {
+            logger.error("parse events has an error", e);
+        }
+    };
 
-    public CanalKafkaOffsetClientExample(String servers, String topic, Integer partition, String groupId){
+    public CanalKafkaOffsetClientExample(String servers, String topic, Integer partition, String groupId) {
         connector = new KafkaOffsetCanalConnector(servers, topic, partition, groupId, false);
     }
 
     public static void main(String[] args) {
         try {
             final CanalKafkaOffsetClientExample kafkaCanalClientExample = new CanalKafkaOffsetClientExample(AbstractKafkaTest.servers,
-                AbstractKafkaTest.topic,
-                AbstractKafkaTest.partition,
-                AbstractKafkaTest.groupId);
+                    AbstractKafkaTest.topic,
+                    AbstractKafkaTest.partition,
+                    AbstractKafkaTest.groupId);
             logger.info("## start the kafka consumer: {}-{}", AbstractKafkaTest.topic, AbstractKafkaTest.groupId);
             kafkaCanalClientExample.start();
             logger.info("## the canal kafka consumer is running now ......");

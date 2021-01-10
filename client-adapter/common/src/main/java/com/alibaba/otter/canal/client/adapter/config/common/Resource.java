@@ -17,7 +17,6 @@ import org.springframework.core.io.ByteArrayResource;
  * The actual behavior is implementation-specific.
  *
  * @author Juergen Hoeller
- * @since 28.12.2003
  * @see #getInputStream()
  * @see #getURL()
  * @see #getURI()
@@ -30,6 +29,7 @@ import org.springframework.core.io.ByteArrayResource;
  * @see PathResource
  * @see ByteArrayResource
  * @see InputStreamResource
+ * @since 28.12.2003
  */
 public interface Resource extends InputStreamSource {
 

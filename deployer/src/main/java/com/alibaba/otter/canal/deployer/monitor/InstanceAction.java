@@ -2,7 +2,7 @@ package com.alibaba.otter.canal.deployer.monitor;
 
 /**
  * config配置变化
- * 
+ *
  * @author jianghang 2013-2-18 下午01:19:29
  * @version 1.0.1
  */

@@ -71,10 +71,10 @@ import com.alibaba.otter.canal.store.model.BatchMode;
 public class CanalInstanceWithManager extends AbstractCanalInstance {
 
     private static final Logger logger = LoggerFactory.getLogger(CanalInstanceWithManager.class);
-    protected String            filter;                                                          // 过滤表达式
-    protected CanalParameter    parameters;                                                      // 对应参数
+    protected String filter;                                                          // 过滤表达式
+    protected CanalParameter parameters;                                                      // 对应参数
 
-    public CanalInstanceWithManager(Canal canal, String filter){
+    public CanalInstanceWithManager(Canal canal, String filter) {
         this.parameters = canal.getCanalParameter();
         this.canalId = canal.getId();
         this.destination = canal.getName();
@@ -128,22 +128,22 @@ public class CanalInstanceWithManager extends AbstractCanalInstance {
                 });
                 if (jarFiles == null || jarFiles.length == 0) {
                     throw new IllegalStateException(String.format("alarmHandlerPluginDir [%s] can't find any name endswith \".jar\" file.",
-                        alarmHandlerPluginDir));
+                            alarmHandlerPluginDir));
                 }
                 URL[] urls = new URL[jarFiles.length];
                 for (int i = 0; i < jarFiles.length; i++) {
                     urls[i] = jarFiles[i].toURI().toURL();
                 }
                 ClassLoader currentClassLoader = new URLClassLoader(urls,
-                    CanalInstanceWithManager.class.getClassLoader());
+                        CanalInstanceWithManager.class.getClassLoader());
                 Class<CanalAlarmHandler> _alarmClass = (Class<CanalAlarmHandler>) currentClassLoader.loadClass(alarmHandlerClass);
                 alarmHandler = _alarmClass.newInstance();
                 logger.info("init [{}] alarm handler success.", alarmHandlerClass);
             } catch (Throwable e) {
                 String errorMsg = String.format("init alarmHandlerPluginDir [%s] alarm handler [%s] error: %s",
-                    alarmHandlerPluginDir,
-                    alarmHandlerClass,
-                    ExceptionUtils.getFullStackTrace(e));
+                        alarmHandlerPluginDir,
+                        alarmHandlerClass,
+                        ExceptionUtils.getFullStackTrace(e));
                 logger.error(errorMsg);
                 throw new CanalException(errorMsg, e);
             }
@@ -162,7 +162,7 @@ public class CanalInstanceWithManager extends AbstractCanalInstance {
         } else if (mode.isMixed()) {
             // metaManager = new MixedMetaManager();
             metaManager = new PeriodMixedMetaManager();// 换用优化过的mixed, at
-                                                       // 2012-09-11
+            // 2012-09-11
             // 设置内嵌的zk metaManager
             ZooKeeperMetaManager zooKeeperMetaManager = new ZooKeeperMetaManager();
             zooKeeperMetaManager.setZkClientx(getZkclientx());
@@ -250,8 +250,8 @@ public class CanalInstanceWithManager extends AbstractCanalInstance {
                 for (List<DataSourcing> groupDbAddress : groupDbAddresses) {
                     if (lastType != null && !lastType.equals(groupDbAddress.get(i).getType())) {
                         throw new CanalException(String.format("master/slave Sourcing type is unmatch. %s vs %s",
-                            lastType,
-                            groupDbAddress.get(i).getType()));
+                                lastType,
+                                groupDbAddress.get(i).getType()));
                     }
 
                     lastType = groupDbAddress.get(i).getType();
@@ -282,8 +282,8 @@ public class CanalInstanceWithManager extends AbstractCanalInstance {
         if (type.isMysql()) {
             MysqlEventParser mysqlEventParser = null;
             if (StringUtils.isNotEmpty(parameters.getRdsAccesskey())
-                && StringUtils.isNotEmpty(parameters.getRdsSecretkey())
-                && StringUtils.isNotEmpty(parameters.getRdsInstanceId())) {
+                    && StringUtils.isNotEmpty(parameters.getRdsSecretkey())
+                    && StringUtils.isNotEmpty(parameters.getRdsInstanceId())) {
 
                 mysqlEventParser = new RdsBinlogEventParserProxy();
                 ((RdsBinlogEventParserProxy) mysqlEventParser).setAccesskey(parameters.getRdsAccesskey());
@@ -308,27 +308,27 @@ public class CanalInstanceWithManager extends AbstractCanalInstance {
             mysqlEventParser.setSlaveId(parameters.getSlaveId());
             if (!CollectionUtils.isEmpty(dbAddresses)) {
                 mysqlEventParser.setMasterInfo(new AuthenticationInfo(dbAddresses.get(0),
-                    parameters.getDbUsername(),
-                    parameters.getDbPassword(),
-                    parameters.getDefaultDatabaseName()));
-
-                if (dbAddresses.size() > 1) {
-                    mysqlEventParser.setStandbyInfo(new AuthenticationInfo(dbAddresses.get(1),
                         parameters.getDbUsername(),
                         parameters.getDbPassword(),
                         parameters.getDefaultDatabaseName()));
+
+                if (dbAddresses.size() > 1) {
+                    mysqlEventParser.setStandbyInfo(new AuthenticationInfo(dbAddresses.get(1),
+                            parameters.getDbUsername(),
+                            parameters.getDbPassword(),
+                            parameters.getDefaultDatabaseName()));
                 }
             }
 
             if (!CollectionUtils.isEmpty(parameters.getPositions())) {
                 EntryPosition masterPosition = JsonUtils.unmarshalFromString(parameters.getPositions().get(0),
-                    EntryPosition.class);
+                        EntryPosition.class);
                 // binlog位置参数
                 mysqlEventParser.setMasterPosition(masterPosition);
 
                 if (parameters.getPositions().size() > 1) {
                     EntryPosition standbyPosition = JsonUtils.unmarshalFromString(parameters.getPositions().get(1),
-                        EntryPosition.class);
+                            EntryPosition.class);
                     mysqlEventParser.setStandbyPosition(standbyPosition);
                 }
             }
@@ -386,9 +386,9 @@ public class CanalInstanceWithManager extends AbstractCanalInstance {
             // 数据库信息，反查表结构时需要
             if (!CollectionUtils.isEmpty(dbAddresses)) {
                 localBinlogEventParser.setMasterInfo(new AuthenticationInfo(dbAddresses.get(0),
-                    parameters.getDbUsername(),
-                    parameters.getDbPassword(),
-                    parameters.getDefaultDatabaseName()));
+                        parameters.getDbUsername(),
+                        parameters.getDbPassword(),
+                        parameters.getDefaultDatabaseName()));
             }
 
             eventParser = localBinlogEventParser;
@@ -455,8 +455,8 @@ public class CanalInstanceWithManager extends AbstractCanalInstance {
             MemoryLogPositionManager memoryLogPositionManager = new MemoryLogPositionManager();
             ZooKeeperLogPositionManager zooKeeperLogPositionManager = new ZooKeeperLogPositionManager(getZkclientx());
             logPositionManager = new PeriodMixedLogPositionManager(memoryLogPositionManager,
-                zooKeeperLogPositionManager,
-                1000L);
+                    zooKeeperLogPositionManager,
+                    1000L);
         } else if (indexMode.isMeta()) {
             logPositionManager = new MetaLogPositionManager(metaManager);
         } else if (indexMode.isMemoryMetaFailback()) {
@@ -469,7 +469,7 @@ public class CanalInstanceWithManager extends AbstractCanalInstance {
         }
 
         logger.info("init logPositionManager end! \n\t load CanalLogPositionManager:{}", logPositionManager.getClass()
-            .getName());
+                .getName());
 
         return logPositionManager;
     }

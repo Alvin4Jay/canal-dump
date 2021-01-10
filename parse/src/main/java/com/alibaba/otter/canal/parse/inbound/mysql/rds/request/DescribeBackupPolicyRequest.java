@@ -9,13 +9,13 @@ import com.alibaba.otter.canal.parse.inbound.mysql.rds.data.RdsBackupPolicy;
 
 /**
  * rds 备份策略查询
- * 
+ *
  * @author chengjin.lyf on 2018/8/7 下午3:41
  * @since 1.0.25
  */
 public class DescribeBackupPolicyRequest extends AbstractRequest<RdsBackupPolicy> {
 
-    public DescribeBackupPolicyRequest(){
+    public DescribeBackupPolicyRequest() {
         setVersion("2014-08-15");
         putQueryString("Action", "DescribeBackupPolicy");
 

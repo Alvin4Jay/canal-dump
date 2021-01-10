@@ -19,7 +19,7 @@ public class ESConnectionTest {
 
     @Before
     public void init() throws UnknownHostException {
-        String[] hosts = new String[] { "127.0.0.1:9200" };
+        String[] hosts = new String[]{"127.0.0.1:9200"};
         Map<String, String> properties = new HashMap<>();
         properties.put("cluster.name", "elasticsearch");
         esConnection = new ESConnection(hosts, properties, ESConnection.ESClientMode.REST);

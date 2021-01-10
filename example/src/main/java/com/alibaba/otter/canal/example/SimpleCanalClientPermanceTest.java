@@ -23,9 +23,9 @@ public class SimpleCanalClientPermanceTest {
         final ArrayBlockingQueue<Long> queue = new ArrayBlockingQueue<Long>(100);
         try {
             final CanalConnector connector = CanalConnectors.newSingleConnector(new InetSocketAddress(ip, 11111),
-                destination,
-                "canal",
-                "canal");
+                    destination,
+                    "canal",
+                    "canal");
 
             Thread ackThread = new Thread(new Runnable() {
 
@@ -58,7 +58,7 @@ public class SimpleCanalClientPermanceTest {
                     if (end - start != 0) {
                         long tps = (perSum * 1000) / (end - start);
                         System.out.println(" total : " + sum + " , current : " + perSum + " , cost : " + (end - start)
-                                           + " , tps : " + tps);
+                                + " , tps : " + tps);
                         start = end;
                         perSum = 0;
                     }

@@ -28,18 +28,17 @@ import com.alibaba.otter.canal.store.model.Event;
  */
 public class AbstractCanalInstance extends AbstractCanalLifeCycle implements CanalInstance {
 
-    private static final Logger                      logger = LoggerFactory.getLogger(AbstractCanalInstance.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractCanalInstance.class);
 
-    protected Long                                   canalId;                                                      // 和manager交互唯一标示
-    protected String                                 destination;                                                  // 队列名字
-    protected CanalEventStore<Event>                 eventStore;                                                   // 有序队列
+    protected Long canalId;                                                      // 和manager交互唯一标示
+    protected String destination;                                                  // 队列名字
+    protected CanalEventStore<Event> eventStore;                                                   // 有序队列
 
-    protected CanalEventParser                       eventParser;                                                  // 解析对应的数据信息
+    protected CanalEventParser eventParser;                                                  // 解析对应的数据信息
     protected CanalEventSink<List<CanalEntry.Entry>> eventSink;                                                    // 链接parse和store的桥接器
-    protected CanalMetaManager                       metaManager;                                                  // 消费信息管理器
-    protected CanalAlarmHandler                      alarmHandler;                                                 // alarm报警机制
-    protected CanalMQConfig                          mqConfig;                                                     // mq的配置
-
+    protected CanalMetaManager metaManager;                                                  // 消费信息管理器
+    protected CanalAlarmHandler alarmHandler;                                                 // alarm报警机制
+    protected CanalMQConfig mqConfig;                                                     // mq的配置
 
 
     @Override
@@ -53,12 +52,12 @@ public class AbstractCanalInstance extends AbstractCanalLifeCycle implements Can
                 // 处理group的模式
                 List<CanalEventParser> eventParsers = ((GroupEventParser) eventParser).getEventParsers();
                 for (CanalEventParser singleEventParser : eventParsers) {// 需要遍历启动
-                    if(singleEventParser instanceof AbstractEventParser) {
+                    if (singleEventParser instanceof AbstractEventParser) {
                         ((AbstractEventParser) singleEventParser).setEventFilter(aviaterFilter);
                     }
                 }
             } else {
-                if(eventParser instanceof AbstractEventParser) {
+                if (eventParser instanceof AbstractEventParser) {
                     ((AbstractEventParser) eventParser).setEventFilter(aviaterFilter);
                 }
             }
@@ -102,7 +101,7 @@ public class AbstractCanalInstance extends AbstractCanalLifeCycle implements Can
     @Override
     public void stop() {
         super.stop();
-        logger.info("stop CannalInstance for {}-{} ", new Object[] { canalId, destination });
+        logger.info("stop CannalInstance for {}-{} ", new Object[]{canalId, destination});
 
         if (eventParser.isStart()) {
             beforeStopEventParser(eventParser);

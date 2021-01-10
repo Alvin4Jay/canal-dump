@@ -26,9 +26,9 @@ import com.alibaba.otter.canal.protocol.SecurityUtil;
 @Service
 public class CanalConfigServiceImpl implements CanalConfigService {
 
-    private Logger              logger               = LoggerFactory.getLogger(CanalConfigServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(CanalConfigServiceImpl.class);
 
-    private static final String CANAL_GLOBAL_CONFIG  = "canal.properties";
+    private static final String CANAL_GLOBAL_CONFIG = "canal.properties";
     private static final String CANAL_ADAPTER_CONFIG = "application.yml";
 
     public CanalConfig getCanalConfig(Long clusterId, Long serverId) {
@@ -60,11 +60,11 @@ public class CanalConfigServiceImpl implements CanalConfigService {
 
     public CanalConfig getCanalConfigSummary() {
         return CanalConfig.find.query()
-            .setDisableLazyLoading(true)
-            .select("name, modifiedTime")
-            .where()
-            .eq("id", 1L)
-            .findOne();
+                .setDisableLazyLoading(true)
+                .select("name, modifiedTime")
+                .where()
+                .eq("id", 1L)
+                .findOne();
     }
 
     public CanalConfig getAdapterConfig() {

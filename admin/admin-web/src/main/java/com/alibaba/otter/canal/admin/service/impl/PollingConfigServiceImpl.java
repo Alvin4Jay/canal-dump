@@ -23,7 +23,7 @@ import com.google.common.base.Joiner;
 public class PollingConfigServiceImpl implements PollingConfigService {
 
     @Autowired
-    NodeServerService   nodeServerService;
+    NodeServerService nodeServerService;
 
     @Autowired
     CanalClusterService canalClusterService;
@@ -80,22 +80,22 @@ public class PollingConfigServiceImpl implements PollingConfigService {
         List<CanalInstanceConfig> canalInstanceConfigs;
         if (server.getClusterId() != null) { // 集群模式
             canalInstanceConfigs = CanalInstanceConfig.find.query()
-                .where()
-                .eq("status", "1")
-                .eq("clusterId", server.getClusterId())
-                .findList(); // 取属于该集群的所有instance config
+                    .where()
+                    .eq("status", "1")
+                    .eq("clusterId", server.getClusterId())
+                    .findList(); // 取属于该集群的所有instance config
         } else { // 单机模式
             canalInstanceConfigs = CanalInstanceConfig.find.query()
-                .where()
-                .eq("status", "1")
-                .eq("serverId", server.getId())
-                .findList();
+                    .where()
+                    .eq("status", "1")
+                    .eq("serverId", server.getId())
+                    .findList();
         }
 
         CanalInstanceConfig canalInstanceConfig = new CanalInstanceConfig();
         List<String> instances = canalInstanceConfigs.stream()
-            .map(CanalInstanceConfig::getName)
-            .collect(Collectors.toList());
+                .map(CanalInstanceConfig::getName)
+                .collect(Collectors.toList());
         String data = Joiner.on(',').join(instances);
         canalInstanceConfig.setContent(data);
         if (!StringUtils.isEmpty(md5)) {

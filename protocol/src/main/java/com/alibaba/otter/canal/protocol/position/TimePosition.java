@@ -2,16 +2,16 @@ package com.alibaba.otter.canal.protocol.position;
 
 /**
  * 基于时间的位置，position数据不唯一
- * 
+ *
  * @author jianghang 2012-6-14 下午09:22:04
  * @version 1.0.0
  */
 public class TimePosition extends Position {
 
     private static final long serialVersionUID = 6185261261064226380L;
-    protected Long            timestamp;
+    protected Long timestamp;
 
-    public TimePosition(Long timestamp){
+    public TimePosition(Long timestamp) {
         this.timestamp = timestamp;
     }
 

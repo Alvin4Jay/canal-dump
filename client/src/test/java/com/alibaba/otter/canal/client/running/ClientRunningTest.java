@@ -18,11 +18,12 @@ import com.alibaba.otter.canal.client.impl.running.ClientRunningMonitor;
 import com.alibaba.otter.canal.common.utils.AddressUtils;
 import com.alibaba.otter.canal.common.zookeeper.ZkClientx;
 import com.alibaba.otter.canal.common.zookeeper.ZookeeperPathUtils;
+
 @Ignore
 public class ClientRunningTest extends AbstractZkTest {
 
     private ZkClientx zkclientx = new ZkClientx(cluster1 + ";" + cluster2);
-    private short     clientId  = 1001;
+    private short clientId = 1001;
 
     @Before
     public void setUp() {

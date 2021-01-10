@@ -26,18 +26,18 @@ public class CanalCluster extends Model {
         /**
          * Construct using the default EbeanServer.
          */
-        public CanalClusterFinder(){
+        public CanalClusterFinder() {
             super(CanalCluster.class);
         }
 
     }
 
     @Id
-    private Long   id;
+    private Long id;
     private String name;
     private String zkHosts;
     @WhenModified
-    private Date   modifiedTime;
+    private Date modifiedTime;
 
     public Long getId() {
         return id;

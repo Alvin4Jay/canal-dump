@@ -33,7 +33,7 @@ public class ConfigLoader {
         Map<String, String> configContentMap = MappingConfigsLoader.loadConfigs("rdb");
         configContentMap.forEach((fileName, content) -> {
             MappingConfig config = YmlConfigBinder
-                .bindYmlToObj(null, content, MappingConfig.class, null, envProperties);
+                    .bindYmlToObj(null, content, MappingConfig.class, null, envProperties);
             if (config == null) {
                 return;
             }

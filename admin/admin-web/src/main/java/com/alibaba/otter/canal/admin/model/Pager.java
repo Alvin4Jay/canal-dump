@@ -8,22 +8,22 @@ public class Pager<T> implements Serializable {
 
     private static final long serialVersionUID = -986577815091763517L;
 
-    private Long              count            = 0L;
-    private List<T>           items            = new ArrayList<T>();
-    private Integer           page             = 1;
-    private Integer           size             = 20;
-    private Long              offset           = 0L;
+    private Long count = 0L;
+    private List<T> items = new ArrayList<T>();
+    private Integer page = 1;
+    private Integer size = 20;
+    private Long offset = 0L;
 
-    public Pager(){
+    public Pager() {
 
     }
 
-    public Pager(Integer page, Integer size){
+    public Pager(Integer page, Integer size) {
         this.page = page;
         this.size = size;
     }
 
-    public Pager(Long count, List<T> items){
+    public Pager(Long count, List<T> items) {
         this.count = count;
         this.items = items;
     }

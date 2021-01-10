@@ -29,7 +29,7 @@ public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
      *
      * @param propertySources the set of {@link PropertySource} objects to use
      */
-    public PropertySourcesPropertyResolver(PropertySources propertySources){
+    public PropertySourcesPropertyResolver(PropertySources propertySources) {
         this.propertySources = propertySources;
     }
 
@@ -65,7 +65,7 @@ public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
             for (PropertySource<?> propertySource : this.propertySources) {
                 if (logger.isTraceEnabled()) {
                     logger
-                        .trace("Searching for key '" + key + "' in PropertySource '" + propertySource.getName() + "'");
+                            .trace("Searching for key '" + key + "' in PropertySource '" + propertySource.getName() + "'");
                 }
                 Object value = propertySource.getProperty(key);
                 if (value != null) {
@@ -99,8 +99,8 @@ public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
                             clazz = ClassUtils.forName((String) value, null);
                         } catch (Exception ex) {
                             throw new PropertySourcesPropertyResolver.ClassConversionException((String) value,
-                                targetValueType,
-                                ex);
+                                    targetValueType,
+                                    ex);
                         }
                     } else if (value instanceof Class) {
                         clazz = (Class<?>) value;
@@ -131,16 +131,16 @@ public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
      * logging of sensitive settings. Subclasses may override this method to change
      * the log level and/or log message, including the property's value if desired.
      *
-     * @param key the key found
+     * @param key            the key found
      * @param propertySource the {@code PropertySource} that the key has been found
-     *     in
-     * @param value the corresponding value
+     *                       in
+     * @param value          the corresponding value
      * @since 4.3.1
      */
     protected void logKeyFound(String key, PropertySource<?> propertySource, Object value) {
         if (logger.isDebugEnabled()) {
             logger.debug("Found key '" + key + "' in PropertySource '" + propertySource.getName()
-                         + "' with value of type " + value.getClass().getSimpleName());
+                    + "' with value of type " + value.getClass().getSimpleName());
         }
     }
 
@@ -148,16 +148,16 @@ public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
     @Deprecated
     private static class ClassConversionException extends ConversionException {
 
-        public ClassConversionException(Class<?> actual, Class<?> expected){
+        public ClassConversionException(Class<?> actual, Class<?> expected) {
             super(String
-                .format("Actual type %s is not assignable to expected type %s", actual.getName(), expected.getName()));
+                    .format("Actual type %s is not assignable to expected type %s", actual.getName(), expected.getName()));
         }
 
-        public ClassConversionException(String actual, Class<?> expected, Exception ex){
+        public ClassConversionException(String actual, Class<?> expected, Exception ex) {
             super(
-                String
-                    .format("Could not find/load class %s during attempt to convert to %s", actual, expected.getName()),
-                ex);
+                    String
+                            .format("Could not find/load class %s during attempt to convert to %s", actual, expected.getName()),
+                    ex);
         }
     }
 

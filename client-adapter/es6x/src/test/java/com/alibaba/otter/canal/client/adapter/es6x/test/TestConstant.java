@@ -6,12 +6,12 @@ import com.alibaba.druid.pool.DruidDataSource;
 
 public class TestConstant {
 
-    public final static String    jdbcUrl      = "jdbc:mysql://127.0.0.1:3306/mytest?useUnicode=true";
-    public final static String    jdbcUser     = "root";
-    public final static String    jdbcPassword = "121212";
+    public final static String jdbcUrl = "jdbc:mysql://127.0.0.1:3306/mytest?useUnicode=true";
+    public final static String jdbcUser = "root";
+    public final static String jdbcPassword = "121212";
 
-    public final static String    esHosts      = "127.0.0.1:9300";
-    public final static String    clusterName  = "elasticsearch";
+    public final static String esHosts = "127.0.0.1:9300";
+    public final static String clusterName = "elasticsearch";
 
     public final static DruidDataSource dataSource;
 

@@ -15,7 +15,7 @@ import com.alibaba.otter.canal.parse.inbound.mysql.rds.data.DescribeBinlogFileRe
  */
 public class DescribeBinlogFilesRequest extends AbstractRequest<DescribeBinlogFileResult> {
 
-    public DescribeBinlogFilesRequest(){
+    public DescribeBinlogFilesRequest() {
         setVersion("2014-08-15");
         putQueryString("Action", "DescribeBinlogFiles");
     }
@@ -48,8 +48,8 @@ public class DescribeBinlogFilesRequest extends AbstractRequest<DescribeBinlogFi
     protected DescribeBinlogFileResult processResult(HttpResponse response) throws Exception {
         String result = EntityUtils.toString(response.getEntity());
         DescribeBinlogFileResult describeBinlogFileResult = JSONObject.parseObject(result,
-            new TypeReference<DescribeBinlogFileResult>() {
-            });
+                new TypeReference<DescribeBinlogFileResult>() {
+                });
         return describeBinlogFileResult;
     }
 }

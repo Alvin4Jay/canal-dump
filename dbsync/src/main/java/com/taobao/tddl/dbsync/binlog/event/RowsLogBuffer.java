@@ -16,38 +16,38 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
 
 /**
  * Extracting JDBC type & value information from packed rows-buffer.
- * 
- * @see mysql-5.1.60/sql/log_event.cc - Rows_log_event::print_verbose_one_row
+ *
  * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
  * @version 1.0
+ * @see mysql-5.1.60/sql/log_event.cc - Rows_log_event::print_verbose_one_row
  */
 public final class RowsLogBuffer {
 
-    protected static final Log logger            = LogFactory.getLog(RowsLogBuffer.class);
+    protected static final Log logger = LogFactory.getLog(RowsLogBuffer.class);
 
-    public static final long   DATETIMEF_INT_OFS = 0x8000000000L;
-    public static final long   TIMEF_INT_OFS     = 0x800000L;
-    public static final long   TIMEF_OFS         = 0x800000000000L;
-    private static char[]      digits            = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+    public static final long DATETIMEF_INT_OFS = 0x8000000000L;
+    public static final long TIMEF_INT_OFS = 0x800000L;
+    public static final long TIMEF_OFS = 0x800000000000L;
+    private static char[] digits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-    private final LogBuffer    buffer;
-    private final int          columnLen;
-    private final int          jsonColumnCount;
-    private final String       charsetName;
+    private final LogBuffer buffer;
+    private final int columnLen;
+    private final int jsonColumnCount;
+    private final String charsetName;
 
-    private final BitSet       nullBits;
-    private int                nullBitIndex;
+    private final BitSet nullBits;
+    private int nullBitIndex;
 
     // Read value_options if this is AI for PARTIAL_UPDATE_ROWS_EVENT
-    private final boolean      partial;
-    private final BitSet       partialBits;
+    private final boolean partial;
+    private final BitSet partialBits;
 
-    private boolean            fNull;
-    private int                javaType;
-    private int                length;
-    private Serializable       value;
+    private boolean fNull;
+    private int javaType;
+    private int length;
+    private Serializable value;
 
-    public RowsLogBuffer(LogBuffer buffer, final int columnLen, String charsetName, int jsonColumnCount, boolean partial){
+    public RowsLogBuffer(LogBuffer buffer, final int columnLen, String charsetName, int jsonColumnCount, boolean partial) {
         this.buffer = buffer;
         this.columnLen = columnLen;
         this.charsetName = charsetName;
@@ -63,7 +63,7 @@ public final class RowsLogBuffer {
 
     /**
      * Extracting next row from packed buffer.
-     * 
+     *
      * @see mysql-5.1.60/sql/log_event.cc -
      * Rows_log_event::print_verbose_one_row
      */
@@ -97,7 +97,7 @@ public final class RowsLogBuffer {
 
     /**
      * Extracting next field value from packed buffer.
-     * 
+     *
      * @see mysql-5.1.60/sql/log_event.cc -
      * Rows_log_event::print_verbose_one_row
      */
@@ -107,7 +107,7 @@ public final class RowsLogBuffer {
 
     /**
      * Extracting next field value from packed buffer.
-     * 
+     *
      * @see mysql-5.1.60/sql/log_event.cc -
      * Rows_log_event::print_verbose_one_row
      */
@@ -270,7 +270,7 @@ public final class RowsLogBuffer {
 
     /**
      * Extracting next field value from packed buffer.
-     * 
+     *
      * @see mysql-5.1.60/sql/log_event.cc - log_event_print_value
      */
     final Serializable fetchValue(String columnName, int columnIndex, int type, final int meta, boolean isBinary) {
@@ -294,9 +294,9 @@ public final class RowsLogBuffer {
                             break;
                         default:
                             throw new IllegalArgumentException(String.format("!! Don't know how to handle column type=%d meta=%d (%04X)",
-                                type,
-                                meta,
-                                meta));
+                                    type,
+                                    meta,
+                                    meta));
                     }
                 }
             } else {
@@ -356,7 +356,7 @@ public final class RowsLogBuffer {
                  * and cannot exist in a binlog.
                  */
                 logger.warn("MYSQL_TYPE_DECIMAL : This enumeration value is "
-                            + "only used internally and cannot exist in a binlog!");
+                        + "only used internally and cannot exist in a binlog!");
                 javaType = Types.DECIMAL;
                 value = null; /* unknown format */
                 length = 0;
@@ -786,7 +786,7 @@ public final class RowsLogBuffer {
                  * and cannot exist in a binlog.
                  */
                 logger.warn("MYSQL_TYPE_NEWDATE : This enumeration value is "
-                            + "only used internally and cannot exist in a binlog!");
+                        + "only used internally and cannot exist in a binlog!");
                 javaType = Types.DATE;
                 value = null; /* unknown format */
                 length = 0;
@@ -926,7 +926,7 @@ public final class RowsLogBuffer {
                  * and cannot exist in a binlog.
                  */
                 logger.warn("MYSQL_TYPE_TINY_BLOB : This enumeration value is "
-                            + "only used internally and cannot exist in a binlog!");
+                        + "only used internally and cannot exist in a binlog!");
             }
             case LogEvent.MYSQL_TYPE_MEDIUM_BLOB: {
                 /*
@@ -934,7 +934,7 @@ public final class RowsLogBuffer {
                  * and cannot exist in a binlog.
                  */
                 logger.warn("MYSQL_TYPE_MEDIUM_BLOB : This enumeration value is "
-                            + "only used internally and cannot exist in a binlog!");
+                        + "only used internally and cannot exist in a binlog!");
             }
             case LogEvent.MYSQL_TYPE_LONG_BLOB: {
                 /*
@@ -942,7 +942,7 @@ public final class RowsLogBuffer {
                  * and cannot exist in a binlog.
                  */
                 logger.warn("MYSQL_TYPE_LONG_BLOB : This enumeration value is "
-                            + "only used internally and cannot exist in a binlog!");
+                        + "only used internally and cannot exist in a binlog!");
             }
             case LogEvent.MYSQL_TYPE_BLOB: {
                 /*
@@ -1071,10 +1071,10 @@ public final class RowsLogBuffer {
                     // print_json_diff
                     int position = buffer.position();
                     StringBuilder builder = JsonDiffConversion.print_json_diff(buffer,
-                        len,
-                        columnName,
-                        columnIndex,
-                        charsetName);
+                            len,
+                            columnName,
+                            columnIndex,
+                            charsetName);
                     value = builder.toString();
                     buffer.position(position + len);
                 } else {
@@ -1086,9 +1086,9 @@ public final class RowsLogBuffer {
                     } else {
                         int position = buffer.position();
                         Json_Value jsonValue = JsonConversion.parse_value(buffer.getUint8(),
-                            buffer,
-                            len - 1,
-                            charsetName);
+                                buffer,
+                                len - 1,
+                                charsetName);
                         StringBuilder builder = new StringBuilder();
                         jsonValue.toJsonString(builder, charsetName);
                         value = builder.toString();
@@ -1135,9 +1135,9 @@ public final class RowsLogBuffer {
             }
             default:
                 logger.error(String.format("!! Don't know how to handle column type=%d meta=%d (%04X)",
-                    type,
-                    meta,
-                    meta));
+                        type,
+                        meta,
+                        meta));
                 javaType = Types.OTHER;
                 value = null;
                 length = 0;
@@ -1184,9 +1184,9 @@ public final class RowsLogBuffer {
     public static void appendNumber4(StringBuilder builder, int d) {
         if (d >= 1000) {
             builder.append(digits[d / 1000])
-                .append(digits[(d / 100) % 10])
-                .append(digits[(d / 10) % 10])
-                .append(digits[d % 10]);
+                    .append(digits[(d / 100) % 10])
+                    .append(digits[(d / 10) % 10])
+                    .append(digits[d % 10]);
         } else {
             builder.append('0');
             appendNumber3(builder, d);

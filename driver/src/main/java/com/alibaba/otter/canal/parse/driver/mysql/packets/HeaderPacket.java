@@ -8,16 +8,16 @@ import com.alibaba.otter.canal.common.utils.CanalToStringStyle;
  * <pre>
  * Offset  Length     Description
  *   0       3        Packet body length stored with the low byte first.
- *   3       1        Packet sequence number. The sequence numbers are reset with each new command. 
+ *   3       1        Packet sequence number. The sequence numbers are reset with each new command.
  *                      While the correct packet sequencing is ensured by the underlying transmission protocol,
  *                      this field is used for the sanity checks of the application logic.
  * </pre>
- * 
+ *
  * <br>
  * The Packet Header will not be shown in the descriptions of packets that
  * follow this section. Think of it as always there. But logically, it
  * "precedes the packet" rather than "is included in the packet".<br>
- * 
+ *
  * @author fujohnwang
  */
 public class HeaderPacket implements IPacket {
@@ -26,7 +26,7 @@ public class HeaderPacket implements IPacket {
      * this field indicates the packet length that follows the header, with
      * header packet's 4 bytes excluded.
      */
-    private int  packetBodyLength;
+    private int packetBodyLength;
     private byte packetSequenceNumber;
 
     /**

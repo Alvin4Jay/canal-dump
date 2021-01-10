@@ -14,15 +14,15 @@ import com.alibaba.otter.canal.parse.driver.mysql.utils.MySQLPasswordEncrypter;
 
 public class ClientAuthenticationPacket extends PacketWithHeaderPacket {
 
-    private int    clientCapability = Capability.CLIENT_LONG_PASSWORD | Capability.CLIENT_LONG_FLAG
-                                      | Capability.CLIENT_PROTOCOL_41 | Capability.CLIENT_INTERACTIVE
-                                      | Capability.CLIENT_TRANSACTIONS | Capability.CLIENT_SECURE_CONNECTION
-                                      | Capability.CLIENT_MULTI_STATEMENTS | Capability.CLIENT_PLUGIN_AUTH;
+    private int clientCapability = Capability.CLIENT_LONG_PASSWORD | Capability.CLIENT_LONG_FLAG
+            | Capability.CLIENT_PROTOCOL_41 | Capability.CLIENT_INTERACTIVE
+            | Capability.CLIENT_TRANSACTIONS | Capability.CLIENT_SECURE_CONNECTION
+            | Capability.CLIENT_MULTI_STATEMENTS | Capability.CLIENT_PLUGIN_AUTH;
     private String username;
     private String password;
-    private byte   charsetNumber;
+    private byte charsetNumber;
     private String databaseName;
-    private int    serverCapabilities;
+    private int serverCapabilities;
     private byte[] scrumbleBuff;
     private byte[] authPluginName;
 
@@ -44,7 +44,7 @@ public class ClientAuthenticationPacket extends PacketWithHeaderPacket {
      *  n (Null-Terminated String)   databasename (optional)
      *  n (Null-Terminated String)   auth plugin name (optional)
      * </pre>
-     * 
+     *
      * @throws IOException
      */
     public byte[] toBytes() throws IOException {

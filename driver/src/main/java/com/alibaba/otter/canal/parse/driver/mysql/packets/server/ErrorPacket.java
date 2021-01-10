@@ -7,9 +7,9 @@ import com.alibaba.otter.canal.parse.driver.mysql.utils.ByteHelper;
 
 public class ErrorPacket extends PacketWithHeaderPacket {
 
-    public byte   fieldCount;
-    public int    errorNumber;
-    public byte   sqlStateMarker;
+    public byte fieldCount;
+    public int errorNumber;
+    public byte sqlStateMarker;
     public byte[] sqlState;
     public String message;
 
@@ -23,7 +23,7 @@ public class ErrorPacket extends PacketWithHeaderPacket {
      *  1                           (sqlstate marker), always '#'
      *  5                           sqlstate (5 characters)
      *  n                           message
-     * 
+     *
      * </pre>
      */
     public void fromBytes(byte[] data) {
@@ -52,7 +52,7 @@ public class ErrorPacket extends PacketWithHeaderPacket {
     @Override
     public String toString() {
         return "ErrorPacket [errorNumber=" + errorNumber + ", fieldCount=" + fieldCount + ", message=" + message
-               + ", sqlState=" + sqlStateToString() + ", sqlStateMarker=" + (char) sqlStateMarker + "]";
+                + ", sqlState=" + sqlStateToString() + ", sqlStateMarker=" + (char) sqlStateMarker + "]";
     }
 
     private String sqlStateToString() {

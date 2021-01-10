@@ -23,7 +23,7 @@ public interface CanalMQProducer {
 
     /**
      * Get base mq properties
-     * 
+     *
      * @return MQProperties
      */
     MQProperties getMqProperties();
@@ -32,7 +32,7 @@ public interface CanalMQProducer {
      * Send canal message to related topic
      *
      * @param canalDestination canal mq destination
-     * @param message canal message
+     * @param message          canal message
      */
     void send(MQDestination canalDestination, Message message, Callback callback);
 

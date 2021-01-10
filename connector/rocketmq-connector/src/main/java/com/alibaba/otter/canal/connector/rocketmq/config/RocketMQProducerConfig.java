@@ -10,13 +10,13 @@ import com.alibaba.otter.canal.connector.core.config.MQProperties;
  */
 public class RocketMQProducerConfig extends MQProperties {
 
-    private String  producerGroup;
-    private boolean enableMessageTrace       = false;
-    private String  customizedTraceTopic;
-    private String  namespace;
-    private String  namesrvAddr;
-    private int     retryTimesWhenSendFailed = 0;
-    private boolean vipChannelEnabled        = false;
+    private String producerGroup;
+    private boolean enableMessageTrace = false;
+    private String customizedTraceTopic;
+    private String namespace;
+    private String namesrvAddr;
+    private int retryTimesWhenSendFailed = 0;
+    private boolean vipChannelEnabled = false;
 
     public String getProducerGroup() {
         return producerGroup;

@@ -17,9 +17,9 @@ public class KafkaFlatMessage extends FlatMessage {
     /**
      * Kafka 消息 offset
      */
-    private long              offset;
+    private long offset;
 
-    public KafkaFlatMessage(FlatMessage message, long offset){
+    public KafkaFlatMessage(FlatMessage message, long offset) {
         super(message.getId());
         BeanUtils.copyProperties(message, this);
         this.offset = offset;

@@ -51,12 +51,12 @@ import com.taobao.tddl.dbsync.binlog.event.mariadb.StartEncryptionLogEvent;
  * <pre>
  * LogDecoder decoder = new LogDecoder();
  * decoder.handle(...);
- * 
+ *
  * LogEvent event;
  * do
  * {
  *     event = decoder.decode(buffer, context);
- * 
+ *
  *     // process log event.
  * }
  * while (event != null);
@@ -68,14 +68,14 @@ import com.taobao.tddl.dbsync.binlog.event.mariadb.StartEncryptionLogEvent;
  */
 public final class LogDecoder {
 
-    protected static final Log logger    = LogFactory.getLog(LogDecoder.class);
+    protected static final Log logger = LogFactory.getLog(LogDecoder.class);
 
-    protected final BitSet     handleSet = new BitSet(LogEvent.ENUM_END_EVENT);
+    protected final BitSet handleSet = new BitSet(LogEvent.ENUM_END_EVENT);
 
-    public LogDecoder(){
+    public LogDecoder() {
     }
 
-    public LogDecoder(final int fromIndex, final int toIndex){
+    public LogDecoder(final int fromIndex, final int toIndex) {
         handleSet.set(fromIndex, toIndex);
     }
 
@@ -112,7 +112,7 @@ public final class LogDecoder {
                     } catch (IOException e) {
                         if (logger.isWarnEnabled()) {
                             logger.warn("Decoding " + LogEvent.getTypeName(header.getType()) + " failed from: "
-                                        + context.getLogPosition(), e);
+                                    + context.getLogPosition(), e);
                         }
                         throw e;
                     } finally {
@@ -223,10 +223,9 @@ public final class LogDecoder {
                 logPosition.position = header.getLogPos();
                 return event;
             }
-            case LogEvent.SLAVE_EVENT: /* can never happen (unused event) */
-            {
+            case LogEvent.SLAVE_EVENT: /* can never happen (unused event) */ {
                 if (logger.isWarnEnabled()) logger.warn("Skipping unsupported SLAVE_EVENT from: "
-                                                        + context.getLogPosition());
+                        + context.getLogPosition());
                 break;
             }
             case LogEvent.CREATE_FILE_EVENT: {
@@ -293,21 +292,21 @@ public final class LogDecoder {
             }
             case LogEvent.PRE_GA_WRITE_ROWS_EVENT: {
                 if (logger.isWarnEnabled()) logger.warn("Skipping unsupported PRE_GA_WRITE_ROWS_EVENT from: "
-                                                        + context.getLogPosition());
+                        + context.getLogPosition());
                 // ev = new Write_rows_log_event_old(buf, event_len,
                 // description_event);
                 break;
             }
             case LogEvent.PRE_GA_UPDATE_ROWS_EVENT: {
                 if (logger.isWarnEnabled()) logger.warn("Skipping unsupported PRE_GA_UPDATE_ROWS_EVENT from: "
-                                                        + context.getLogPosition());
+                        + context.getLogPosition());
                 // ev = new Update_rows_log_event_old(buf, event_len,
                 // description_event);
                 break;
             }
             case LogEvent.PRE_GA_DELETE_ROWS_EVENT: {
                 if (logger.isWarnEnabled()) logger.warn("Skipping unsupported PRE_GA_DELETE_ROWS_EVENT from: "
-                                                        + context.getLogPosition());
+                        + context.getLogPosition());
                 // ev = new Delete_rows_log_event_old(buf, event_len,
                 // description_event);
                 break;
@@ -464,7 +463,7 @@ public final class LogDecoder {
                 } else {
                     if (logger.isWarnEnabled()) {
                         logger.warn("Skipping unrecognized binlog event " + LogEvent.getTypeName(header.getType())
-                                    + " from: " + context.getLogPosition());
+                                + " from: " + context.getLogPosition());
                     }
                 }
         }

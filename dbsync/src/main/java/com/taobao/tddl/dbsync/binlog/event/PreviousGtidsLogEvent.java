@@ -10,7 +10,7 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
  */
 public class PreviousGtidsLogEvent extends LogEvent {
 
-    public PreviousGtidsLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent){
+    public PreviousGtidsLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent) {
         super(header);
         // do nothing , just for mysql gtid search function
     }

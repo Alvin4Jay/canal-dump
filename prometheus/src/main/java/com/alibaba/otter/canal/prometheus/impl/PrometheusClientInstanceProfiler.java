@@ -15,18 +15,18 @@ import static com.alibaba.otter.canal.prometheus.CanalInstanceExports.DEST_LABEL
  */
 public class PrometheusClientInstanceProfiler implements ClientInstanceProfiler {
 
-    private static final long   NANO_PER_MILLI = 1000 * 1000L;
-    private static final String PACKET_TYPE    = "canal_instance_client_packets";
+    private static final long NANO_PER_MILLI = 1000 * 1000L;
+    private static final String PACKET_TYPE = "canal_instance_client_packets";
     private static final String OUTBOUND_BYTES = "canal_instance_client_bytes";
-    private static final String EMPTY_BATCHES  = "canal_instance_client_empty_batches";
-    private static final String ERRORS         = "canal_instance_client_request_error";
-    private static final String LATENCY        = "canal_instance_client_request_latency";
-    private final Counter       outboundCounter;
-    private final Counter       packetsCounter;
-    private final Counter       emptyBatchesCounter;
-    private final Counter       errorsCounter;
-    private final Histogram     responseLatency;
-    private volatile boolean    running        = false;
+    private static final String EMPTY_BATCHES = "canal_instance_client_empty_batches";
+    private static final String ERRORS = "canal_instance_client_request_error";
+    private static final String LATENCY = "canal_instance_client_request_latency";
+    private final Counter outboundCounter;
+    private final Counter packetsCounter;
+    private final Counter emptyBatchesCounter;
+    private final Counter errorsCounter;
+    private final Histogram responseLatency;
+    private volatile boolean running = false;
 
     private static class SingletonHolder {
         private static final PrometheusClientInstanceProfiler SINGLETON = new PrometheusClientInstanceProfiler();

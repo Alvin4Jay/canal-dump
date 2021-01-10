@@ -1,6 +1,7 @@
 package com.alibaba.otter.canal.prometheus.impl;
 
 import static com.alibaba.otter.canal.prometheus.CanalInstanceExports.DEST_LABELS_LIST;
+
 import io.prometheus.client.Collector;
 import io.prometheus.client.CounterMetricFamily;
 
@@ -25,13 +26,13 @@ import com.google.common.base.Preconditions;
  */
 public class SinkCollector extends Collector implements InstanceRegistry {
 
-    private static final Logger                            logger               = LoggerFactory.getLogger(SinkCollector.class);
-    private static final long                              NANO_PER_MILLI       = 1000 * 1000L;
-    private static final String                            SINK_BLOCKING_TIME   = "canal_instance_sink_blocking_time";
-    private static final String                            SINK_BLOCK_TIME_HELP = "Total sink blocking time in milliseconds";
-    private final ConcurrentMap<String, SinkMetricsHolder> instances            = new ConcurrentHashMap<String, SinkMetricsHolder>();
+    private static final Logger logger = LoggerFactory.getLogger(SinkCollector.class);
+    private static final long NANO_PER_MILLI = 1000 * 1000L;
+    private static final String SINK_BLOCKING_TIME = "canal_instance_sink_blocking_time";
+    private static final String SINK_BLOCK_TIME_HELP = "Total sink blocking time in milliseconds";
+    private final ConcurrentMap<String, SinkMetricsHolder> instances = new ConcurrentHashMap<String, SinkMetricsHolder>();
 
-    private SinkCollector(){
+    private SinkCollector() {
     }
 
     private static class SingletonHolder {
@@ -47,8 +48,8 @@ public class SinkCollector extends Collector implements InstanceRegistry {
     public List<MetricFamilySamples> collect() {
         List<MetricFamilySamples> mfs = new ArrayList<MetricFamilySamples>();
         CounterMetricFamily blockingCounter = new CounterMetricFamily(SINK_BLOCKING_TIME,
-            SINK_BLOCK_TIME_HELP,
-            DEST_LABELS_LIST);
+                SINK_BLOCK_TIME_HELP,
+                DEST_LABELS_LIST);
         for (SinkMetricsHolder smh : instances.values()) {
             blockingCounter.addMetric(smh.destLabelValues, (smh.eventsSinkBlockingTime.doubleValue() / NANO_PER_MILLI));
         }
@@ -82,7 +83,7 @@ public class SinkCollector extends Collector implements InstanceRegistry {
 
     private class SinkMetricsHolder {
 
-        private AtomicLong   eventsSinkBlockingTime;
+        private AtomicLong eventsSinkBlockingTime;
         private List<String> destLabelValues;
     }
 }

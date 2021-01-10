@@ -15,16 +15,17 @@ import java.util.Map;
  *    token = SHA1(token XOR SHA1(scramble + password))
  * 3. checktoken vs password
  * </pre>
- * 
+ *
  * @author agapple 2019年8月26日 下午4:58:15
  * @since 1.1.4
  */
 public class SecurityUtil {
 
-    private static char[]                  digits  = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c',
-            'd', 'e', 'f'                         };
+    private static char[] digits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c',
+            'd', 'e', 'f'};
 
     private static Map<Character, Integer> rDigits = new HashMap<Character, Integer>(16);
+
     static {
         for (int i = 0; i < digits.length; ++i) {
             rDigits.put(digits[i], i);
@@ -52,7 +53,7 @@ public class SecurityUtil {
      * server auth check
      */
     public static final boolean scrambleServerAuth(byte[] token, byte[] pass, byte[] seed)
-                                                                                          throws NoSuchAlgorithmException {
+            throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-1");
         md.update(seed);
         byte[] pass1 = md.digest(pass);

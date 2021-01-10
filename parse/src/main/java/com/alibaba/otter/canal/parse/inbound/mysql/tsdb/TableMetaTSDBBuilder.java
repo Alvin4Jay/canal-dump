@@ -11,14 +11,14 @@ import com.google.common.collect.Maps;
 
 /**
  * tableMeta构造器
- * 
+ *
  * @author agapple 2018年8月8日 上午11:01:08
  * @since 1.0.25
  */
 
 public class TableMetaTSDBBuilder {
 
-    protected final static Logger                                        logger   = LoggerFactory.getLogger(DefaultTableMetaTSDBFactory.class);
+    protected final static Logger logger = LoggerFactory.getLogger(DefaultTableMetaTSDBFactory.class);
     private static ConcurrentMap<String, ClassPathXmlApplicationContext> contexts = Maps.newConcurrentMap();
 
     /**

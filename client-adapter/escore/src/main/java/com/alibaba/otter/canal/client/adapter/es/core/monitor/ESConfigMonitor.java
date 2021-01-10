@@ -19,13 +19,13 @@ import com.alibaba.otter.canal.client.adapter.support.Util;
 
 public class ESConfigMonitor {
 
-    private static final Logger   logger = LoggerFactory.getLogger(ESConfigMonitor.class);
+    private static final Logger logger = LoggerFactory.getLogger(ESConfigMonitor.class);
 
-    private String                adapterName;
+    private String adapterName;
 
-    private ESAdapter             esAdapter;
+    private ESAdapter esAdapter;
 
-    private Properties            envProperties;
+    private Properties envProperties;
 
     private FileAlterationMonitor fileMonitor;
 
@@ -36,7 +36,7 @@ public class ESConfigMonitor {
         File confDir = Util.getConfDirPath(adapterName);
         try {
             FileAlterationObserver observer = new FileAlterationObserver(confDir,
-                FileFilterUtils.and(FileFilterUtils.fileFileFilter(), FileFilterUtils.suffixFileFilter("yml")));
+                    FileFilterUtils.and(FileFilterUtils.fileFileFilter(), FileFilterUtils.suffixFileFilter("yml")));
             FileListener listener = new FileListener();
             observer.addListener(listener);
             fileMonitor = new FileAlterationMonitor(3000, observer);
@@ -64,10 +64,10 @@ public class ESConfigMonitor {
                 // 加载新增的配置文件
                 String configContent = MappingConfigsLoader.loadConfig(adapterName + File.separator + file.getName());
                 ESSyncConfig config = YmlConfigBinder.bindYmlToObj(null,
-                    configContent,
-                    ESSyncConfig.class,
-                    null,
-                    envProperties);
+                        configContent,
+                        ESSyncConfig.class,
+                        null,
+                        envProperties);
                 if (config != null) {
                     config.validate();
                     addConfigToCache(file, config);
@@ -86,16 +86,16 @@ public class ESConfigMonitor {
                 if (esAdapter.getEsSyncConfig().containsKey(file.getName())) {
                     // 加载配置文件
                     String configContent = MappingConfigsLoader.loadConfig(adapterName + File.separator
-                                                                           + file.getName());
+                            + file.getName());
                     if (configContent == null) {
                         onFileDelete(file);
                         return;
                     }
                     ESSyncConfig config = YmlConfigBinder.bindYmlToObj(null,
-                        configContent,
-                        ESSyncConfig.class,
-                        null,
-                        envProperties);
+                            configContent,
+                            ESSyncConfig.class,
+                            null,
+                            envProperties);
                     if (config == null) {
                         return;
                     }

@@ -27,23 +27,23 @@ import com.alibaba.otter.canal.server.netty.NettyUtils;
 
 /**
  * 客户端身份认证处理
- * 
+ *
  * @author jianghang 2012-10-24 上午11:12:45
  * @version 1.0.0
  */
 public class ClientAuthenticationHandler extends SimpleChannelHandler {
 
-    private static final Logger     logger                                  = LoggerFactory.getLogger(ClientAuthenticationHandler.class);
-    private final int               SUPPORTED_VERSION                       = 3;
-    private final int               defaultSubscriptorDisconnectIdleTimeout = 60 * 60 * 1000;
+    private static final Logger logger = LoggerFactory.getLogger(ClientAuthenticationHandler.class);
+    private final int SUPPORTED_VERSION = 3;
+    private final int defaultSubscriptorDisconnectIdleTimeout = 60 * 60 * 1000;
     private CanalServerWithEmbedded embeddedServer;
-    private byte[]                  seed;
+    private byte[] seed;
 
-    public ClientAuthenticationHandler(){
+    public ClientAuthenticationHandler() {
 
     }
 
-    public ClientAuthenticationHandler(CanalServerWithEmbedded embeddedServer){
+    public ClientAuthenticationHandler(CanalServerWithEmbedded embeddedServer) {
         this.embeddedServer = embeddedServer;
     }
 
@@ -56,22 +56,22 @@ public class ClientAuthenticationHandler extends SimpleChannelHandler {
                 final ClientAuth clientAuth = ClientAuth.parseFrom(packet.getBody());
                 if (seed == null) {
                     byte[] errorBytes = NettyUtils.errorPacket(400,
-                        MessageFormatter.format("auth failed for seed is null", clientAuth.getUsername()).getMessage());
+                            MessageFormatter.format("auth failed for seed is null", clientAuth.getUsername()).getMessage());
                     NettyUtils.write(ctx.getChannel(), errorBytes, null);
                 }
 
                 if (!embeddedServer.auth(clientAuth.getUsername(), clientAuth.getPassword().toStringUtf8(), seed)) {
                     byte[] errorBytes = NettyUtils.errorPacket(400,
-                        MessageFormatter.format("auth failed for user:{}", clientAuth.getUsername()).getMessage());
+                            MessageFormatter.format("auth failed for user:{}", clientAuth.getUsername()).getMessage());
                     NettyUtils.write(ctx.getChannel(), errorBytes, null);
                 }
 
                 // 如果存在订阅信息
                 if (StringUtils.isNotEmpty(clientAuth.getDestination())
-                    && StringUtils.isNotEmpty(clientAuth.getClientId())) {
+                        && StringUtils.isNotEmpty(clientAuth.getClientId())) {
                     ClientIdentity clientIdentity = new ClientIdentity(clientAuth.getDestination(),
-                        Short.valueOf(clientAuth.getClientId()),
-                        clientAuth.getFilter());
+                            Short.valueOf(clientAuth.getClientId()),
+                            clientAuth.getFilter());
                     try {
                         MDC.put("destination", clientIdentity.getDestination());
                         embeddedServer.subscribe(clientIdentity);
@@ -105,26 +105,26 @@ public class ClientAuthenticationHandler extends SimpleChannelHandler {
                         // fix bug: soTimeout parameter's unit from connector is
                         // millseconds.
                         IdleStateHandler idleStateHandler = new IdleStateHandler(NettyUtils.hashedWheelTimer,
-                            readTimeout,
-                            writeTimeout,
-                            0,
-                            TimeUnit.MILLISECONDS);
+                                readTimeout,
+                                writeTimeout,
+                                0,
+                                TimeUnit.MILLISECONDS);
                         ctx.getPipeline().addBefore(SessionHandler.class.getName(),
-                            IdleStateHandler.class.getName(),
-                            idleStateHandler);
+                                IdleStateHandler.class.getName(),
+                                idleStateHandler);
 
                         IdleStateAwareChannelHandler idleStateAwareChannelHandler = new IdleStateAwareChannelHandler() {
 
                             public void channelIdle(ChannelHandlerContext ctx, IdleStateEvent e) throws Exception {
                                 logger.warn("channel:{} idle timeout exceeds, close channel to save server resources...",
-                                    ctx.getChannel());
+                                        ctx.getChannel());
                                 ctx.getChannel().close();
                             }
 
                         };
                         ctx.getPipeline().addBefore(SessionHandler.class.getName(),
-                            IdleStateAwareChannelHandler.class.getName(),
-                            idleStateAwareChannelHandler);
+                                IdleStateAwareChannelHandler.class.getName(),
+                                idleStateAwareChannelHandler);
                     }
 
                 });

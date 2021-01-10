@@ -30,15 +30,15 @@ import com.alibaba.otter.canal.client.adapter.support.OuterAdapterConfig;
  */
 public class CanalAdapterLoader {
 
-    private static final Logger           logger                 = LoggerFactory.getLogger(CanalAdapterLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(CanalAdapterLoader.class);
 
-    private CanalClientConfig             canalClientConfig;
+    private CanalClientConfig canalClientConfig;
 
     private Map<String, AdapterProcessor> canalAdapterProcessors = new HashMap<>();
 
     private ExtensionLoader<OuterAdapter> loader;
 
-    public CanalAdapterLoader(CanalClientConfig canalClientConfig){
+    public CanalAdapterLoader(CanalClientConfig canalClientConfig) {
         this.canalClientConfig = canalClientConfig;
     }
 
@@ -58,16 +58,16 @@ public class CanalAdapterLoader {
                 canalOuterAdapterGroups.add(canalOuterAdapters);
 
                 AdapterProcessor adapterProcessor = canalAdapterProcessors.computeIfAbsent(canalAdapter.getInstance()
-                                                                                           + "|"
-                                                                                           + StringUtils.trimToEmpty(group.getGroupId()),
-                    f -> new AdapterProcessor(canalClientConfig,
-                        canalAdapter.getInstance(),
-                        group.getGroupId(),
-                        canalOuterAdapterGroups));
+                                + "|"
+                                + StringUtils.trimToEmpty(group.getGroupId()),
+                        f -> new AdapterProcessor(canalClientConfig,
+                                canalAdapter.getInstance(),
+                                group.getGroupId(),
+                                canalOuterAdapterGroups));
                 adapterProcessor.start();
 
                 logger.info("Start adapter for canal-client mq topic: {} succeed", canalAdapter.getInstance() + "-"
-                                                                                   + group.getGroupId());
+                        + group.getGroupId());
             }
         }
 

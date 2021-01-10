@@ -13,9 +13,9 @@ public class PropertyOrigin {
 
     private final PropertySource<?> source;
 
-    private final String            name;
+    private final String name;
 
-    PropertyOrigin(PropertySource<?> source, String name){
+    PropertyOrigin(PropertySource<?> source, String name) {
         this.name = name;
         this.source = source;
     }

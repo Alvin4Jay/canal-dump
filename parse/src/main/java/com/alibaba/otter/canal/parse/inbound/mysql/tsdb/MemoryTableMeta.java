@@ -48,11 +48,11 @@ import com.alibaba.otter.canal.protocol.position.EntryPosition;
  */
 public class MemoryTableMeta implements TableMetaTSDB {
 
-    private Logger                       logger     = LoggerFactory.getLogger(MemoryTableMeta.class);
+    private Logger logger = LoggerFactory.getLogger(MemoryTableMeta.class);
     private Map<List<String>, TableMeta> tableMetas = new ConcurrentHashMap<List<String>, TableMeta>();
-    private SchemaRepository             repository = new SchemaRepository(JdbcConstants.MYSQL);
+    private SchemaRepository repository = new SchemaRepository(JdbcConstants.MYSQL);
 
-    public MemoryTableMeta(){
+    public MemoryTableMeta() {
     }
 
     @Override
@@ -75,12 +75,12 @@ public class MemoryTableMeta implements TableMetaTSDB {
             try {
                 // druid暂时flush privileges语法解析有问题
                 if (!StringUtils.startsWithIgnoreCase(StringUtils.trim(ddl), "flush")
-                    && !StringUtils.startsWithIgnoreCase(StringUtils.trim(ddl), "grant")
-                    && !StringUtils.startsWithIgnoreCase(StringUtils.trim(ddl), "revoke")
-                    && !StringUtils.startsWithIgnoreCase(StringUtils.trim(ddl), "create user")
-                    && !StringUtils.startsWithIgnoreCase(StringUtils.trim(ddl), "alter user")
-                    && !StringUtils.startsWithIgnoreCase(StringUtils.trim(ddl), "drop user")
-                    && !StringUtils.startsWithIgnoreCase(StringUtils.trim(ddl), "create database")) {
+                        && !StringUtils.startsWithIgnoreCase(StringUtils.trim(ddl), "grant")
+                        && !StringUtils.startsWithIgnoreCase(StringUtils.trim(ddl), "revoke")
+                        && !StringUtils.startsWithIgnoreCase(StringUtils.trim(ddl), "create user")
+                        && !StringUtils.startsWithIgnoreCase(StringUtils.trim(ddl), "alter user")
+                        && !StringUtils.startsWithIgnoreCase(StringUtils.trim(ddl), "drop user")
+                        && !StringUtils.startsWithIgnoreCase(StringUtils.trim(ddl), "create database")) {
                     repository.console(ddl);
                 }
             } catch (Throwable e) {
@@ -268,7 +268,7 @@ public class MemoryTableMeta implements TableMetaTSDB {
         if (sqlName instanceof SQLPropertyExpr) {
             SQLIdentifierExpr owner = (SQLIdentifierExpr) ((SQLPropertyExpr) sqlName).getOwner();
             return DruidDdlParser.unescapeName(owner.getName()) + "."
-                   + DruidDdlParser.unescapeName(((SQLPropertyExpr) sqlName).getName());
+                    + DruidDdlParser.unescapeName(((SQLPropertyExpr) sqlName).getName());
         } else if (sqlName instanceof SQLIdentifierExpr) {
             return DruidDdlParser.unescapeName(((SQLIdentifierExpr) sqlName).getName());
         } else if (sqlName instanceof SQLCharExpr) {

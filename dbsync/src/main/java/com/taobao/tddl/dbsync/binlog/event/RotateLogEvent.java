@@ -34,7 +34,7 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
  * <td>Name of the binlog to rotate to.</td>
  * </tr>
  * </table>
- * 
+ *
  * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
  * @version 1.0
  */
@@ -56,26 +56,26 @@ public final class RotateLogEvent extends LogEvent {
      * </ul>
      * Source : http://forge.mysql.com/wiki/MySQL_Internals_Binary_Log
      */
-    private final String          filename;
-    private final long            position;
+    private final String filename;
+    private final long position;
 
     /* Rotate event post-header */
-    public static final int       R_POS_OFFSET   = 0;
-    public static final int       R_IDENT_OFFSET = 8;
+    public static final int R_POS_OFFSET = 0;
+    public static final int R_IDENT_OFFSET = 8;
 
     /* Max length of full path-name */
-    public static final int       FN_REFLEN      = 512;
+    public static final int FN_REFLEN = 512;
 
     // Rotate header with all empty fields.
-    public static final LogHeader ROTATE_HEADER  = new LogHeader(ROTATE_EVENT);
+    public static final LogHeader ROTATE_HEADER = new LogHeader(ROTATE_EVENT);
 
     /**
      * Creates a new <code>Rotate_log_event</code> object read normally from
      * log.
-     * 
+     *
      * @throws MySQLExtractException
      */
-    public RotateLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent){
+    public RotateLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent) {
         super(header);
 
         final int headerSize = descriptionEvent.commonHeaderLen;
@@ -83,8 +83,8 @@ public final class RotateLogEvent extends LogEvent {
 
         buffer.position(headerSize + R_POS_OFFSET);
         position = (postHeaderLen != 0) ? buffer.getLong64() : 4; // !uint8korr(buf
-                                                                  // +
-                                                                  // R_POS_OFFSET)
+        // +
+        // R_POS_OFFSET)
 
         final int filenameOffset = headerSize + postHeaderLen;
         int filenameLen = buffer.limit() - filenameOffset;
@@ -98,7 +98,7 @@ public final class RotateLogEvent extends LogEvent {
      * Creates a new <code>Rotate_log_event</code> without log information. This
      * is used to generate missing log rotation events.
      */
-    public RotateLogEvent(String filename){
+    public RotateLogEvent(String filename) {
         super(ROTATE_HEADER);
 
         this.filename = filename;
@@ -108,7 +108,7 @@ public final class RotateLogEvent extends LogEvent {
     /**
      * Creates a new <code>Rotate_log_event</code> without log information.
      */
-    public RotateLogEvent(String filename, final long position){
+    public RotateLogEvent(String filename, final long position) {
         super(ROTATE_HEADER);
 
         this.filename = filename;

@@ -17,9 +17,9 @@ public class KafkaMessage extends Message {
     /**
      * Kafka 消息 offset
      */
-    private long              offset;
+    private long offset;
 
-    public KafkaMessage(Message message, long offset){
+    public KafkaMessage(Message message, long offset) {
         super(message.getId());
         BeanUtils.copyProperties(message, this);
         this.offset = offset;

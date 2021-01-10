@@ -28,18 +28,18 @@ import com.google.common.base.Joiner;
 
 /**
  * 提供canal admin的管理操作
- * 
+ *
  * @author agapple 2019年8月24日 下午11:39:01
  * @since 1.1.4
  */
 public class CanalAdminController implements CanalAdmin {
 
     private static final Logger logger = LoggerFactory.getLogger(CanalAdminController.class);
-    private String              user;
-    private String              passwd;
-    private CanalStarter         canalStater;
+    private String user;
+    private String passwd;
+    private CanalStarter canalStater;
 
-    public CanalAdminController(CanalStarter canalStater){
+    public CanalAdminController(CanalStarter canalStater) {
         this.canalStater = canalStater;
     }
 
@@ -190,8 +190,8 @@ public class CanalAdminController implements CanalAdmin {
     @Override
     public String listCanalLog() {
         Collection<File> files = org.apache.commons.io.FileUtils.listFiles(new File("../logs/canal/"),
-            TrueFileFilter.TRUE,
-            TrueFileFilter.TRUE);
+                TrueFileFilter.TRUE,
+                TrueFileFilter.TRUE);
         List<String> names = files.stream().map(f -> f.getName()).collect(Collectors.toList());
         return Joiner.on(",").join(names);
     }
@@ -204,8 +204,8 @@ public class CanalAdminController implements CanalAdmin {
     @Override
     public String listInstanceLog(String destination) {
         Collection<File> files = org.apache.commons.io.FileUtils.listFiles(new File("../logs/" + destination + "/"),
-            TrueFileFilter.TRUE,
-            TrueFileFilter.TRUE);
+                TrueFileFilter.TRUE,
+                TrueFileFilter.TRUE);
         List<String> names = files.stream().map(f -> f.getName()).collect(Collectors.toList());
         return Joiner.on(",").join(names);
     }
@@ -220,7 +220,7 @@ public class CanalAdminController implements CanalAdmin {
 
     private InstanceAction getInstanceAction(String destination) {
         Map<InstanceConfig.InstanceMode, InstanceConfigMonitor> monitors = canalStater.getController()
-            .getInstanceConfigMonitors();
+                .getInstanceConfigMonitors();
 
         InstanceAction instanceAction = null;
         if (monitors.containsKey(InstanceConfig.InstanceMode.SPRING)) {

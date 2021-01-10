@@ -20,21 +20,21 @@ import com.alibaba.otter.canal.protocol.position.LogPosition;
  */
 public class PeriodMixedLogPositionManager extends AbstractLogPositionManager {
 
-    private static final Logger         logger       = LoggerFactory.getLogger(PeriodMixedLogPositionManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(PeriodMixedLogPositionManager.class);
 
-    private MemoryLogPositionManager    memoryLogPositionManager;
+    private MemoryLogPositionManager memoryLogPositionManager;
     private ZooKeeperLogPositionManager zooKeeperLogPositionManager;
-    private ScheduledExecutorService    executorService;
+    private ScheduledExecutorService executorService;
 
-    private long                        period;
-    private Set<String>                 persistTasks;
+    private long period;
+    private Set<String> persistTasks;
 
     @SuppressWarnings("serial")
-    private final LogPosition           nullPosition = new LogPosition() {
-                                                     };
+    private final LogPosition nullPosition = new LogPosition() {
+    };
 
     public PeriodMixedLogPositionManager(MemoryLogPositionManager memoryLogPositionManager,
-                                         ZooKeeperLogPositionManager zooKeeperLogPositionManager, long period){
+                                         ZooKeeperLogPositionManager zooKeeperLogPositionManager, long period) {
         if (memoryLogPositionManager == null) {
             throw new NullPointerException("null memoryLogPositionManager");
         }

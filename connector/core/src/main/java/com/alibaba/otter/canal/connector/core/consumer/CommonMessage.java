@@ -6,20 +6,20 @@ import java.util.Map;
 
 public class CommonMessage implements Serializable {
 
-    private static final long         serialVersionUID = 2611556444074013268L;
+    private static final long serialVersionUID = 2611556444074013268L;
 
-    private String                    database;                               // 数据库或schema
-    private String                    table;                                  // 表名
-    private List<String>              pkNames;
-    private Boolean                   isDdl;
+    private String database;                               // 数据库或schema
+    private String table;                                  // 表名
+    private List<String> pkNames;
+    private Boolean isDdl;
     // 类型:INSERT/UPDATE/DELETE
-    private String                    type;
+    private String type;
     // binlog executeTime, 执行耗时
-    private Long                      es;
+    private Long es;
     // dml build timeStamp, 同步时间
-    private Long                      ts;
+    private Long ts;
     // 执行的sql,dml sql为空
-    private String                    sql;
+    private String sql;
     // 数据列表
     private List<Map<String, Object>> data;
     // 旧数据列表,用于update,size和data的size一一对应
@@ -119,7 +119,7 @@ public class CommonMessage implements Serializable {
     @Override
     public String toString() {
         return "CommonMessage{" + "database='" + database + '\'' + ", table='" + table + '\'' + ", pkNames=" + pkNames
-               + ", isDdl=" + isDdl + ", type='" + type + '\'' + ", es=" + es + ", ts=" + ts + ", sql='" + sql + '\''
-               + ", data=" + data + ", old=" + old + '}';
+                + ", isDdl=" + isDdl + ", type='" + type + '\'' + ", es=" + es + ", ts=" + ts + ", sql='" + sql + '\''
+                + ", data=" + data + ", old=" + old + '}';
     }
 }

@@ -10,40 +10,40 @@ import com.taobao.tddl.dbsync.binlog.event.FormatDescriptionLogEvent;
 
 /**
  * TODO: Document It!!
- * 
+ *
  * <pre>
  * FileLogFetcher fetcher = new FileLogFetcher();
  * fetcher.open(file, 0);
- * 
+ *
  * while (fetcher.fetch()) {
  *     LogEvent event;
  *     do {
  *         event = decoder.decode(fetcher, context);
- * 
+ *
  *         // process log event.
  *     } while (event != null);
  * }
  * // file ending reached.
  * </pre>
- * 
+ *
  * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
  * @version 1.0
  */
 public final class FileLogFetcher extends LogFetcher {
 
-    public static final byte[] BINLOG_MAGIC = { -2, 0x62, 0x69, 0x6e };
+    public static final byte[] BINLOG_MAGIC = {-2, 0x62, 0x69, 0x6e};
 
-    private FileInputStream    fin;
+    private FileInputStream fin;
 
-    public FileLogFetcher(){
+    public FileLogFetcher() {
         super(DEFAULT_INITIAL_CAPACITY, DEFAULT_GROWTH_FACTOR);
     }
 
-    public FileLogFetcher(final int initialCapacity){
+    public FileLogFetcher(final int initialCapacity) {
         super(initialCapacity, DEFAULT_GROWTH_FACTOR);
     }
 
-    public FileLogFetcher(final int initialCapacity, final float growthFactor){
+    public FileLogFetcher(final int initialCapacity, final float growthFactor) {
         super(initialCapacity, growthFactor);
     }
 
@@ -80,9 +80,9 @@ public final class FileLogFetcher extends LogFetcher {
         }
 
         if (buffer[0] != BINLOG_MAGIC[0] || buffer[1] != BINLOG_MAGIC[1] || buffer[2] != BINLOG_MAGIC[2]
-            || buffer[3] != BINLOG_MAGIC[3]) {
+                || buffer[3] != BINLOG_MAGIC[3]) {
             throw new IOException("Error binlog file header: "
-                                  + Arrays.toString(Arrays.copyOf(buffer, BIN_LOG_HEADER_SIZE)));
+                    + Arrays.toString(Arrays.copyOf(buffer, BIN_LOG_HEADER_SIZE)));
         }
 
         limit = 0;
@@ -91,9 +91,9 @@ public final class FileLogFetcher extends LogFetcher {
 
         if (filePosition > BIN_LOG_HEADER_SIZE) {
             final int maxFormatDescriptionEventLen = FormatDescriptionLogEvent.LOG_EVENT_MINIMAL_HEADER_LEN
-                                                     + FormatDescriptionLogEvent.ST_COMMON_HEADER_LEN_OFFSET
-                                                     + LogEvent.ENUM_END_EVENT + LogEvent.BINLOG_CHECKSUM_ALG_DESC_LEN
-                                                     + LogEvent.CHECKSUM_CRC32_SIGNATURE_LEN;
+                    + FormatDescriptionLogEvent.ST_COMMON_HEADER_LEN_OFFSET
+                    + LogEvent.ENUM_END_EVENT + LogEvent.BINLOG_CHECKSUM_ALG_DESC_LEN
+                    + LogEvent.CHECKSUM_CRC32_SIGNATURE_LEN;
 
             ensureCapacity(maxFormatDescriptionEventLen);
             limit = fin.read(buffer, 0, maxFormatDescriptionEventLen);
@@ -104,7 +104,7 @@ public final class FileLogFetcher extends LogFetcher {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see com.taobao.tddl.dbsync.binlog.LogFetcher#fetch()
      */
     public boolean fetch() throws IOException {
@@ -133,8 +133,8 @@ public final class FileLogFetcher extends LogFetcher {
             if (limit >= FormatDescriptionLogEvent.LOG_EVENT_HEADER_LEN) {
                 int lenPosition = position + 4 + 1 + 4;
                 long eventLen = ((long) (0xff & buffer[lenPosition++])) | ((long) (0xff & buffer[lenPosition++]) << 8)
-                                | ((long) (0xff & buffer[lenPosition++]) << 16)
-                                | ((long) (0xff & buffer[lenPosition++]) << 24);
+                        | ((long) (0xff & buffer[lenPosition++]) << 16)
+                        | ((long) (0xff & buffer[lenPosition++]) << 24);
 
                 if (limit >= eventLen) {
                     return true;
@@ -164,7 +164,7 @@ public final class FileLogFetcher extends LogFetcher {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see com.taobao.tddl.dbsync.binlog.LogFetcher#close()
      */
     public void close() throws IOException {

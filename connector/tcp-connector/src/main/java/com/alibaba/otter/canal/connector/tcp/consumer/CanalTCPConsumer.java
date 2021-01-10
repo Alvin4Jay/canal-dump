@@ -20,16 +20,16 @@ import com.alibaba.otter.canal.protocol.Message;
 
 /**
  * TCP 消费者连接器, 一个destination对应一个SPI实例
- * 
+ *
  * @author rewerma 2020-01-30
  * @version 1.0.0
  */
 @SPI("tcp")
 public class CanalTCPConsumer implements CanalMsgConsumer {
 
-    private Long           currentBatchId = null;
+    private Long currentBatchId = null;
     private CanalConnector canalConnector;
-    private int            batchSize      = 500;
+    private int batchSize = 500;
 
     @Override
     public void init(Properties properties, String destination, String groupId) {
@@ -48,9 +48,9 @@ public class CanalTCPConsumer implements CanalMsgConsumer {
             this.canalConnector = new SimpleCanalConnector(sa, username, password, destination);
         } else {
             this.canalConnector = new ClusterCanalConnector(username,
-                password,
-                destination,
-                new ClusterNodeAccessStrategy(destination, ZkClientx.getZkClient(zkHosts)));
+                    password,
+                    destination,
+                    new ClusterNodeAccessStrategy(destination, ZkClientx.getZkClient(zkHosts)));
         }
     }
 

@@ -4,23 +4,23 @@ import com.taobao.tddl.dbsync.binlog.LogBuffer;
 
 /**
  * Create_file_log_event.
- * 
+ *
  * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
  * @version 1.0
  */
 public final class CreateFileLogEvent extends LoadLogEvent {
 
-    protected LogBuffer     blockBuf;
-    protected int           blockLen;
-    protected long          fileId;
+    protected LogBuffer blockBuf;
+    protected int blockLen;
+    protected long fileId;
 
-    protected boolean       initedFromOld;
+    protected boolean initedFromOld;
 
     /* CF = "Create File" */
     public static final int CF_FILE_ID_OFFSET = 0;
-    public static final int CF_DATA_OFFSET    = FormatDescriptionLogEvent.CREATE_FILE_HEADER_LEN;
+    public static final int CF_DATA_OFFSET = FormatDescriptionLogEvent.CREATE_FILE_HEADER_LEN;
 
-    public CreateFileLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent){
+    public CreateFileLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent) {
         super(header, buffer, descriptionEvent);
 
         final int headerLen = descriptionEvent.commonHeaderLen;
@@ -28,8 +28,8 @@ public final class CreateFileLogEvent extends LoadLogEvent {
         final int createFileHeaderLen = descriptionEvent.postHeaderLen[CREATE_FILE_EVENT - 1];
 
         copyLogEvent(buffer,
-            ((header.type == LOAD_EVENT) ? (loadHeaderLen + headerLen) : (headerLen + loadHeaderLen + createFileHeaderLen)),
-            descriptionEvent);
+                ((header.type == LOAD_EVENT) ? (loadHeaderLen + headerLen) : (headerLen + loadHeaderLen + createFileHeaderLen)),
+                descriptionEvent);
 
         if (descriptionEvent.binlogVersion != 1) {
             fileId = buffer.getUint32(headerLen + loadHeaderLen + CF_FILE_ID_OFFSET);

@@ -28,7 +28,7 @@ import com.taobao.tddl.dbsync.binlog.LogEvent;
  * <td>64 bit random seed2.</td>
  * </tr>
  * </table>
- * 
+ *
  * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
  * @version 1.0
  */
@@ -44,19 +44,19 @@ public final class RandLogEvent extends LogEvent {
      * </ul>
      * Source : http://forge.mysql.com/wiki/MySQL_Internals_Binary_Log
      */
-    private final long      seed1;
-    private final long      seed2;
+    private final long seed1;
+    private final long seed2;
 
     /* Rand event data */
     public static final int RAND_SEED1_OFFSET = 0;
     public static final int RAND_SEED2_OFFSET = 8;
 
-    public RandLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent){
+    public RandLogEvent(LogHeader header, LogBuffer buffer, FormatDescriptionLogEvent descriptionEvent) {
         super(header);
 
         /* The Post-Header is empty. The Variable Data part begins immediately. */
         buffer.position(descriptionEvent.commonHeaderLen + descriptionEvent.postHeaderLen[RAND_EVENT - 1]
-                        + RAND_SEED1_OFFSET);
+                + RAND_SEED1_OFFSET);
         seed1 = buffer.getLong64(); // !uint8korr(buf+RAND_SEED1_OFFSET);
         seed2 = buffer.getLong64(); // !uint8korr(buf+RAND_SEED2_OFFSET);
     }

@@ -24,7 +24,7 @@ public class DummyEventStore implements CanalEventStore<Event> {
     }
 
     public Events get(Position start, int batchSize, long timeout, TimeUnit unit) throws InterruptedException,
-                                                                                 CanalStoreException {
+            CanalStoreException {
         return null;
     }
 

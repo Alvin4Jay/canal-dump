@@ -8,7 +8,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * An utility class implements MySQL/Java charsets conversion. you can see
  * com.mysql.jdbc.CharsetMapping.
- * 
+ *
  * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
  */
 public final class CharsetConversion {
@@ -17,13 +17,13 @@ public final class CharsetConversion {
 
     static final class Entry {
 
-        protected final int    charsetId;
+        protected final int charsetId;
         protected final String mysqlCharset;
         protected final String mysqlCollation;
         protected final String javaCharset;
 
         Entry(final int id, String mysqlCharset, // NL
-              String mysqlCollation, String javaCharset){
+              String mysqlCollation, String javaCharset) {
             this.charsetId = id;
             this.mysqlCharset = mysqlCharset;
             this.mysqlCollation = mysqlCollation;
@@ -45,16 +45,16 @@ public final class CharsetConversion {
     // Loads character set information.
     static void putEntry(final int charsetId, String mysqlCharset, String mysqlCollation, String javaCharset) {
         entries[charsetId] = new Entry(charsetId, mysqlCharset, // NL
-            mysqlCollation,
-            javaCharset);
+                mysqlCollation,
+                javaCharset);
     }
 
     // Loads character set information.
     @Deprecated
     static void putEntry(final int charsetId, String mysqlCharset, String mysqlCollation) {
         entries[charsetId] = new Entry(charsetId, mysqlCharset, // NL
-            mysqlCollation, /* Unknown java charset */
-            null);
+                mysqlCollation, /* Unknown java charset */
+                null);
     }
 
     // Load character set data statically.
@@ -381,7 +381,7 @@ public final class CharsetConversion {
                 return entry.javaCharset;
             } else {
                 logger.warn("Unknown java charset for: id = " + id + ", name = " + entry.mysqlCharset + ", coll = "
-                            + entry.mysqlCollation);
+                        + entry.mysqlCollation);
                 return null;
             }
         } else {

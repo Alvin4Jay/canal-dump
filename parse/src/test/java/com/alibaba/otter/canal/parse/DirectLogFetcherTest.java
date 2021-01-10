@@ -45,13 +45,14 @@ import com.taobao.tddl.dbsync.binlog.event.UpdateRowsLogEvent;
 import com.taobao.tddl.dbsync.binlog.event.WriteRowsLogEvent;
 import com.taobao.tddl.dbsync.binlog.event.XidLogEvent;
 import com.taobao.tddl.dbsync.binlog.event.mariadb.AnnotateRowsEvent;
+
 @Ignore
 public class DirectLogFetcherTest {
 
-    protected final Logger logger         = LoggerFactory.getLogger(this.getClass());
-    protected String       binlogFileName = "mysql-bin.000001";
-    protected Charset      charset        = Charset.forName("utf-8");
-    private int            binlogChecksum;
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected String binlogFileName = "mysql-bin.000001";
+    protected Charset charset = Charset.forName("utf-8");
+    private int binlogChecksum;
 
     @Test
     public void testSimple() {
@@ -153,7 +154,7 @@ public class DirectLogFetcherTest {
     }
 
     private void sendBinlogDump(MysqlConnector connector, String binlogfilename, Long binlogPosition, int slaveId)
-                                                                                                                  throws IOException {
+            throws IOException {
         BinlogDumpCommandPacket binlogDumpCmd = new BinlogDumpCommandPacket();
         binlogDumpCmd.binlogFileName = binlogfilename;
         binlogDumpCmd.binlogPosition = binlogPosition;
@@ -254,37 +255,37 @@ public class DirectLogFetcherTest {
 
     protected void parseQueryEvent(QueryLogEvent event) {
         System.out.println(String.format("================> binlog[%s:%s] , name[%s]",
-            binlogFileName,
-            event.getHeader().getLogPos() - event.getHeader().getEventLen(),
-            event.getCatalog()));
+                binlogFileName,
+                event.getHeader().getLogPos() - event.getHeader().getEventLen(),
+                event.getCatalog()));
         System.out.println("sql : " + event.getQuery());
     }
 
     protected void parseRowsQueryEvent(RowsQueryLogEvent event) throws Exception {
         System.out.println(String.format("================> binlog[%s:%s]", binlogFileName, event.getHeader()
-            .getLogPos() - event.getHeader().getEventLen()));
+                .getLogPos() - event.getHeader().getEventLen()));
         System.out.println("sql : " + new String(event.getRowsQuery().getBytes("ISO-8859-1"), charset.name()));
     }
 
     protected void parseAnnotateRowsEvent(AnnotateRowsEvent event) throws Exception {
         System.out.println(String.format("================> binlog[%s:%s]", binlogFileName, event.getHeader()
-            .getLogPos() - event.getHeader().getEventLen()));
+                .getLogPos() - event.getHeader().getEventLen()));
         System.out.println("sql : " + new String(event.getRowsQuery().getBytes("ISO-8859-1"), charset.name()));
     }
 
     protected void parseXidEvent(XidLogEvent event) throws Exception {
         System.out.println(String.format("================> binlog[%s:%s]", binlogFileName, event.getHeader()
-            .getLogPos() - event.getHeader().getEventLen()));
+                .getLogPos() - event.getHeader().getEventLen()));
         System.out.println("xid : " + event.getXid());
     }
 
     protected void parseRowsEvent(RowsLogEvent event) {
         try {
             System.out.println(String.format("================> binlog[%s:%s] , name[%s,%s]",
-                binlogFileName,
-                event.getHeader().getLogPos() - event.getHeader().getEventLen(),
-                event.getTable().getDbName(),
-                event.getTable().getTableName()));
+                    binlogFileName,
+                    event.getHeader().getLogPos() - event.getHeader().getEventLen(),
+                    event.getTable().getDbName(),
+                    event.getTable().getTableName()));
             RowsLogBuffer buffer = event.getRowsBuf(charset.name());
             BitSet columns = event.getColumns();
             BitSet changeColumns = event.getChangeColumns();
@@ -315,7 +316,7 @@ public class DirectLogFetcherTest {
     }
 
     protected void parseOneRow(RowsLogEvent event, RowsLogBuffer buffer, BitSet cols, boolean isAfter)
-                                                                                                      throws UnsupportedEncodingException {
+            throws UnsupportedEncodingException {
         TableMapLogEvent map = event.getTable();
         if (map == null) {
             throw new RuntimeException("not found TableMap with tid=" + event.getTableId());

@@ -31,10 +31,10 @@ public class KuduMappingConfigLoader {
         Map<String, String> configContentMap = MappingConfigsLoader.loadConfigs("kudu");
         configContentMap.forEach((fileName, content) -> {
             KuduMappingConfig config = YmlConfigBinder.bindYmlToObj(null,
-                content,
-                KuduMappingConfig.class,
-                null,
-                envProperties);
+                    content,
+                    KuduMappingConfig.class,
+                    null,
+                    envProperties);
             if (config == null) {
                 return;
             }

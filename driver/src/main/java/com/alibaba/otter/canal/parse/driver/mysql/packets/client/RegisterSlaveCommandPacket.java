@@ -8,19 +8,19 @@ import com.alibaba.otter.canal.parse.driver.mysql.utils.ByteHelper;
 
 /**
  * COM_REGISTER_SLAVE
- * 
+ *
  * @author zhibinliu
  * @since 1.0.24
  */
 public class RegisterSlaveCommandPacket extends CommandPacket {
 
     public String reportHost;
-    public int    reportPort;
+    public int reportPort;
     public String reportUser;
     public String reportPasswd;
-    public long   serverId;
+    public long serverId;
 
-    public RegisterSlaveCommandPacket(){
+    public RegisterSlaveCommandPacket() {
         setCommand((byte) 0x15);
     }
 
@@ -49,7 +49,7 @@ public class RegisterSlaveCommandPacket extends CommandPacket {
         ByteHelper.writeFixedLengthBytesFromStart(reportPasswd.getBytes(), reportPasswd.getBytes().length, out);
         ByteHelper.writeUnsignedShortLittleEndian(reportPort, out);
         ByteHelper.writeUnsignedIntLittleEndian(0, out);// Fake
-                                                        // rpl_recovery_rank
+        // rpl_recovery_rank
         ByteHelper.writeUnsignedIntLittleEndian(0, out);// master id
         return out.toByteArray();
     }

@@ -26,14 +26,15 @@ import static com.alibaba.otter.canal.prometheus.CanalInstanceExports.DEST_LABEL
  */
 public class EntryCollector extends Collector implements InstanceRegistry {
 
-    private static final Logger                             logger            = LoggerFactory.getLogger(SinkCollector.class);
-    private static final String                             DELAY             = "canal_instance_traffic_delay";
-    private static final String                             TRANSACTION       = "canal_instance_transactions";
-    private static final String                             DELAY_HELP        = "Traffic delay of canal instance in milliseconds";
-    private static final String                             TRANSACTION_HELP  = "Transactions counter of canal instance";
-    private final ConcurrentMap<String, EntryMetricsHolder> instances        = new ConcurrentHashMap<String, EntryMetricsHolder>();
+    private static final Logger logger = LoggerFactory.getLogger(SinkCollector.class);
+    private static final String DELAY = "canal_instance_traffic_delay";
+    private static final String TRANSACTION = "canal_instance_transactions";
+    private static final String DELAY_HELP = "Traffic delay of canal instance in milliseconds";
+    private static final String TRANSACTION_HELP = "Transactions counter of canal instance";
+    private final ConcurrentMap<String, EntryMetricsHolder> instances = new ConcurrentHashMap<String, EntryMetricsHolder>();
 
-    private EntryCollector() {}
+    private EntryCollector() {
+    }
 
     private static class SingletonHolder {
         private static final EntryCollector SINGLETON = new EntryCollector();
@@ -126,8 +127,8 @@ public class EntryCollector extends Collector implements InstanceRegistry {
     }
 
     private class EntryMetricsHolder {
-        private AtomicLong   latestExecTime;
-        private AtomicLong   transactionCounter;
+        private AtomicLong latestExecTime;
+        private AtomicLong transactionCounter;
         private List<String> destLabelValues;
     }
 

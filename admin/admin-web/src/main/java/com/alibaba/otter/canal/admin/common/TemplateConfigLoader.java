@@ -12,11 +12,11 @@ import org.slf4j.LoggerFactory;
 
 public class TemplateConfigLoader {
 
-    private static final Logger logger              = LoggerFactory.getLogger(TemplateConfigLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(TemplateConfigLoader.class);
 
-    public static final String  CONF_DIR            = "conf";
-    public static final String  CANAL_CONFIG_TMP    = "canal-template.properties";
-    public static final String  INSTANCE_CONFIG_TMP = "instance-template.properties";
+    public static final String CONF_DIR = "conf";
+    public static final String CANAL_CONFIG_TMP = "canal-template.properties";
+    public static final String INSTANCE_CONFIG_TMP = "instance-template.properties";
 
     public static String loadCanalConfig() {
         return loadFile(CANAL_CONFIG_TMP);

@@ -11,7 +11,7 @@ public class SecurityUtilTest {
 
     @Test
     public void testSimple() throws NoSuchAlgorithmException {
-        byte[] seed = { 1, 2, 3, 4, 5, 6, 7, 8 };
+        byte[] seed = {1, 2, 3, 4, 5, 6, 7, 8};
         // String str = "e3619321c1a937c46a0d8bd1dac39f93b27d4458"; // canal
         // passwd
         String str = SecurityUtil.scrambleGenPass("canal".getBytes());

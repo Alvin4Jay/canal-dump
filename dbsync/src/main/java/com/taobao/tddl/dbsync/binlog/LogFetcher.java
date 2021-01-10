@@ -6,18 +6,18 @@ import java.util.Arrays;
 
 /**
  * Declaration a binary-log fetcher. It extends from <code>LogBuffer</code>.
- * 
+ *
  * <pre>
  * LogFetcher fetcher = new SomeLogFetcher();
  * ...
- * 
+ *
  * while (fetcher.fetch())
  * {
  *     LogEvent event;
  *     do
  *     {
  *         event = decoder.decode(fetcher, context);
- * 
+ *
  *         // process log event.
  *     }
  *     while (event != null);
@@ -25,32 +25,38 @@ import java.util.Arrays;
  * // no more binlog.
  * fetcher.close();
  * </pre>
- * 
+ *
  * @author <a href="mailto:changyuan.lh@taobao.com">Changyuan.lh</a>
  * @version 1.0
  */
 public abstract class LogFetcher extends LogBuffer implements Closeable {
 
-    /** Default initial capacity. */
-    public static final int   DEFAULT_INITIAL_CAPACITY = 8192;
+    /**
+     * Default initial capacity.
+     */
+    public static final int DEFAULT_INITIAL_CAPACITY = 8192;
 
-    /** Default growth factor. */
-    public static final float DEFAULT_GROWTH_FACTOR    = 2.0f;
+    /**
+     * Default growth factor.
+     */
+    public static final float DEFAULT_GROWTH_FACTOR = 2.0f;
 
-    /** Binlog file header size */
-    public static final int   BIN_LOG_HEADER_SIZE      = 4;
+    /**
+     * Binlog file header size
+     */
+    public static final int BIN_LOG_HEADER_SIZE = 4;
 
-    protected final float     factor;
+    protected final float factor;
 
-    public LogFetcher(){
+    public LogFetcher() {
         this(DEFAULT_INITIAL_CAPACITY, DEFAULT_GROWTH_FACTOR);
     }
 
-    public LogFetcher(final int initialCapacity){
+    public LogFetcher(final int initialCapacity) {
         this(initialCapacity, DEFAULT_GROWTH_FACTOR);
     }
 
-    public LogFetcher(final int initialCapacity, final float growthFactor){
+    public LogFetcher(final int initialCapacity, final float growthFactor) {
         this.buffer = new byte[initialCapacity];
         this.factor = growthFactor;
     }
@@ -59,7 +65,7 @@ public abstract class LogFetcher extends LogBuffer implements Closeable {
      * Increases the capacity of this <tt>LogFetcher</tt> instance, if
      * necessary, to ensure that it can hold at least the number of elements
      * specified by the minimum capacity argument.
-     * 
+     *
      * @param minCapacity the desired minimum capacity
      */
     protected final void ensureCapacity(final int minCapacity) {
@@ -80,7 +86,7 @@ public abstract class LogFetcher extends LogBuffer implements Closeable {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @see java.io.Closeable#close()
      */
     public abstract void close() throws IOException;

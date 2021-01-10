@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 
 public class URLClassExtensionLoader extends URLClassLoader {
 
-    public URLClassExtensionLoader(URL[] urls){
+    public URLClassExtensionLoader(URL[] urls) {
         super(urls);
     }
 
@@ -20,7 +20,7 @@ public class URLClassExtensionLoader extends URLClassLoader {
         }
 
         if (name.startsWith("java.") || name.startsWith("org.slf4j.") || name.startsWith("org.apache.logging")
-            || name.startsWith("org.apache.commons.logging.")) {
+                || name.startsWith("org.apache.commons.logging.")) {
             // || name.startsWith("org.apache.hadoop."))
             // {
             c = super.loadClass(name);
@@ -55,9 +55,9 @@ public class URLClassExtensionLoader extends URLClassLoader {
     private static class CompoundEnumeration<E> implements Enumeration<E> {
 
         private Enumeration<E>[] enums;
-        private int              index = 0;
+        private int index = 0;
 
-        public CompoundEnumeration(Enumeration<E>[] enums){
+        public CompoundEnumeration(Enumeration<E>[] enums) {
             this.enums = enums;
         }
 

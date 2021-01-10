@@ -20,7 +20,7 @@ import com.alibaba.otter.canal.connector.core.spi.CanalMQProducer;
  */
 public abstract class AbstractMQProducer implements CanalMQProducer {
 
-    protected MQProperties       mqProperties;
+    protected MQProperties mqProperties;
 
     protected ThreadPoolExecutor executor;
 
@@ -31,12 +31,12 @@ public abstract class AbstractMQProducer implements CanalMQProducer {
 
         int parallelThreadSize = mqProperties.getParallelThreadSize();
         executor = new ThreadPoolExecutor(parallelThreadSize,
-            parallelThreadSize,
-            0,
-            TimeUnit.SECONDS,
-            new ArrayBlockingQueue<Runnable>(parallelThreadSize * 2),
-            new NamedThreadFactory("MQParallel"),
-            new ThreadPoolExecutor.CallerRunsPolicy());
+                parallelThreadSize,
+                0,
+                TimeUnit.SECONDS,
+                new ArrayBlockingQueue<Runnable>(parallelThreadSize * 2),
+                new NamedThreadFactory("MQParallel"),
+                new ThreadPoolExecutor.CallerRunsPolicy());
     }
 
     @Override
@@ -62,7 +62,7 @@ public abstract class AbstractMQProducer implements CanalMQProducer {
      * canal.mq.timeout = 100 <br/>
      * canal.mq.access.channel = local <br/>
      * </p>
-     * 
+     *
      * @param properties 总配置对象
      */
     private void loadCanalMqProperties(Properties properties) {

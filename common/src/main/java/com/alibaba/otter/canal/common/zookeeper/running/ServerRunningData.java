@@ -8,7 +8,7 @@ import com.alibaba.otter.canal.common.utils.CanalToStringStyle;
 
 /**
  * 服务端running状态信息
- * 
+ *
  * @author jianghang 2012-11-22 下午03:11:30
  * @version 1.0.0
  */
@@ -17,14 +17,14 @@ public class ServerRunningData implements Serializable {
     private static final long serialVersionUID = 92260481691855281L;
 
     @Deprecated
-    private Long              cid;
-    private String            address;
-    private boolean           active           = true;
+    private Long cid;
+    private String address;
+    private boolean active = true;
 
-    public ServerRunningData(){
+    public ServerRunningData() {
     }
 
-    public ServerRunningData(String address){
+    public ServerRunningData(String address) {
         this.address = address;
     }
 

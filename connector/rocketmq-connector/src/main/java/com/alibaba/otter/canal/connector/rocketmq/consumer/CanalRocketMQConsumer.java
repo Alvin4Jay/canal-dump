@@ -41,26 +41,26 @@ import com.google.common.collect.Lists;
 @SPI("rocketmq")
 public class CanalRocketMQConsumer implements CanalMsgConsumer {
 
-    private static final Logger                                logger               = LoggerFactory.getLogger(CanalRocketMQConsumer.class);
-    private static final String                                CLOUD_ACCESS_CHANNEL = "cloud";
+    private static final Logger logger = LoggerFactory.getLogger(CanalRocketMQConsumer.class);
+    private static final String CLOUD_ACCESS_CHANNEL = "cloud";
 
-    private String                                             nameServer;
-    private String                                             topic;
-    private String                                             groupName;
-    private volatile boolean                                   connected            = false;
-    private DefaultMQPushConsumer                              rocketMQConsumer;
+    private String nameServer;
+    private String topic;
+    private String groupName;
+    private volatile boolean connected = false;
+    private DefaultMQPushConsumer rocketMQConsumer;
     private BlockingQueue<ConsumerBatchMessage<CommonMessage>> messageBlockingQueue;
-    private int                                                batchSize            = -1;
-    private long                                               batchProcessTimeout  = 60 * 1000;
-    private boolean                                            flatMessage;
-    private volatile ConsumerBatchMessage<CommonMessage>       lastGetBatchMessage  = null;
-    private String                                             accessKey;
-    private String                                             secretKey;
-    private String                                             customizedTraceTopic;
-    private boolean                                            enableMessageTrace   = false;
-    private String                                             accessChannel;
-    private String                                             namespace;
-    private String                                             filter               = "*";
+    private int batchSize = -1;
+    private long batchProcessTimeout = 60 * 1000;
+    private boolean flatMessage;
+    private volatile ConsumerBatchMessage<CommonMessage> lastGetBatchMessage = null;
+    private String accessKey;
+    private String secretKey;
+    private String customizedTraceTopic;
+    private boolean enableMessageTrace = false;
+    private String accessChannel;
+    private String namespace;
+    private String filter = "*";
 
     @Override
     public void init(Properties properties, String topic, String groupName) {
@@ -99,10 +99,10 @@ public class CanalRocketMQConsumer implements CanalMsgConsumer {
         }
 
         rocketMQConsumer = new DefaultMQPushConsumer(groupName,
-            rpcHook,
-            new AllocateMessageQueueAveragely(),
-            enableMessageTrace,
-            customizedTraceTopic);
+                rpcHook,
+                new AllocateMessageQueueAveragely(),
+                enableMessageTrace,
+                customizedTraceTopic);
         rocketMQConsumer.setVipChannelEnabled(false);
         if (CLOUD_ACCESS_CHANNEL.equals(this.accessChannel)) {
             rocketMQConsumer.setAccessChannel(AccessChannel.CLOUD);

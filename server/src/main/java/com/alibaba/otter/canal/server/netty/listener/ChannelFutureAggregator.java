@@ -54,16 +54,17 @@ public class ChannelFutureAggregator implements ChannelFutureListener {
      */
     public static class ClientRequestResult {
 
-        private String                 destination;
+        private String destination;
         private CanalPacket.PacketType type;
-        private GeneratedMessageV3       request;
-        private int                    amount;
-        private long                   latency;
-        private short                  errorCode;
-        private boolean                empty;
-        private Throwable              channelError;
+        private GeneratedMessageV3 request;
+        private int amount;
+        private long latency;
+        private short errorCode;
+        private boolean empty;
+        private Throwable channelError;
 
-        private ClientRequestResult() {}
+        private ClientRequestResult() {
+        }
 
         private ClientRequestResult(Builder builder) {
             this.destination = Preconditions.checkNotNull(builder.destination);
@@ -79,14 +80,14 @@ public class ChannelFutureAggregator implements ChannelFutureListener {
         // auto-generated
         public static class Builder {
 
-            private String                 destination;
+            private String destination;
             private CanalPacket.PacketType type;
-            private GeneratedMessageV3       request;
-            private int                    amount;
-            private long                   latency;
-            private short                  errorCode;
-            private boolean                empty;
-            private Throwable              channelError;
+            private GeneratedMessageV3 request;
+            private int amount;
+            private long latency;
+            private short errorCode;
+            private boolean empty;
+            private Throwable channelError;
 
             Builder destination(String destination) {
                 this.destination = destination;
@@ -144,6 +145,7 @@ public class ChannelFutureAggregator implements ChannelFutureListener {
                 return new ClientRequestResult(this);
             }
         }
+
         // getters
         public String getDestination() {
             return destination;

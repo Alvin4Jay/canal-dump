@@ -2,11 +2,11 @@ package com.alibaba.otter.canal.instance.core;
 
 public class CanalMQConfig {
 
-    private String  topic;
+    private String topic;
     private Integer partition;
     private Integer partitionsNum;
-    private String  partitionHash;
-    private String  dynamicTopic;
+    private String partitionHash;
+    private String dynamicTopic;
 
     public String getTopic() {
         return topic;

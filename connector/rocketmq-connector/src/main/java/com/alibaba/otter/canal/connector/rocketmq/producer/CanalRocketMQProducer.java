@@ -45,9 +45,9 @@ import com.alibaba.otter.canal.protocol.FlatMessage;
 @SPI("rocketmq")
 public class CanalRocketMQProducer extends AbstractMQProducer implements CanalMQProducer {
 
-    private static final Logger logger               = LoggerFactory.getLogger(CanalRocketMQProducer.class);
+    private static final Logger logger = LoggerFactory.getLogger(CanalRocketMQProducer.class);
 
-    private DefaultMQProducer   defaultMQProducer;
+    private DefaultMQProducer defaultMQProducer;
     private static final String CLOUD_ACCESS_CHANNEL = "cloud";
 
     @Override
@@ -66,9 +66,9 @@ public class CanalRocketMQProducer extends AbstractMQProducer implements CanalMQ
         }
 
         defaultMQProducer = new DefaultMQProducer(rocketMQProperties.getProducerGroup(),
-            rpcHook,
-            rocketMQProperties.isEnableMessageTrace(),
-            rocketMQProperties.getCustomizedTraceTopic());
+                rpcHook,
+                rocketMQProperties.isEnableMessageTrace(),
+                rocketMQProperties.getCustomizedTraceTopic());
         if (CLOUD_ACCESS_CHANNEL.equals(rocketMQProperties.getAccessChannel())) {
             defaultMQProducer.setAccessChannel(AccessChannel.CLOUD);
         }
@@ -126,8 +126,8 @@ public class CanalRocketMQProducer extends AbstractMQProducer implements CanalMQ
             if (!StringUtils.isEmpty(destination.getDynamicTopic())) {
                 // 动态topic
                 Map<String, com.alibaba.otter.canal.protocol.Message> messageMap = MQMessageUtils.messageTopics(message,
-                    destination.getTopic(),
-                    destination.getDynamicTopic());
+                        destination.getTopic(),
+                        destination.getDynamicTopic());
 
                 for (Map.Entry<String, com.alibaba.otter.canal.protocol.Message> entry : messageMap.entrySet()) {
                     String topicName = entry.getKey().replace('.', '_');
@@ -162,10 +162,10 @@ public class CanalRocketMQProducer extends AbstractMQProducer implements CanalMQ
                 MQMessageUtils.EntryRowData[] datas = MQMessageUtils.buildMessageData(message, executor);
                 // 串行分区
                 com.alibaba.otter.canal.protocol.Message[] messages = MQMessageUtils.messagePartition(datas,
-                    message.getId(),
-                    destination.getPartitionsNum(),
-                    destination.getPartitionHash(),
-                    mqProperties.isDatabaseHash());
+                        message.getId(),
+                        destination.getPartitionsNum(),
+                        destination.getPartitionHash(),
+                        mqProperties.isDatabaseHash());
                 int length = messages.length;
 
                 ExecutorTemplate template = new ExecutorTemplate(executor);
@@ -175,7 +175,7 @@ public class CanalRocketMQProducer extends AbstractMQProducer implements CanalMQ
                         final int index = i;
                         template.submit(() -> {
                             Message data = new Message(topicName, CanalMessageSerializerUtil.serializer(dataPartition,
-                                mqProperties.isFilterTransactionEntry()));
+                                    mqProperties.isFilterTransactionEntry()));
                             sendMessage(data, index);
                         });
                     }
@@ -185,7 +185,7 @@ public class CanalRocketMQProducer extends AbstractMQProducer implements CanalMQ
             } else {
                 final int partition = destination.getPartition() != null ? destination.getPartition() : 0;
                 Message data = new Message(topicName, CanalMessageSerializerUtil.serializer(message,
-                    mqProperties.isFilterTransactionEntry()));
+                        mqProperties.isFilterTransactionEntry()));
                 sendMessage(data, partition);
             }
         } else {
@@ -202,9 +202,9 @@ public class CanalRocketMQProducer extends AbstractMQProducer implements CanalMQ
 
                 for (FlatMessage flatMessage : flatMessages) {
                     FlatMessage[] partitionFlatMessage = MQMessageUtils.messagePartition(flatMessage,
-                        destination.getPartitionsNum(),
-                        destination.getPartitionHash(),
-                        mqProperties.isDatabaseHash());
+                            destination.getPartitionsNum(),
+                            destination.getPartitionHash(),
+                            mqProperties.isDatabaseHash());
                     int length = partitionFlatMessage.length;
                     for (int i = 0; i < length; i++) {
                         partitionFlatMessages.get(i).add(partitionFlatMessage[i]);
@@ -218,9 +218,9 @@ public class CanalRocketMQProducer extends AbstractMQProducer implements CanalMQ
                         final int index = i;
                         template.submit(() -> {
                             List<Message> messages = flatMessagePart.stream()
-                                .map(flatMessage -> new Message(topicName, JSON.toJSONBytes(flatMessage,
-                                    SerializerFeature.WriteMapNullValue)))
-                                .collect(Collectors.toList());
+                                    .map(flatMessage -> new Message(topicName, JSON.toJSONBytes(flatMessage,
+                                            SerializerFeature.WriteMapNullValue)))
+                                    .collect(Collectors.toList());
                             // 批量发送
                             sendMessage(messages, index);
                         });
@@ -232,9 +232,9 @@ public class CanalRocketMQProducer extends AbstractMQProducer implements CanalMQ
             } else {
                 final int partition = destination.getPartition() != null ? destination.getPartition() : 0;
                 List<Message> messages = flatMessages.stream()
-                    .map(flatMessage -> new Message(topicName, JSON.toJSONBytes(flatMessage,
-                        SerializerFeature.WriteMapNullValue)))
-                    .collect(Collectors.toList());
+                        .map(flatMessage -> new Message(topicName, JSON.toJSONBytes(flatMessage,
+                                SerializerFeature.WriteMapNullValue)))
+                        .collect(Collectors.toList());
                 // 批量发送
                 sendMessage(messages, partition);
             }

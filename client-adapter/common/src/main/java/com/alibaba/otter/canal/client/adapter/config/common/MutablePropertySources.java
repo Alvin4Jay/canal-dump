@@ -26,7 +26,7 @@ import org.springframework.core.env.PropertySourcesPropertyResolver;
  */
 public class MutablePropertySources implements PropertySources {
 
-    private final Log                     logger;
+    private final Log logger;
 
     private final List<PropertySource<?>> propertySourceList = new CopyOnWriteArrayList<PropertySource<?>>();
 
@@ -34,7 +34,7 @@ public class MutablePropertySources implements PropertySources {
      * Create a new {@link MutablePropertySources}
      * object.
      */
-    public MutablePropertySources(){
+    public MutablePropertySources() {
         this.logger = LogFactory.getLog(getClass());
     }
 
@@ -43,7 +43,7 @@ public class MutablePropertySources implements PropertySources {
      * object, preserving the original order of contained {@code PropertySource}
      * objects.
      */
-    public MutablePropertySources(PropertySources propertySources){
+    public MutablePropertySources(PropertySources propertySources) {
         this();
         for (PropertySource<?> propertySource : propertySources) {
             addLast(propertySource);
@@ -55,7 +55,7 @@ public class MutablePropertySources implements PropertySources {
      * object and inherit the given logger, usually from an enclosing
      * {@link Environment}.
      */
-    MutablePropertySources(Log logger){
+    MutablePropertySources(Log logger) {
         this.logger = logger;
     }
 
@@ -104,7 +104,7 @@ public class MutablePropertySources implements PropertySources {
     public void addBefore(String relativePropertySourceName, PropertySource<?> propertySource) {
         if (logger.isDebugEnabled()) {
             logger.debug("Adding PropertySource '" + propertySource.getName()
-                         + "' with search precedence immediately higher than '" + relativePropertySourceName + "'");
+                    + "' with search precedence immediately higher than '" + relativePropertySourceName + "'");
         }
         assertLegalRelativeAddition(relativePropertySourceName, propertySource);
         removeIfPresent(propertySource);
@@ -119,7 +119,7 @@ public class MutablePropertySources implements PropertySources {
     public void addAfter(String relativePropertySourceName, PropertySource<?> propertySource) {
         if (logger.isDebugEnabled()) {
             logger.debug("Adding PropertySource '" + propertySource.getName()
-                         + "' with search precedence immediately lower than '" + relativePropertySourceName + "'");
+                    + "' with search precedence immediately lower than '" + relativePropertySourceName + "'");
         }
         assertLegalRelativeAddition(relativePropertySourceName, propertySource);
         removeIfPresent(propertySource);
@@ -152,10 +152,10 @@ public class MutablePropertySources implements PropertySources {
      * Replace the property source with the given name with the given property
      * source object.
      *
-     * @param name the name of the property source to find and replace
+     * @param name           the name of the property source to find and replace
      * @param propertySource the replacement property source
      * @throws IllegalArgumentException if no property source with the given name is
-     *     present
+     *                                  present
      * @see #contains
      */
     public void replace(String name, PropertySource<?> propertySource) {
@@ -185,7 +185,7 @@ public class MutablePropertySources implements PropertySources {
         String newPropertySourceName = propertySource.getName();
         if (relativePropertySourceName.equals(newPropertySourceName)) {
             throw new IllegalArgumentException(
-                "PropertySource named '" + newPropertySourceName + "' cannot be added relative to itself");
+                    "PropertySource named '" + newPropertySourceName + "' cannot be added relative to itself");
         }
     }
 
@@ -208,7 +208,7 @@ public class MutablePropertySources implements PropertySources {
      * Assert that the named property source is present and return its index.
      *
      * @param name {@linkplain PropertySource#getName() name of the property source}
-     *     to find
+     *             to find
      * @throws IllegalArgumentException if the named property source is not present
      */
     private int assertPresentAndGetIndex(String name) {

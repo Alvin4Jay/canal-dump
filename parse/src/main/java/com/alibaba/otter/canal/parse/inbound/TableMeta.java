@@ -21,16 +21,16 @@ import com.taobao.tddl.dbsync.binlog.event.TableMapLogEvent;
  */
 public class TableMeta {
 
-    private String          schema;
-    private String          table;
+    private String schema;
+    private String table;
     private List<FieldMeta> fields = new ArrayList<TableMeta.FieldMeta>();
-    private String          ddl;                                          // 表结构的DDL语句
+    private String ddl;                                          // 表结构的DDL语句
 
-    public TableMeta(){
+    public TableMeta() {
 
     }
 
-    public TableMeta(String schema, String table, List<FieldMeta> fields){
+    public TableMeta(String schema, String table, List<FieldMeta> fields) {
         this.schema = schema;
         this.table = table;
         this.fields = fields;
@@ -110,11 +110,11 @@ public class TableMeta {
 
     public static class FieldMeta {
 
-        public FieldMeta(){
+        public FieldMeta() {
 
         }
 
-        public FieldMeta(String columnName, String columnType, boolean nullable, boolean key, String defaultValue){
+        public FieldMeta(String columnName, String columnType, boolean nullable, boolean key, String defaultValue) {
             this.columnName = columnName;
             this.columnType = columnType;
             this.nullable = nullable;
@@ -122,12 +122,12 @@ public class TableMeta {
             this.defaultValue = defaultValue;
         }
 
-        private String  columnName;
-        private String  columnType;
+        private String columnName;
+        private String columnType;
         private boolean nullable;
         private boolean key;
-        private String  defaultValue;
-        private String  extra;
+        private String defaultValue;
+        private String extra;
         private boolean unique;
 
         public String getColumnName() {
@@ -193,8 +193,8 @@ public class TableMeta {
         @Override
         public String toString() {
             return "FieldMeta [columnName=" + columnName + ", columnType=" + columnType + ", nullable=" + nullable
-                   + ", key=" + key + ", defaultValue=" + defaultValue + ", extra=" + extra + ", unique=" + unique
-                   + "]";
+                    + ", key=" + key + ", defaultValue=" + defaultValue + ", extra=" + extra + ", unique=" + unique
+                    + "]";
         }
 
     }

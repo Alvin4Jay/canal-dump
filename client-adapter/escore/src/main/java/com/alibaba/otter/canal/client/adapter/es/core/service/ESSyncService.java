@@ -37,9 +37,9 @@ public class ESSyncService {
 
     private static Logger logger = LoggerFactory.getLogger(ESSyncService.class);
 
-    private ESTemplate    esTemplate;
+    private ESTemplate esTemplate;
 
-    public ESSyncService(ESTemplate esTemplate){
+    public ESSyncService(ESTemplate esTemplate) {
         this.esTemplate = esTemplate;
     }
 
@@ -48,39 +48,39 @@ public class ESSyncService {
         if (esSyncConfigs != null) {
             if (logger.isTraceEnabled()) {
                 logger.trace("Destination: {}, database:{}, table:{}, type:{}, affected index count: {}",
-                    dml.getDestination(),
-                    dml.getDatabase(),
-                    dml.getTable(),
-                    dml.getType(),
-                    esSyncConfigs.size());
+                        dml.getDestination(),
+                        dml.getDatabase(),
+                        dml.getTable(),
+                        dml.getType(),
+                        esSyncConfigs.size());
             }
 
             for (ESSyncConfig config : esSyncConfigs) {
                 if (logger.isTraceEnabled()) {
                     logger.trace("Prepared to sync index: {}, destination: {}",
-                        config.getEsMapping().get_index(),
-                        dml.getDestination());
+                            config.getEsMapping().get_index(),
+                            dml.getDestination());
                 }
                 this.sync(config, dml);
                 if (logger.isTraceEnabled()) {
                     logger.trace("Sync completed: {}, destination: {}",
-                        config.getEsMapping().get_index(),
-                        dml.getDestination());
+                            config.getEsMapping().get_index(),
+                            dml.getDestination());
                 }
             }
             if (logger.isTraceEnabled()) {
                 logger.trace("Sync elapsed time: {} ms, affected indexes count：{}, destination: {}",
-                    (System.currentTimeMillis() - begin),
-                    esSyncConfigs.size(),
-                    dml.getDestination());
+                        (System.currentTimeMillis() - begin),
+                        esSyncConfigs.size(),
+                        dml.getDestination());
             }
             if (logger.isDebugEnabled()) {
                 StringBuilder configIndexes = new StringBuilder();
                 esSyncConfigs
-                    .forEach(esSyncConfig -> configIndexes.append(esSyncConfig.getEsMapping().get_index()).append(" "));
+                        .forEach(esSyncConfig -> configIndexes.append(esSyncConfig.getEsMapping().get_index()).append(" "));
                 logger.debug("DML: {} \nAffected indexes: {}",
-                    JSON.toJSONString(dml, SerializerFeature.WriteMapNullValue),
-                    configIndexes.toString());
+                        JSON.toJSONString(dml, SerializerFeature.WriteMapNullValue),
+                        configIndexes.toString());
             }
         }
     }
@@ -107,9 +107,9 @@ public class ESSyncService {
 
             if (logger.isTraceEnabled()) {
                 logger.trace("Sync elapsed time: {} ms,destination: {}, es index: {}",
-                    (System.currentTimeMillis() - begin),
-                    dml.getDestination(),
-                    config.getEsMapping().get_index());
+                        (System.currentTimeMillis() - begin),
+                        dml.getDestination(),
+                        config.getEsMapping().get_index());
             }
         } catch (Throwable e) {
             logger.error("sync error, es index: {}, DML : {}", config.getEsMapping().get_index(), dml);
@@ -121,7 +121,7 @@ public class ESSyncService {
      * 插入操作dml
      *
      * @param config es配置
-     * @param dml dml数据
+     * @param dml    dml数据
      */
     private void insert(ESSyncConfig config, Dml dml) {
         List<Map<String, Object>> dataList = dml.getData();
@@ -167,9 +167,9 @@ public class ESSyncService {
                             Map<String, Object> esFieldData = new LinkedHashMap<>();
                             for (FieldItem fieldItem : tableItem.getRelationSelectFieldItems()) {
                                 Object value = esTemplate.getValFromData(config.getEsMapping(),
-                                    data,
-                                    fieldItem.getFieldName(),
-                                    fieldItem.getColumn().getColumnName());
+                                        data,
+                                        fieldItem.getFieldName(),
+                                        fieldItem.getColumn().getColumnName());
                                 esFieldData.put(Util.cleanColumn(fieldItem.getFieldName()), value);
                             }
 
@@ -191,7 +191,7 @@ public class ESSyncService {
      * 更新操作dml
      *
      * @param config es配置
-     * @param dml dml数据
+     * @param dml    dml数据
      */
     private void update(ESSyncConfig config, Dml dml) {
         List<Map<String, Object>> dataList = dml.getData();
@@ -223,7 +223,8 @@ public class ESSyncService {
                     }
 
                     boolean allUpdateFieldSimple = true;
-                    out: for (FieldItem fieldItem : schemaItem.getSelectFields().values()) {
+                    out:
+                    for (FieldItem fieldItem : schemaItem.getSelectFields().values()) {
                         for (ColumnItem columnItem : fieldItem.getColumnItems()) {
                             if (old.containsKey(columnItem.getColumnName())) {
                                 if (fieldItem.isMethod() || fieldItem.isBinaryOp()) {
@@ -256,7 +257,7 @@ public class ESSyncService {
                         if (changed) {
                             for (FieldItem fieldItem : tableItem.getRelationSelectFieldItems()) {
                                 fieldItem.getColumnItems()
-                                    .forEach(columnItem -> old.put(columnItem.getColumnName(), null));
+                                        .forEach(columnItem -> old.put(columnItem.getColumnName(), null));
                             }
                         }
                     }
@@ -296,9 +297,9 @@ public class ESSyncService {
                             for (FieldItem fieldItem : tableItem.getRelationSelectFieldItems()) {
                                 if (old.containsKey(fieldItem.getColumn().getColumnName())) {
                                     Object value = esTemplate.getValFromData(config.getEsMapping(),
-                                        data,
-                                        fieldItem.getFieldName(),
-                                        fieldItem.getColumn().getColumnName());
+                                            data,
+                                            fieldItem.getFieldName(),
+                                            fieldItem.getColumn().getColumnName());
                                     esFieldData.put(Util.cleanColumn(fieldItem.getFieldName()), value);
                                 }
                             }
@@ -322,7 +323,7 @@ public class ESSyncService {
      * 删除操作dml
      *
      * @param config es配置
-     * @param dml dml数据
+     * @param dml    dml数据
      */
     private void delete(ESSyncConfig config, Dml dml) {
         List<Map<String, Object>> dataList = dml.getData();
@@ -345,16 +346,16 @@ public class ESSyncService {
                     // 主键为简单字段
                     if (!idFieldItem.isMethod() && !idFieldItem.isBinaryOp()) {
                         Object idVal = esTemplate.getValFromData(mapping,
-                            data,
-                            idFieldItem.getFieldName(),
-                            idFieldItem.getColumn().getColumnName());
+                                data,
+                                idFieldItem.getFieldName(),
+                                idFieldItem.getColumn().getColumnName());
 
                         if (logger.isTraceEnabled()) {
                             logger.trace("Main table delete es index, destination:{}, table: {}, index: {}, id: {}",
-                                config.getDestination(),
-                                dml.getTable(),
-                                mapping.get_index(),
-                                idVal);
+                                    config.getDestination(),
+                                    dml.getTable(),
+                                    mapping.get_index(),
+                                    idVal);
                         }
                         esTemplate.delete(mapping, idVal, null);
                     } else {
@@ -370,10 +371,10 @@ public class ESSyncService {
 
                         if (logger.isTraceEnabled()) {
                             logger.trace("Main table delete es index, destination:{}, table: {}, index: {}, pk: {}",
-                                config.getDestination(),
-                                dml.getTable(),
-                                mapping.get_index(),
-                                pkVal);
+                                    config.getDestination(),
+                                    dml.getTable(),
+                                    mapping.get_index(),
+                                    pkVal);
                         }
                         esFieldData.remove(pkFieldItem.getFieldName());
                         esFieldData.keySet().forEach(key -> esFieldData.put(key, null));
@@ -430,8 +431,8 @@ public class ESSyncService {
      * 单表简单字段insert
      *
      * @param config es配置
-     * @param dml dml信息
-     * @param data 单行dml数据
+     * @param dml    dml信息
+     * @param data   单行dml数据
      */
     private void singleTableSimpleFiledInsert(ESSyncConfig config, Dml dml, Map<String, Object> data) {
         ESMapping mapping = config.getEsMapping();
@@ -440,10 +441,10 @@ public class ESSyncService {
 
         if (logger.isTraceEnabled()) {
             logger.trace("Single table insert to es index, destination:{}, table: {}, index: {}, id: {}",
-                config.getDestination(),
-                dml.getTable(),
-                mapping.get_index(),
-                idVal);
+                    config.getDestination(),
+                    dml.getTable(),
+                    mapping.get_index(),
+                    idVal);
         }
         esTemplate.insert(mapping, idVal, esFieldData);
     }
@@ -452,8 +453,8 @@ public class ESSyncService {
      * 主表(单表)复杂字段insert
      *
      * @param config es配置
-     * @param dml dml信息
-     * @param data 单行dml数据
+     * @param dml    dml信息
+     * @param data   单行dml数据
      */
     private void mainTableInsert(ESSyncConfig config, Dml dml, Map<String, Object> data) {
         ESMapping mapping = config.getEsMapping();
@@ -463,10 +464,10 @@ public class ESSyncService {
         DataSource ds = DatasourceConfig.DATA_SOURCES.get(config.getDataSourceKey());
         if (logger.isTraceEnabled()) {
             logger.trace("Main table insert to es index by query sql, destination:{}, table: {}, index: {}, sql: {}",
-                config.getDestination(),
-                dml.getTable(),
-                mapping.get_index(),
-                sql.replace("\n", " "));
+                    config.getDestination(),
+                    dml.getTable(),
+                    mapping.get_index(),
+                    sql.replace("\n", " "));
         }
         Util.sqlRS(ds, sql, rs -> {
             try {
@@ -476,11 +477,11 @@ public class ESSyncService {
 
                     if (logger.isTraceEnabled()) {
                         logger.trace(
-                            "Main table insert to es index by query sql, destination:{}, table: {}, index: {}, id: {}",
-                            config.getDestination(),
-                            dml.getTable(),
-                            mapping.get_index(),
-                            idVal);
+                                "Main table insert to es index by query sql, destination:{}, table: {}, index: {}, id: {}",
+                                config.getDestination(),
+                                dml.getTable(),
+                                mapping.get_index(),
+                                idVal);
                     }
                     esTemplate.insert(mapping, idVal, esFieldData);
                 }
@@ -499,10 +500,10 @@ public class ESSyncService {
         DataSource ds = DatasourceConfig.DATA_SOURCES.get(config.getDataSourceKey());
         if (logger.isTraceEnabled()) {
             logger.trace("Main table delete es index by query sql, destination:{}, table: {}, index: {}, sql: {}",
-                config.getDestination(),
-                dml.getTable(),
-                mapping.get_index(),
-                sql.replace("\n", " "));
+                    config.getDestination(),
+                    dml.getTable(),
+                    mapping.get_index(),
+                    sql.replace("\n", " "));
         }
         Util.sqlRS(ds, sql, rs -> {
             try {
@@ -520,11 +521,11 @@ public class ESSyncService {
 
                     if (logger.isTraceEnabled()) {
                         logger.trace(
-                            "Main table delete to es index by query sql, destination:{}, table: {}, index: {}, id: {}",
-                            config.getDestination(),
-                            dml.getTable(),
-                            mapping.get_index(),
-                            idVal);
+                                "Main table delete to es index by query sql, destination:{}, table: {}, index: {}, id: {}",
+                                config.getDestination(),
+                                dml.getTable(),
+                                mapping.get_index(),
+                                idVal);
                     }
                     esTemplate.delete(mapping, idVal, esFieldData);
                 }
@@ -538,9 +539,9 @@ public class ESSyncService {
     /**
      * 关联表主表简单字段operation
      *
-     * @param config es配置
-     * @param dml dml信息
-     * @param data 单行dml数据
+     * @param config    es配置
+     * @param dml       dml信息
+     * @param data      单行dml数据
      * @param tableItem 当前表配置
      */
     private void joinTableSimpleFieldOperation(ESSyncConfig config, Dml dml, Map<String, Object> data,
@@ -552,9 +553,9 @@ public class ESSyncService {
             for (FieldItem fieldItem : entry.getValue()) {
                 if (fieldItem.getColumnItems().size() == 1) {
                     Object value = esTemplate.getValFromData(mapping,
-                        data,
-                        fieldItem.getFieldName(),
-                        entry.getKey().getColumn().getColumnName());
+                            data,
+                            fieldItem.getFieldName(),
+                            entry.getKey().getColumn().getColumnName());
 
                     String fieldName = fieldItem.getFieldName();
                     // 判断是否是主键
@@ -568,9 +569,9 @@ public class ESSyncService {
 
         if (logger.isDebugEnabled()) {
             logger.trace("Join table update es index by foreign key, destination:{}, table: {}, index: {}",
-                config.getDestination(),
-                dml.getTable(),
-                mapping.get_index());
+                    config.getDestination(),
+                    dml.getTable(),
+                    mapping.get_index());
         }
         esTemplate.updateByQuery(config, paramsTmp, esFieldData);
     }
@@ -578,10 +579,10 @@ public class ESSyncService {
     /**
      * 关联子查询, 主表简单字段operation
      *
-     * @param config es配置
-     * @param dml dml信息
-     * @param data 单行dml数据
-     * @param old 单行old数据
+     * @param config    es配置
+     * @param dml       dml信息
+     * @param data      单行dml数据
+     * @param old       单行old数据
      * @param tableItem 当前表配置
      */
     private void subTableSimpleFieldOperation(ESSyncConfig config, Dml dml, Map<String, Object> data,
@@ -591,9 +592,9 @@ public class ESSyncService {
         MySqlSelectQueryBlock queryBlock = SqlParser.parseSQLSelectQueryBlock(tableItem.getSubQuerySql());
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ")
-            .append(SqlParser.parse4SQLSelectItem(queryBlock))
-            .append(" FROM ")
-            .append(SqlParser.parse4FromTableSource(queryBlock));
+                .append(SqlParser.parse4SQLSelectItem(queryBlock))
+                .append(" FROM ")
+                .append(SqlParser.parse4FromTableSource(queryBlock));
 
         String whereSql = SqlParser.parse4WhereItem(queryBlock);
         if (whereSql != null) {
@@ -619,10 +620,10 @@ public class ESSyncService {
         DataSource ds = DatasourceConfig.DATA_SOURCES.get(config.getDataSourceKey());
         if (logger.isTraceEnabled()) {
             logger.trace("Join table update es index by query sql, destination:{}, table: {}, index: {}, sql: {}",
-                config.getDestination(),
-                dml.getTable(),
-                mapping.get_index(),
-                sql.toString().replace("\n", " "));
+                    config.getDestination(),
+                    dml.getTable(),
+                    mapping.get_index(),
+                    sql.toString().replace("\n", " "));
         }
         Util.sqlRS(ds, sql.toString(), values, rs -> {
             try {
@@ -631,15 +632,16 @@ public class ESSyncService {
 
                     for (FieldItem fieldItem : tableItem.getRelationSelectFieldItems()) {
                         if (old != null) {
-                            out: for (FieldItem fieldItem1 : tableItem.getSubQueryFields()) {
+                            out:
+                            for (FieldItem fieldItem1 : tableItem.getSubQueryFields()) {
                                 for (ColumnItem columnItem0 : fieldItem.getColumnItems()) {
                                     if (fieldItem1.getFieldName().equals(columnItem0.getColumnName()))
                                         for (ColumnItem columnItem : fieldItem1.getColumnItems()) {
                                             if (old.containsKey(columnItem.getColumnName())) {
                                                 Object val = esTemplate.getValFromRS(mapping,
-                                                    rs,
-                                                    fieldItem.getFieldName(),
-                                                    fieldItem.getColumn().getColumnName());
+                                                        rs,
+                                                        fieldItem.getFieldName(),
+                                                        fieldItem.getColumn().getColumnName());
                                                 esFieldData.put(Util.cleanColumn(fieldItem.getFieldName()), val);
                                                 break out;
                                             }
@@ -648,9 +650,9 @@ public class ESSyncService {
                             }
                         } else {
                             Object val = esTemplate.getValFromRS(mapping,
-                                rs,
-                                fieldItem.getFieldName(),
-                                fieldItem.getColumn().getColumnName());
+                                    rs,
+                                    fieldItem.getFieldName(),
+                                    fieldItem.getColumn().getColumnName());
                             esFieldData.put(Util.cleanColumn(fieldItem.getFieldName()), val);
                         }
                     }
@@ -660,9 +662,9 @@ public class ESSyncService {
                         for (FieldItem fieldItem : entry.getValue()) {
                             if (fieldItem.getColumnItems().size() == 1) {
                                 Object value = esTemplate.getValFromRS(mapping,
-                                    rs,
-                                    fieldItem.getFieldName(),
-                                    entry.getKey().getColumn().getColumnName());
+                                        rs,
+                                        fieldItem.getFieldName(),
+                                        entry.getKey().getColumn().getColumnName());
                                 String fieldName = fieldItem.getFieldName();
                                 // 判断是否是主键
                                 if (fieldName.equals(mapping.get_id())) {
@@ -675,9 +677,9 @@ public class ESSyncService {
 
                     if (logger.isDebugEnabled()) {
                         logger.trace("Join table update es index by query sql, destination:{}, table: {}, index: {}",
-                            config.getDestination(),
-                            dml.getTable(),
-                            mapping.get_index());
+                                config.getDestination(),
+                                dml.getTable(),
+                                mapping.get_index());
                     }
                     esTemplate.updateByQuery(config, paramsTmp, esFieldData);
                 }
@@ -691,9 +693,9 @@ public class ESSyncService {
     /**
      * 关联(子查询), 主表复杂字段operation, 全sql执行
      *
-     * @param config es配置
-     * @param dml dml信息
-     * @param data 单行dml数据
+     * @param config    es配置
+     * @param dml       dml信息
+     * @param data      单行dml数据
      * @param tableItem 当前表配置
      */
     private void wholeSqlOperation(ESSyncConfig config, Dml dml, Map<String, Object> data, Map<String, Object> old,
@@ -723,10 +725,10 @@ public class ESSyncService {
         DataSource ds = DatasourceConfig.DATA_SOURCES.get(config.getDataSourceKey());
         if (logger.isTraceEnabled()) {
             logger.trace("Join table update es index by query whole sql, destination:{}, table: {}, index: {}, sql: {}",
-                config.getDestination(),
-                dml.getTable(),
-                mapping.get_index(),
-                sql.toString().replace("\n", " "));
+                    config.getDestination(),
+                    dml.getTable(),
+                    mapping.get_index(),
+                    sql.toString().replace("\n", " "));
         }
         Util.sqlRS(ds, sql.toString(), rs -> {
             try {
@@ -735,15 +737,16 @@ public class ESSyncService {
                     for (FieldItem fieldItem : tableItem.getRelationSelectFieldItems()) {
                         if (old != null) {
                             // 从表子查询
-                            out: for (FieldItem fieldItem1 : tableItem.getSubQueryFields()) {
+                            out:
+                            for (FieldItem fieldItem1 : tableItem.getSubQueryFields()) {
                                 for (ColumnItem columnItem0 : fieldItem.getColumnItems()) {
                                     if (fieldItem1.getFieldName().equals(columnItem0.getColumnName()))
                                         for (ColumnItem columnItem : fieldItem1.getColumnItems()) {
                                             if (old.containsKey(columnItem.getColumnName())) {
                                                 Object val = esTemplate.getValFromRS(mapping,
-                                                    rs,
-                                                    fieldItem.getFieldName(),
-                                                    fieldItem.getFieldName());
+                                                        rs,
+                                                        fieldItem.getFieldName(),
+                                                        fieldItem.getFieldName());
                                                 esFieldData.put(fieldItem.getFieldName(), val);
                                                 break out;
                                             }
@@ -756,9 +759,9 @@ public class ESSyncService {
                                     for (ColumnItem columnItem : fieldItem1.getColumnItems()) {
                                         if (old.containsKey(columnItem.getColumnName())) {
                                             Object val = esTemplate.getValFromRS(mapping,
-                                                rs,
-                                                fieldItem.getFieldName(),
-                                                fieldItem.getFieldName());
+                                                    rs,
+                                                    fieldItem.getFieldName(),
+                                                    fieldItem.getFieldName());
                                             esFieldData.put(Util.cleanColumn(fieldItem.getFieldName()), val);
                                             break;
                                         }
@@ -767,7 +770,7 @@ public class ESSyncService {
                             }
                         } else {
                             Object val = esTemplate
-                                .getValFromRS(mapping, rs, fieldItem.getFieldName(), fieldItem.getFieldName());
+                                    .getValFromRS(mapping, rs, fieldItem.getFieldName(), fieldItem.getFieldName());
                             esFieldData.put(Util.cleanColumn(fieldItem.getFieldName()), val);
                         }
                     }
@@ -776,7 +779,7 @@ public class ESSyncService {
                     for (Map.Entry<FieldItem, List<FieldItem>> entry : tableItem.getRelationTableFields().entrySet()) {
                         for (FieldItem fieldItem : entry.getValue()) {
                             Object value = esTemplate
-                                .getValFromRS(mapping, rs, fieldItem.getFieldName(), fieldItem.getFieldName());
+                                    .getValFromRS(mapping, rs, fieldItem.getFieldName(), fieldItem.getFieldName());
                             String fieldName = fieldItem.getFieldName();
                             // 判断是否是主键
                             if (fieldName.equals(mapping.get_id())) {
@@ -788,10 +791,10 @@ public class ESSyncService {
 
                     if (logger.isDebugEnabled()) {
                         logger.trace(
-                            "Join table update es index by query whole sql, destination:{}, table: {}, index: {}",
-                            config.getDestination(),
-                            dml.getTable(),
-                            mapping.get_index());
+                                "Join table update es index by query whole sql, destination:{}, table: {}, index: {}",
+                                config.getDestination(),
+                                dml.getTable(),
+                                mapping.get_index());
                     }
                     esTemplate.updateByQuery(config, paramsTmp, esFieldData);
                 }
@@ -806,9 +809,9 @@ public class ESSyncService {
      * 单表简单字段update
      *
      * @param config es配置
-     * @param dml dml信息
-     * @param data 单行data数据
-     * @param old 单行old数据
+     * @param dml    dml信息
+     * @param data   单行data数据
+     * @param old    单行old数据
      */
     private void singleTableSimpleFiledUpdate(ESSyncConfig config, Dml dml, Map<String, Object> data,
                                               Map<String, Object> old) {
@@ -819,10 +822,10 @@ public class ESSyncService {
 
         if (logger.isTraceEnabled()) {
             logger.trace("Main table update to es index, destination:{}, table: {}, index: {}, id: {}",
-                config.getDestination(),
-                dml.getTable(),
-                mapping.get_index(),
-                idVal);
+                    config.getDestination(),
+                    dml.getTable(),
+                    mapping.get_index(),
+                    idVal);
         }
         esTemplate.update(mapping, idVal, esFieldData);
     }
@@ -831,8 +834,8 @@ public class ESSyncService {
      * 主表(单表)复杂字段update
      *
      * @param config es配置
-     * @param dml dml信息
-     * @param data 单行dml数据
+     * @param dml    dml信息
+     * @param data   单行dml数据
      */
     private void mainTableUpdate(ESSyncConfig config, Dml dml, Map<String, Object> data, Map<String, Object> old) {
         ESMapping mapping = config.getEsMapping();
@@ -842,10 +845,10 @@ public class ESSyncService {
         DataSource ds = DatasourceConfig.DATA_SOURCES.get(config.getDataSourceKey());
         if (logger.isTraceEnabled()) {
             logger.trace("Main table update to es index by query sql, destination:{}, table: {}, index: {}, sql: {}",
-                config.getDestination(),
-                dml.getTable(),
-                mapping.get_index(),
-                sql.replace("\n", " "));
+                    config.getDestination(),
+                    dml.getTable(),
+                    mapping.get_index(),
+                    sql.replace("\n", " "));
         }
         Util.sqlRS(ds, sql, rs -> {
             try {
@@ -855,11 +858,11 @@ public class ESSyncService {
 
                     if (logger.isTraceEnabled()) {
                         logger.trace(
-                            "Main table update to es index by query sql, destination:{}, table: {}, index: {}, id: {}",
-                            config.getDestination(),
-                            dml.getTable(),
-                            mapping.get_index(),
-                            idVal);
+                                "Main table update to es index by query sql, destination:{}, table: {}, index: {}, id: {}",
+                                config.getDestination(),
+                                dml.getTable(),
+                                mapping.get_index(),
+                                idVal);
                     }
                     esTemplate.update(mapping, idVal, esFieldData);
                 }

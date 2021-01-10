@@ -23,7 +23,7 @@ import com.alibaba.otter.canal.client.adapter.support.DatasourceConfig;
 @ConfigurationProperties(prefix = "canal.conf")
 public class AdapterCanalConfig extends CanalClientConfig {
 
-    public final Set<String>              DESTINATIONS = new LinkedHashSet<>();
+    public final Set<String> DESTINATIONS = new LinkedHashSet<>();
 
     private Map<String, DatasourceConfig> srcDataSources;
 

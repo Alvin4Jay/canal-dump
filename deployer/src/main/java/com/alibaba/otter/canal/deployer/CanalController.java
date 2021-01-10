@@ -46,34 +46,34 @@ import com.google.common.collect.MigrateMap;
  */
 public class CanalController {
 
-    private static final Logger                      logger   = LoggerFactory.getLogger(CanalController.class);
-    private String                                   ip;
-    private String                                   registerIp;
-    private int                                      port;
-    private int                                      adminPort;
+    private static final Logger logger = LoggerFactory.getLogger(CanalController.class);
+    private String ip;
+    private String registerIp;
+    private int port;
+    private int adminPort;
     // 默认使用spring的方式载入
-    private Map<String, InstanceConfig>              instanceConfigs;
-    private InstanceConfig                           globalInstanceConfig;
-    private Map<String, PlainCanalConfigClient>      managerClients;
+    private Map<String, InstanceConfig> instanceConfigs;
+    private InstanceConfig globalInstanceConfig;
+    private Map<String, PlainCanalConfigClient> managerClients;
     // 监听instance config的变化
-    private boolean                                  autoScan = true;
-    private InstanceAction                           defaultAction;
+    private boolean autoScan = true;
+    private InstanceAction defaultAction;
     private Map<InstanceMode, InstanceConfigMonitor> instanceConfigMonitors;
-    private CanalServerWithEmbedded                  embededCanalServer;
-    private CanalServerWithNetty                     canalServer;
+    private CanalServerWithEmbedded embededCanalServer;
+    private CanalServerWithNetty canalServer;
 
-    private CanalInstanceGenerator                   instanceGenerator;
-    private ZkClientx                                zkclientx;
+    private CanalInstanceGenerator instanceGenerator;
+    private ZkClientx zkclientx;
 
-    private CanalMQStarter                           canalMQStarter;
-    private String                                   adminUser;
-    private String                                   adminPasswd;
+    private CanalMQStarter canalMQStarter;
+    private String adminUser;
+    private String adminPasswd;
 
-    public CanalController(){
+    public CanalController() {
         this(System.getProperties());
     }
 
-    public CanalController(final Properties properties){
+    public CanalController(final Properties properties) {
         managerClients = MigrateMap.makeComputingMap(new Function<String, PlainCanalConfigClient>() {
 
             public PlainCanalConfigClient apply(String managerAddress) {
@@ -182,7 +182,7 @@ public class CanalController {
                         try {
                             if (zkclientx != null) {
                                 final String path = ZookeeperPathUtils.getDestinationClusterNode(destination,
-                                    registerIp + ":" + port);
+                                        registerIp + ":" + port);
                                 initCid(path);
                                 zkclientx.subscribeStateChanges(new IZkStateListener() {
 
@@ -210,7 +210,7 @@ public class CanalController {
                             MDC.put(CanalConstants.MDC_DESTINATION, String.valueOf(destination));
                             if (zkclientx != null) {
                                 final String path = ZookeeperPathUtils.getDestinationClusterNode(destination,
-                                    registerIp + ":" + port);
+                                        registerIp + ":" + port);
                                 releaseCid(path);
                             }
                         } finally {
@@ -307,8 +307,8 @@ public class CanalController {
 
                 public InstanceConfigMonitor apply(InstanceMode mode) {
                     int scanInterval = Integer.valueOf(getProperty(properties,
-                        CanalConstants.CANAL_AUTO_SCAN_INTERVAL,
-                        "5"));
+                            CanalConstants.CANAL_AUTO_SCAN_INTERVAL,
+                            "5"));
 
                     if (mode.isSpring()) {
                         SpringInstanceConfigMonitor monitor = new SpringInstanceConfigMonitor();
@@ -359,7 +359,7 @@ public class CanalController {
         }
 
         String managerAddress = getProperty(properties,
-            CanalConstants.getInstanceManagerAddressKey(CanalConstants.GLOBAL_NAME));
+                CanalConstants.getInstanceManagerAddressKey(CanalConstants.GLOBAL_NAME));
         if (StringUtils.isNotEmpty(managerAddress)) {
             if (StringUtils.equals(managerAddress, "${canal.admin.manager}")) {
                 managerAddress = adminManagerAddress;

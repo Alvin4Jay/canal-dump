@@ -48,38 +48,38 @@ import com.alibaba.otter.canal.protocol.position.EntryPosition;
  */
 public class DatabaseTableMeta implements TableMetaTSDB {
 
-    public static final EntryPosition       INIT_POSITION       = new EntryPosition("0", 0L, -2L, -1L);
-    private static Logger                   logger              = LoggerFactory.getLogger(DatabaseTableMeta.class);
-    private static Pattern                  pattern             = Pattern.compile("Duplicate entry '.*' for key '*'");
-    private static Pattern                  h2Pattern           = Pattern.compile("Unique index or primary key violation");
-    private static ScheduledExecutorService scheduler           = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
+    public static final EntryPosition INIT_POSITION = new EntryPosition("0", 0L, -2L, -1L);
+    private static Logger logger = LoggerFactory.getLogger(DatabaseTableMeta.class);
+    private static Pattern pattern = Pattern.compile("Duplicate entry '.*' for key '*'");
+    private static Pattern h2Pattern = Pattern.compile("Unique index or primary key violation");
+    private static ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
 
-                                                                    @Override
-                                                                    public Thread newThread(Runnable r) {
-                                                                        Thread thread = new Thread(r,
-                                                                            "[scheduler-table-meta-snapshot]");
-                                                                        thread.setDaemon(true);
-                                                                        return thread;
-                                                                    }
-                                                                });
-    private ReadWriteLock                   lock                = new ReentrantReadWriteLock();
-    private AtomicBoolean                   initialized         = new AtomicBoolean(false);
-    private String                          destination;
-    private MemoryTableMeta                 memoryTableMeta;
-    private volatile MysqlConnection        connection;                                                                    // 查询meta信息的链接
-    private CanalEventFilter                filter;
-    private CanalEventFilter                blackFilter;
-    private Map<String, List<String>>       fieldFilterMap      = new HashMap<String, List<String>>();
-    private Map<String, List<String>>       fieldBlackFilterMap = new HashMap<String, List<String>>();
-    private EntryPosition                   lastPosition;
-    private boolean                         hasNewDdl;
-    private MetaHistoryDAO                  metaHistoryDAO;
-    private MetaSnapshotDAO                 metaSnapshotDAO;
-    private int                             snapshotInterval    = 24;
-    private int                             snapshotExpire      = 360;
-    private ScheduledFuture<?>              scheduleSnapshotFuture;
+        @Override
+        public Thread newThread(Runnable r) {
+            Thread thread = new Thread(r,
+                    "[scheduler-table-meta-snapshot]");
+            thread.setDaemon(true);
+            return thread;
+        }
+    });
+    private ReadWriteLock lock = new ReentrantReadWriteLock();
+    private AtomicBoolean initialized = new AtomicBoolean(false);
+    private String destination;
+    private MemoryTableMeta memoryTableMeta;
+    private volatile MysqlConnection connection;                                                                    // 查询meta信息的链接
+    private CanalEventFilter filter;
+    private CanalEventFilter blackFilter;
+    private Map<String, List<String>> fieldFilterMap = new HashMap<String, List<String>>();
+    private Map<String, List<String>> fieldBlackFilterMap = new HashMap<String, List<String>>();
+    private EntryPosition lastPosition;
+    private boolean hasNewDdl;
+    private MetaHistoryDAO metaHistoryDAO;
+    private MetaSnapshotDAO metaSnapshotDAO;
+    private int snapshotInterval = 24;
+    private int snapshotExpire = 360;
+    private ScheduledFuture<?> scheduleSnapshotFuture;
 
-    public DatabaseTableMeta(){
+    public DatabaseTableMeta() {
 
     }
 
@@ -129,7 +129,7 @@ public class DatabaseTableMeta implements TableMetaTSDB {
                 connection.disconnect();
             } catch (IOException e) {
                 logger.error("ERROR # disconnect meta connection for address:{}", connection.getConnector()
-                    .getAddress(), e);
+                        .getAddress(), e);
             }
         }
 
@@ -383,7 +383,7 @@ public class DatabaseTableMeta implements TableMetaTSDB {
             } catch (IOException e1) {
                 if (e.getMessage().contains("errorNumber=1146")) {
                     logger.error("table not exist in db , pls check :" + getFullName(schema, table) + " , mem : "
-                                 + tableMetaFromMem);
+                            + tableMetaFromMem);
                     return false;
                 }
                 throw new CanalParseException(e);
@@ -393,7 +393,7 @@ public class DatabaseTableMeta implements TableMetaTSDB {
         boolean result = compareTableMeta(tableMetaFromMem, tableMetaFromDB);
         if (!result) {
             logger.error("pls submit github issue, show create table ddl:" + createDDL + " , compare failed . \n db : "
-                         + tableMetaFromDB + " \n mem : " + tableMetaFromMem);
+                    + tableMetaFromDB + " \n mem : " + tableMetaFromMem);
         }
         return result;
     }
@@ -410,18 +410,18 @@ public class DatabaseTableMeta implements TableMetaTSDB {
             Long binlogTimestamp = snapshotDO.getBinlogTimestamp();
 
             EntryPosition snapshotPosition = new EntryPosition(binlogFile,
-                binlogOffest == null ? 0l : binlogOffest,
-                binlogTimestamp == null ? 0l : binlogTimestamp,
-                Long.valueOf(binlogMasterId == null ? "-2" : binlogMasterId));
+                    binlogOffest == null ? 0l : binlogOffest,
+                    binlogTimestamp == null ? 0l : binlogTimestamp,
+                    Long.valueOf(binlogMasterId == null ? "-2" : binlogMasterId));
             // data存储为Map<String,String>，每个分库一套建表
             String sqlData = snapshotDO.getData();
             JSONObject jsonObj = JSON.parseObject(sqlData);
             for (Map.Entry entry : jsonObj.entrySet()) {
                 // 记录到内存
                 if (!memoryTableMeta.apply(snapshotPosition,
-                    ObjectUtils.toString(entry.getKey()),
-                    ObjectUtils.toString(entry.getValue()),
-                    null)) {
+                        ObjectUtils.toString(entry.getKey()),
+                        ObjectUtils.toString(entry.getValue()),
+                        null)) {
                     return null;
                 }
             }
@@ -435,8 +435,8 @@ public class DatabaseTableMeta implements TableMetaTSDB {
     private boolean applyHistoryOnMemory(EntryPosition position, EntryPosition rollbackPosition) {
         try {
             List<MetaHistoryDO> metaHistoryDOList = metaHistoryDAO.findByTimestamp(destination,
-                position.getTimestamp(),
-                rollbackPosition.getTimestamp());
+                    position.getTimestamp(),
+                    rollbackPosition.getTimestamp());
             if (metaHistoryDOList == null) {
                 return true;
             }
@@ -449,15 +449,15 @@ public class DatabaseTableMeta implements TableMetaTSDB {
                 String useSchema = metaHistoryDO.getUseSchema();
                 String sqlData = metaHistoryDO.getSqlText();
                 EntryPosition snapshotPosition = new EntryPosition(binlogFile,
-                    binlogOffest == null ? 0L : binlogOffest,
-                    binlogTimestamp == null ? 0L : binlogTimestamp,
-                    Long.valueOf(binlogMasterId == null ? "-2" : binlogMasterId));
+                        binlogOffest == null ? 0L : binlogOffest,
+                        binlogTimestamp == null ? 0L : binlogTimestamp,
+                        Long.valueOf(binlogMasterId == null ? "-2" : binlogMasterId));
 
                 // 如果是同一秒内,对比一下history的位点，如果比期望的位点要大，忽略之
                 if (snapshotPosition.getTimestamp() > rollbackPosition.getTimestamp()) {
                     continue;
                 } else if (rollbackPosition.getServerId() == snapshotPosition.getServerId()
-                           && snapshotPosition.compareTo(rollbackPosition) > 0) {
+                        && snapshotPosition.compareTo(rollbackPosition) > 0) {
                     continue;
                 }
 
@@ -477,13 +477,13 @@ public class DatabaseTableMeta implements TableMetaTSDB {
     private String getFullName(String schema, String table) {
         StringBuilder builder = new StringBuilder();
         return builder.append('`')
-            .append(schema)
-            .append('`')
-            .append('.')
-            .append('`')
-            .append(table)
-            .append('`')
-            .toString();
+                .append(schema)
+                .append('`')
+                .append('.')
+                .append('`')
+                .append(table)
+                .append('`')
+                .toString();
     }
 
     public static boolean compareTableMeta(TableMeta source, TableMeta target) {
@@ -503,7 +503,7 @@ public class DatabaseTableMeta implements TableMetaTSDB {
 
         /**
          * MySQL DDL的一些默认行为:
-         * 
+         *
          * <pre>
          * 1. Timestamp类型的列在第一次添加时，未指定默认值会默认为CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
          * 2. Timestamp类型的列在第二次时，必须指定默认值
@@ -533,7 +533,7 @@ public class DatabaseTableMeta implements TableMetaTSDB {
             // https://github.com/alibaba/canal/issues/1100
             // 支持一下 int vs int(10)
             if ((sourceField.isUnsigned() && !targetField.isUnsigned())
-                || (!sourceField.isUnsigned() && targetField.isUnsigned())) {
+                    || (!sourceField.isUnsigned() && targetField.isUnsigned())) {
                 return false;
             }
 
@@ -565,7 +565,7 @@ public class DatabaseTableMeta implements TableMetaTSDB {
 
             // BLOB, TEXT, GEOMETRY or JSON默认都是nullable，可以忽略比较，但比较了也是对齐
             if (StringUtils.containsIgnoreCase(sourceColumnType, "timestamp")
-                || StringUtils.containsIgnoreCase(targetColumnType, "timestamp")) {
+                    || StringUtils.containsIgnoreCase(targetColumnType, "timestamp")) {
                 // timestamp可能会加default current_timestamp默认值,忽略对比nullable
             } else {
                 if (sourceField.isNullable() != targetField.isNullable()) {
@@ -586,14 +586,14 @@ public class DatabaseTableMeta implements TableMetaTSDB {
 
     /**
      * <pre>
-     * synonyms处理 
-     * 1. BOOL/BOOLEAN => TINYINT 
+     * synonyms处理
+     * 1. BOOL/BOOLEAN => TINYINT
      * 2. DEC/NUMERIC/FIXED => DECIMAL
      * 3. INTEGER => INT
-     * 
-     * 
+     *
+     *
      * </pre>
-     * 
+     *
      * @param originType
      * @return
      */
@@ -601,24 +601,24 @@ public class DatabaseTableMeta implements TableMetaTSDB {
         if (StringUtils.equalsIgnoreCase(originType, "bool") || StringUtils.equalsIgnoreCase(originType, "boolean")) {
             return "tinyint";
         } else if (StringUtils.equalsIgnoreCase(originType, "dec")
-                   || StringUtils.equalsIgnoreCase(originType, "numeric")
-                   || StringUtils.equalsIgnoreCase(originType, "fixed")) {
+                || StringUtils.equalsIgnoreCase(originType, "numeric")
+                || StringUtils.equalsIgnoreCase(originType, "fixed")) {
             return "decimal";
         } else if (StringUtils.equalsIgnoreCase(originType, "integer")) {
             return "int";
         } else if (StringUtils.equalsIgnoreCase(originType, "real")
-                   || StringUtils.equalsIgnoreCase(originType, "double precision")) {
+                || StringUtils.equalsIgnoreCase(originType, "double precision")) {
             return "double";
         }
 
         // BLOB、TEXT会根据给定长度自动转换为对应的TINY、MEDIUM，LONG类型，长度和字符集也有关，统一按照blob对比
         if (StringUtils.equalsIgnoreCase(originType, "tinyblob")
-            || StringUtils.equalsIgnoreCase(originType, "mediumblob")
-            || StringUtils.equalsIgnoreCase(originType, "longblob")) {
+                || StringUtils.equalsIgnoreCase(originType, "mediumblob")
+                || StringUtils.equalsIgnoreCase(originType, "longblob")) {
             return "blob";
         } else if (StringUtils.equalsIgnoreCase(originType, "tinytext")
-                   || StringUtils.equalsIgnoreCase(originType, "mediumtext")
-                   || StringUtils.equalsIgnoreCase(originType, "longtext")) {
+                || StringUtils.equalsIgnoreCase(originType, "mediumtext")
+                || StringUtils.equalsIgnoreCase(originType, "longtext")) {
             return "text";
         }
 

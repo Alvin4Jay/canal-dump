@@ -23,7 +23,7 @@ import com.alibaba.otter.canal.protocol.position.EntryPosition;
  * @since 3.2.5
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/tsdb/h2-tsdb.xml" })
+@ContextConfiguration(locations = {"/tsdb/h2-tsdb.xml"})
 @Ignore
 public class TableMetaManagerTest {
 

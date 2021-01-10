@@ -36,7 +36,7 @@ public class WebConfig implements WebMvcConfigurer {
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
                 httpServletResponse.setHeader("Access-Control-Allow-Methods", "*");
                 httpServletResponse.setHeader("Access-Control-Allow-Headers",
-                    "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Token");
+                        "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Token");
                 httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
                 httpServletResponse.setHeader("Access-Control-Max-Age", String.valueOf(3600 * 24));
 
@@ -83,10 +83,10 @@ public class WebConfig implements WebMvcConfigurer {
                 return true;
             }
         })
-            .addPathPatterns("/api/**")
-            .excludePathPatterns("/api/**/config/**")
-            .excludePathPatterns("/api/**/user/login")
-            .excludePathPatterns("/api/**/user/logout")
-            .excludePathPatterns("/api/**/user/info");
+                .addPathPatterns("/api/**")
+                .excludePathPatterns("/api/**/config/**")
+                .excludePathPatterns("/api/**/user/login")
+                .excludePathPatterns("/api/**/user/logout")
+                .excludePathPatterns("/api/**/user/info");
     }
 }

@@ -20,13 +20,14 @@ import com.alibaba.otter.canal.protocol.position.EntryPosition;
 import com.alibaba.otter.canal.protocol.position.LogIdentity;
 import com.alibaba.otter.canal.protocol.position.LogPosition;
 import com.alibaba.otter.canal.sink.exception.CanalSinkException;
+
 @Ignore
 public class MysqlEventParserTest {
 
     private static final String DETECTING_SQL = "insert into retl.xdual values(1,now()) on duplicate key update x=now()";
     private static final String MYSQL_ADDRESS = "127.0.0.1";
-    private static final String USERNAME      = "canal";
-    private static final String PASSWORD      = "canal";
+    private static final String USERNAME = "canal";
+    private static final String PASSWORD = "canal";
 
     @Test
     public void test_position() throws InterruptedException {
@@ -46,7 +47,7 @@ public class MysqlEventParserTest {
 
             @Override
             public boolean sink(List<Entry> entrys, InetSocketAddress remoteAddress, String destination)
-                                                                                                        throws CanalSinkException {
+                    throws CanalSinkException {
                 for (Entry entry : entrys) {
                     if (entry.getEntryType() != EntryType.HEARTBEAT) {
                         entryCount.incrementAndGet();
@@ -114,7 +115,7 @@ public class MysqlEventParserTest {
 
             @Override
             public boolean sink(List<Entry> entrys, InetSocketAddress remoteAddress, String destination)
-                                                                                                        throws CanalSinkException {
+                    throws CanalSinkException {
                 for (Entry entry : entrys) {
                     if (entry.getEntryType() != EntryType.HEARTBEAT) {
                         entryCount.incrementAndGet();
@@ -182,7 +183,7 @@ public class MysqlEventParserTest {
 
             @Override
             public boolean sink(List<Entry> entrys, InetSocketAddress remoteAddress, String destination)
-                                                                                                        throws CanalSinkException {
+                    throws CanalSinkException {
                 for (Entry entry : entrys) {
                     if (entry.getEntryType() != EntryType.HEARTBEAT) {
 
@@ -240,15 +241,15 @@ public class MysqlEventParserTest {
 
     @Test
     public void test_no_position() throws InterruptedException { // 在某个文件下，找不到对应的timestamp数据，会使用106L
-                                                                 // position进行数据抓取
+        // position进行数据抓取
         final TimeoutChecker timeoutChecker = new TimeoutChecker(3 * 60 * 1000);
         final AtomicLong entryCount = new AtomicLong(0);
         final EntryPosition entryPosition = new EntryPosition();
 
         final MysqlEventParser controller = new MysqlEventParser();
         final EntryPosition defaultPosition = buildPosition("mysql-bin.000001",
-            null,
-            new Date().getTime() + 1000 * 1000L);
+                null,
+                new Date().getTime() + 1000 * 1000L);
         controller.setSlaveId(3344L);
         controller.setDetectingEnable(false);
         controller.setMasterInfo(buildAuthentication());
@@ -257,7 +258,7 @@ public class MysqlEventParserTest {
 
             @Override
             public boolean sink(List<Entry> entrys, InetSocketAddress remoteAddress, String destination)
-                                                                                                        throws CanalSinkException {
+                    throws CanalSinkException {
                 for (Entry entry : entrys) {
                     if (entry.getEntryType() != EntryType.HEARTBEAT) {
                         entryCount.incrementAndGet();

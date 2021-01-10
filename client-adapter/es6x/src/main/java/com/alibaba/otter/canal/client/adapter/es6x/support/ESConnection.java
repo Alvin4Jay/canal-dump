@@ -59,13 +59,13 @@ public class ESConnection {
         TRANSPORT, REST
     }
 
-    private ESClientMode        mode;
+    private ESClientMode mode;
 
-    private TransportClient     transportClient;
+    private TransportClient transportClient;
 
     private RestHighLevelClient restHighLevelClient;
 
-    public ESConnection(String[] hosts, Map<String, String> properties, ESClientMode mode) throws UnknownHostException{
+    public ESConnection(String[] hosts, Map<String, String> properties, ESClientMode mode) throws UnknownHostException {
         this.mode = mode;
         if (mode == ESClientMode.TRANSPORT) {
             Settings.Builder settingBuilder = Settings.builder();
@@ -75,7 +75,7 @@ public class ESConnection {
             for (String host : hosts) {
                 int i = host.indexOf(":");
                 transportClient.addTransportAddress(new TransportAddress(InetAddress.getByName(host.substring(0, i)),
-                    Integer.parseInt(host.substring(i + 1))));
+                        Integer.parseInt(host.substring(i + 1))));
             }
         } else {
             HttpHost[] httpHosts = new HttpHost[hosts.length];
@@ -83,7 +83,7 @@ public class ESConnection {
                 String host = hosts[i];
                 int j = host.indexOf(":");
                 HttpHost httpHost = new HttpHost(InetAddress.getByName(host.substring(0, j)),
-                    Integer.parseInt(host.substring(j + 1)));
+                        Integer.parseInt(host.substring(j + 1)));
                 httpHosts[i] = httpHost;
             }
             RestClientBuilder restClientBuilder = RestClient.builder(httpHosts);
@@ -92,7 +92,7 @@ public class ESConnection {
                 String[] nameAndPwdArr = nameAndPwd.split(":");
                 final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
                 credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(nameAndPwdArr[0],
-                    nameAndPwdArr[1]));
+                        nameAndPwdArr[1]));
                 restClientBuilder.setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider));
             }
             restHighLevelClient = new RestHighLevelClient(restClientBuilder);
@@ -117,15 +117,15 @@ public class ESConnection {
             ImmutableOpenMap<String, MappingMetaData> mappings;
             try {
                 mappings = transportClient.admin()
-                    .cluster()
-                    .prepareState()
-                    .execute()
-                    .actionGet()
-                    .getState()
-                    .getMetaData()
-                    .getIndices()
-                    .get(index)
-                    .getMappings();
+                        .cluster()
+                        .prepareState()
+                        .execute()
+                        .actionGet()
+                        .getState()
+                        .getMetaData()
+                        .getIndices()
+                        .get(index)
+                        .getMappings();
             } catch (NullPointerException e) {
                 throw new IllegalArgumentException("Not found the mapping info of index: " + index);
             }
@@ -163,9 +163,9 @@ public class ESConnection {
 
         private IndexRequestBuilder indexRequestBuilder;
 
-        private IndexRequest        indexRequest;
+        private IndexRequest indexRequest;
 
-        public ES6xIndexRequest(String index, String type, String id){
+        public ES6xIndexRequest(String index, String type, String id) {
             if (mode == ESClientMode.TRANSPORT) {
                 indexRequestBuilder = transportClient.prepareIndex(index, type, id);
             } else {
@@ -212,9 +212,9 @@ public class ESConnection {
 
         private UpdateRequestBuilder updateRequestBuilder;
 
-        private UpdateRequest        updateRequest;
+        private UpdateRequest updateRequest;
 
-        public ES6xUpdateRequest(String index, String type, String id){
+        public ES6xUpdateRequest(String index, String type, String id) {
             if (mode == ESClientMode.TRANSPORT) {
                 updateRequestBuilder = transportClient.prepareUpdate(index, type, id);
             } else {
@@ -270,9 +270,9 @@ public class ESConnection {
 
         private DeleteRequestBuilder deleteRequestBuilder;
 
-        private DeleteRequest        deleteRequest;
+        private DeleteRequest deleteRequest;
 
-        public ES6xDeleteRequest(String index, String type, String id){
+        public ES6xDeleteRequest(String index, String type, String id) {
             if (mode == ESClientMode.TRANSPORT) {
                 deleteRequestBuilder = transportClient.prepareDelete(index, type, id);
             } else {
@@ -301,11 +301,11 @@ public class ESConnection {
 
         private SearchRequestBuilder searchRequestBuilder;
 
-        private SearchRequest        searchRequest;
+        private SearchRequest searchRequest;
 
-        private SearchSourceBuilder  sourceBuilder;
+        private SearchSourceBuilder sourceBuilder;
 
-        public ESSearchRequest(String index, String... types){
+        public ESSearchRequest(String index, String... types) {
             if (mode == ESClientMode.TRANSPORT) {
                 searchRequestBuilder = transportClient.prepareSearch(index).setTypes(types);
             } else {
@@ -366,9 +366,9 @@ public class ESConnection {
 
         private BulkRequestBuilder bulkRequestBuilder;
 
-        private BulkRequest        bulkRequest;
+        private BulkRequest bulkRequest;
 
-        public ES6xBulkRequest(){
+        public ES6xBulkRequest() {
             if (mode == ESClientMode.TRANSPORT) {
                 bulkRequestBuilder = transportClient.prepareBulk();
             } else {
@@ -458,7 +458,7 @@ public class ESConnection {
 
         private BulkResponse bulkResponse;
 
-        public ES6xBulkResponse(BulkResponse bulkResponse){
+        public ES6xBulkResponse(BulkResponse bulkResponse) {
             this.bulkResponse = bulkResponse;
         }
 

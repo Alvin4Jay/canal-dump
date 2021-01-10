@@ -17,20 +17,20 @@ import com.alibaba.otter.canal.instance.spring.SpringCanalInstanceGenerator;
 
 /**
  * 基于manager生成对应的{@linkplain CanalInstance}
- * 
+ *
  * @author jianghang 2012-7-12 下午05:37:09
  * @version 1.0.0
  */
 public class PlainCanalInstanceGenerator implements CanalInstanceGenerator {
 
-    private static final Logger    logger      = LoggerFactory.getLogger(SpringCanalInstanceGenerator.class);
-    private String                 springXml;
+    private static final Logger logger = LoggerFactory.getLogger(SpringCanalInstanceGenerator.class);
+    private String springXml;
     private PlainCanalConfigClient canalConfigClient;
-    private String                 defaultName = "instance";
-    private BeanFactory            beanFactory;
-    private Properties             canalConfig;
+    private String defaultName = "instance";
+    private BeanFactory beanFactory;
+    private Properties canalConfig;
 
-    public PlainCanalInstanceGenerator(Properties canalConfig){
+    public PlainCanalInstanceGenerator(Properties canalConfig) {
         this.canalConfig = canalConfig;
     }
 

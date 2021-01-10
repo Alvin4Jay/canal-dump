@@ -33,7 +33,7 @@ public class NodeServerController {
      * 获取所有节点信息列表
      *
      * @param nodeServer 筛选条件
-     * @param env 环境变量
+     * @param env        环境变量
      * @return 节点信息列表
      */
     @GetMapping(value = "/nodeServers")
@@ -46,7 +46,7 @@ public class NodeServerController {
      * 保存节点信息
      *
      * @param nodeServer 节点信息
-     * @param env 环境变量
+     * @param env        环境变量
      * @return 是否成功
      */
     @PostMapping(value = "/nodeServer")
@@ -58,7 +58,7 @@ public class NodeServerController {
     /**
      * 获取节点信息详情
      *
-     * @param id 节点信息id
+     * @param id  节点信息id
      * @param env 环境变量
      * @return 检点信息
      */
@@ -71,7 +71,7 @@ public class NodeServerController {
      * 修改节点信息
      *
      * @param nodeServer 节点信息
-     * @param env 环境变量
+     * @param env        环境变量
      * @return 是否成功
      */
     @PutMapping(value = "/nodeServer")
@@ -83,7 +83,7 @@ public class NodeServerController {
     /**
      * 删除节点信息
      *
-     * @param id 节点信息id
+     * @param id  节点信息id
      * @param env 环境变量
      * @return 是否成功
      */
@@ -96,9 +96,9 @@ public class NodeServerController {
     /**
      * 获取远程节点运行状态
      *
-     * @param ip 节点ip
+     * @param ip   节点ip
      * @param port 节点端口
-     * @param env 环境变量
+     * @param env  环境变量
      * @return 状态信息
      */
     @GetMapping(value = "/nodeServer/status")
@@ -109,7 +109,7 @@ public class NodeServerController {
     /**
      * 启动远程节点
      *
-     * @param id 节点id
+     * @param id  节点id
      * @param env 环境变量
      * @return 是否成功
      */
@@ -121,7 +121,7 @@ public class NodeServerController {
     /**
      * 获取远程节点日志
      *
-     * @param id 节点id
+     * @param id  节点id
      * @param env 环境变量
      * @return 节点日志
      */
@@ -133,7 +133,7 @@ public class NodeServerController {
     /**
      * 关闭远程节点
      *
-     * @param id 节点id
+     * @param id  节点id
      * @param env 环境变量
      * @return 是否成功
      */

@@ -27,7 +27,8 @@
         <property name="minEvictableIdleTimeMillis" value="300000"/>
         <property name="validationQuery" value="SELECT 1"/>
         <property name="exceptionSorterClassName" value="com.alibaba.druid.pool.vendor.MySqlExceptionSorter"/>
-        <property name="validConnectionCheckerClassName" value="com.alibaba.druid.pool.vendor.MySqlValidConnectionChecker"/>
+        <property name="validConnectionCheckerClassName"
+                  value="com.alibaba.druid.pool.vendor.MySqlValidConnectionChecker"/>
         <property name="testWhileIdle" value="true"/>
         <property name="testOnBorrow" value="false"/>
         <property name="testOnReturn" value="false"/>
@@ -47,7 +48,8 @@
     </bean>
 
 
-    <bean id="mysqlClient" class="com.alibaba.otter.canal.example.db.mysql.MysqlClient" lazy-init="true" parent="canalConnectorClient">
+    <bean id="mysqlClient" class="com.alibaba.otter.canal.example.db.mysql.MysqlClient" lazy-init="true"
+          parent="canalConnectorClient">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 </beans>

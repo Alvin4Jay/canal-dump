@@ -32,37 +32,37 @@ import com.alibaba.otter.canal.client.adapter.config.common.PropertySources;
  */
 public class PropertiesConfigurationFactory<T> implements FactoryBean<T>, ApplicationContextAware, MessageSourceAware, InitializingBean {
 
-    private static final char[] EXACT_DELIMITERS       = { '_', '.', '[' };
+    private static final char[] EXACT_DELIMITERS = {'_', '.', '['};
 
-    private static final char[] TARGET_NAME_DELIMITERS = { '_', '.' };
+    private static final char[] TARGET_NAME_DELIMITERS = {'_', '.'};
 
-    private static final Log    logger                 = LogFactory.getLog(PropertiesConfigurationFactory.class);
+    private static final Log logger = LogFactory.getLog(PropertiesConfigurationFactory.class);
 
-    private boolean             ignoreUnknownFields    = true;
+    private boolean ignoreUnknownFields = true;
 
-    private boolean             ignoreInvalidFields;
+    private boolean ignoreInvalidFields;
 
-    private boolean             exceptionIfInvalid     = true;
+    private boolean exceptionIfInvalid = true;
 
-    private PropertySources     propertySources;
+    private PropertySources propertySources;
 
-    private final T             target;
+    private final T target;
 
-    private Validator           validator;
+    private Validator validator;
 
-    private ApplicationContext  applicationContext;
+    private ApplicationContext applicationContext;
 
-    private MessageSource       messageSource;
+    private MessageSource messageSource;
 
-    private boolean             hasBeenBound           = false;
+    private boolean hasBeenBound = false;
 
-    private boolean             ignoreNestedProperties = false;
+    private boolean ignoreNestedProperties = false;
 
-    private String              targetName;
+    private String targetName;
 
-    private ConversionService   conversionService;
+    private ConversionService conversionService;
 
-    private boolean             resolvePlaceholders    = true;
+    private boolean resolvePlaceholders = true;
 
     /**
      * Create a new {@link PropertiesConfigurationFactory} instance.
@@ -70,7 +70,7 @@ public class PropertiesConfigurationFactory<T> implements FactoryBean<T>, Applic
      * @param target the target object to bind too
      * @see #PropertiesConfigurationFactory(Class)
      */
-    public PropertiesConfigurationFactory(T target){
+    public PropertiesConfigurationFactory(T target) {
         Assert.notNull(target, "target must not be null");
         this.target = target;
     }
@@ -82,7 +82,7 @@ public class PropertiesConfigurationFactory<T> implements FactoryBean<T>, Applic
      * @see #PropertiesConfigurationFactory(Class)
      */
     @SuppressWarnings("unchecked")
-    public PropertiesConfigurationFactory(Class<?> type){
+    public PropertiesConfigurationFactory(Class<?> type) {
         Assert.notNull(type, "type must not be null");
         this.target = (T) BeanUtils.instantiate(type);
     }
@@ -244,7 +244,7 @@ public class PropertiesConfigurationFactory<T> implements FactoryBean<T>, Applic
 
     private void doBindPropertiesToTarget() throws BindException {
         RelaxedDataBinder dataBinder = (this.targetName != null ? new RelaxedDataBinder(this.target,
-            this.targetName) : new RelaxedDataBinder(this.target));
+                this.targetName) : new RelaxedDataBinder(this.target));
         if (this.validator != null && this.validator.supports(dataBinder.getTarget().getClass())) {
             dataBinder.setValidator(this.validator);
         }
@@ -258,7 +258,7 @@ public class PropertiesConfigurationFactory<T> implements FactoryBean<T>, Applic
         customizeBinder(dataBinder);
         if (this.applicationContext != null) {
             ResourceEditorRegistrar resourceEditorRegistrar = new ResourceEditorRegistrar(this.applicationContext,
-                this.applicationContext.getEnvironment());
+                    this.applicationContext.getEnvironment());
             resourceEditorRegistrar.registerCustomEditors(dataBinder);
         }
         Iterable<String> relaxedTargetNames = getRelaxedTargetNames();
@@ -338,7 +338,7 @@ public class PropertiesConfigurationFactory<T> implements FactoryBean<T>, Applic
             logger.error("Properties configuration failed validation");
             for (ObjectError error : errors.getAllErrors()) {
                 logger.error(this.messageSource != null ? this.messageSource.getMessage(error, Locale.getDefault())
-                                                          + " (" + error + ")" : error);
+                        + " (" + error + ")" : error);
             }
             if (this.exceptionIfInvalid) {
                 throw new BindException(errors);

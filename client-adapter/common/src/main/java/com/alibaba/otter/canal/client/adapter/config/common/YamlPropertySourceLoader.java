@@ -24,7 +24,7 @@ public class YamlPropertySourceLoader implements PropertySourceLoader {
 
     @Override
     public String[] getFileExtensions() {
-        return new String[] { "yml", "yaml" };
+        return new String[]{"yml", "yaml"};
     }
 
     @Override
@@ -46,7 +46,7 @@ public class YamlPropertySourceLoader implements PropertySourceLoader {
      */
     private static class Processor extends YamlProcessor {
 
-        Processor(Resource resource, String profile){
+        Processor(Resource resource, String profile) {
             if (profile == null) {
                 setMatchDefault(true);
                 setDocumentMatchers(new SpringProfileDocumentMatcher());

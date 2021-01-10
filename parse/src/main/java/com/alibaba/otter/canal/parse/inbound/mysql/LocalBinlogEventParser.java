@@ -17,7 +17,7 @@ import com.alibaba.otter.canal.protocol.position.LogPosition;
 
 /**
  * 基于本地binlog文件的复制
- * 
+ *
  * @author jianghang 2012-6-21 下午04:07:33
  * @version 1.0.0
  */
@@ -25,15 +25,15 @@ public class LocalBinlogEventParser extends AbstractMysqlEventParser implements 
 
     // 数据库信息
     protected AuthenticationInfo masterInfo;
-    protected EntryPosition      masterPosition;        // binlog信息
-    protected MysqlConnection    metaConnection;        // 查询meta信息的链接
-    protected TableMetaCache     tableMetaCache;        // 对应meta
+    protected EntryPosition masterPosition;        // binlog信息
+    protected MysqlConnection metaConnection;        // 查询meta信息的链接
+    protected TableMetaCache tableMetaCache;        // 对应meta
 
-    protected String             directory;
-    protected boolean            needWait   = false;
-    protected int                bufferSize = 16 * 1024;
+    protected String directory;
+    protected boolean needWait = false;
+    protected int bufferSize = 16 * 1024;
 
-    public LocalBinlogEventParser(){
+    public LocalBinlogEventParser() {
         // this.runningInfo = new AuthenticationInfo();
     }
 
@@ -71,7 +71,7 @@ public class LocalBinlogEventParser extends AbstractMysqlEventParser implements 
                 metaConnection.disconnect();
             } catch (IOException e) {
                 logger.error("ERROR # disconnect meta connection for address:{}", metaConnection.getConnector()
-                    .getAddress(), e);
+                        .getAddress(), e);
             }
         }
     }
@@ -91,7 +91,7 @@ public class LocalBinlogEventParser extends AbstractMysqlEventParser implements 
                 metaConnection.disconnect();
             } catch (IOException e) {
                 logger.error("ERROR # disconnect meta connection for address:{}", metaConnection.getConnector()
-                    .getAddress(), e);
+                        .getAddress(), e);
             }
         }
 
@@ -114,10 +114,10 @@ public class LocalBinlogEventParser extends AbstractMysqlEventParser implements 
 
     private MysqlConnection buildMysqlConnection() {
         MysqlConnection connection = new MysqlConnection(runningInfo.getAddress(),
-            runningInfo.getUsername(),
-            runningInfo.getPassword(),
-            connectionCharsetNumber,
-            runningInfo.getDefaultDatabaseName());
+                runningInfo.getUsername(),
+                runningInfo.getPassword(),
+                connectionCharsetNumber,
+                runningInfo.getDefaultDatabaseName());
         connection.getConnector().setReceiveBufferSize(64 * 1024);
         connection.getConnector().setSendBufferSize(64 * 1024);
         connection.getConnector().setSoTimeout(30 * 1000);

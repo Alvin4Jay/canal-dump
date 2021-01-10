@@ -37,7 +37,7 @@ public class TypeUtil {
         } else if (clazz == Double.class || clazz == double.class) {
             bytes = Bytes.toBytes((Double) obj);
         } else if (clazz == Byte.class || clazz == byte.class) {
-            bytes = new byte[] { (byte) obj };
+            bytes = new byte[]{(byte) obj};
         } else if (clazz == BigDecimal.class) {
             bytes = Bytes.toBytes((BigDecimal) obj);
         } else if (clazz == BigInteger.class) {

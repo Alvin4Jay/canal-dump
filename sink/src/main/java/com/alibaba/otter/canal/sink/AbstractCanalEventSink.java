@@ -11,7 +11,7 @@ import com.alibaba.otter.canal.filter.CanalEventFilter;
  */
 public abstract class AbstractCanalEventSink<T> extends AbstractCanalLifeCycle implements CanalEventSink<T> {
 
-    protected CanalEventFilter                  filter;
+    protected CanalEventFilter filter;
     protected List<CanalEventDownStreamHandler> handlers = new ArrayList<CanalEventDownStreamHandler>();
 
     public void setFilter(CanalEventFilter filter) {

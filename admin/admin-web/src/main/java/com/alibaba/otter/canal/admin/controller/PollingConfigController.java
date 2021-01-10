@@ -31,13 +31,13 @@ public class PollingConfigController {
     private static final byte[] seeds = "canal is best!".getBytes();
 
     @Value(value = "${canal.adminUser}")
-    String                      user;
+    String user;
 
     @Value(value = "${canal.adminPasswd}")
-    String                      passwd;
+    String passwd;
 
     @Autowired
-    PollingConfigService        pollingConfigService;
+    PollingConfigService pollingConfigService;
 
     /**
      * 获取server全局配置

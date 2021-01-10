@@ -7,7 +7,7 @@ import com.alibaba.otter.canal.parse.driver.mysql.utils.ByteHelper;
 
 public class AuthSwitchRequestPacket extends CommandPacket {
 
-    public int    status;
+    public int status;
     public String authName;
     public byte[] authData;
 

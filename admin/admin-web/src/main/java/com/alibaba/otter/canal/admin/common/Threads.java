@@ -7,11 +7,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Threads {
 
-    public static int                   pool            = 60;
+    public static int pool = 60;
     public static final ExecutorService executorService = new ThreadPoolExecutor(pool,
-                                                            pool,
-                                                            0L,
-                                                            TimeUnit.MILLISECONDS,
-                                                            new ArrayBlockingQueue<Runnable>(pool * 20),
-                                                            DaemonThreadFactory.daemonThreadFactory);
+            pool,
+            0L,
+            TimeUnit.MILLISECONDS,
+            new ArrayBlockingQueue<Runnable>(pool * 20),
+            DaemonThreadFactory.daemonThreadFactory);
 }

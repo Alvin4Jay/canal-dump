@@ -26,13 +26,13 @@ import com.alibaba.otter.canal.client.adapter.support.Util;
 @Component
 public class ApplicationConfigMonitor {
 
-    private static final Logger   logger = LoggerFactory.getLogger(ApplicationConfigMonitor.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationConfigMonitor.class);
 
     @Resource
-    private ContextRefresher      contextRefresher;
+    private ContextRefresher contextRefresher;
 
     @Resource
-    private CanalAdapterService   canalAdapterService;
+    private CanalAdapterService canalAdapterService;
 
     private FileAlterationMonitor fileMonitor;
 
@@ -41,9 +41,9 @@ public class ApplicationConfigMonitor {
         File confDir = Util.getConfDirPath();
         try {
             FileAlterationObserver observer = new FileAlterationObserver(confDir,
-                FileFilterUtils.and(FileFilterUtils.fileFileFilter(),
-                    FileFilterUtils.prefixFileFilter("application"),
-                    FileFilterUtils.suffixFileFilter("yml")));
+                    FileFilterUtils.and(FileFilterUtils.fileFileFilter(),
+                            FileFilterUtils.prefixFileFilter("application"),
+                            FileFilterUtils.suffixFileFilter("yml")));
             FileListener listener = new FileListener();
             observer.addListener(listener);
             fileMonitor = new FileAlterationMonitor(3000, observer);

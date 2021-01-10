@@ -21,6 +21,7 @@ import com.alibaba.otter.canal.protocol.CanalEntry.RowData;
 import com.alibaba.otter.canal.protocol.position.EntryPosition;
 import com.alibaba.otter.canal.protocol.position.LogPosition;
 import com.alibaba.otter.canal.sink.exception.CanalSinkException;
+
 @Ignore
 public class LocalBinlogDumpTest {
 
@@ -37,12 +38,12 @@ public class LocalBinlogDumpTest {
         controller.setEventSink(new AbstractCanalEventSinkTest<List<Entry>>() {
 
             public boolean sink(List<Entry> entrys, InetSocketAddress remoteAddress, String destination)
-                                                                                                        throws CanalSinkException,
-                                                                                                        InterruptedException {
+                    throws CanalSinkException,
+                    InterruptedException {
 
                 for (Entry entry : entrys) {
                     if (entry.getEntryType() == EntryType.TRANSACTIONBEGIN
-                        || entry.getEntryType() == EntryType.TRANSACTIONEND) {
+                            || entry.getEntryType() == EntryType.TRANSACTIONEND) {
                         continue;
                     }
 
@@ -52,16 +53,16 @@ public class LocalBinlogDumpTest {
                             rowChage = RowChange.parseFrom(entry.getStoreValue());
                         } catch (Exception e) {
                             throw new RuntimeException("ERROR ## parser of eromanga-event has an error , data:"
-                                                       + entry.toString(), e);
+                                    + entry.toString(), e);
                         }
 
                         EventType eventType = rowChage.getEventType();
                         System.out.println(String.format("================> binlog[%s:%s] , name[%s,%s] , eventType : %s",
-                            entry.getHeader().getLogfileName(),
-                            entry.getHeader().getLogfileOffset(),
-                            entry.getHeader().getSchemaName(),
-                            entry.getHeader().getTableName(),
-                            eventType));
+                                entry.getHeader().getLogfileName(),
+                                entry.getHeader().getLogfileOffset(),
+                                entry.getHeader().getSchemaName(),
+                                entry.getHeader().getTableName(),
+                                eventType));
 
                         for (RowData rowData : rowChage.getRowDatasList()) {
                             if (eventType == EventType.DELETE) {

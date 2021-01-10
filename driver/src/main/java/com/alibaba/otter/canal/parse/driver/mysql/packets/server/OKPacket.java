@@ -8,16 +8,16 @@ import com.alibaba.otter.canal.parse.driver.mysql.utils.ByteHelper;
 
 /**
  * Aka. OK packet
- * 
+ *
  * @author fujohnwang
  */
 public class OKPacket extends PacketWithHeaderPacket {
 
-    public byte   fieldCount;
+    public byte fieldCount;
     public byte[] affectedRows;
     public byte[] insertId;
-    public int    serverStatus;
-    public int    warningCount;
+    public int serverStatus;
+    public int warningCount;
     public String message;
 
     /**
@@ -32,7 +32,7 @@ public class OKPacket extends PacketWithHeaderPacket {
      *  2                           warning_count
      *  n   (until end of packet)   message
      * </pre>
-     * 
+     *
      * @throws IOException
      */
     public void fromBytes(byte[] data) throws IOException {
@@ -111,8 +111,8 @@ public class OKPacket extends PacketWithHeaderPacket {
 
     public String toString() {
         return "OKPacket [affectedRows=" + Arrays.toString(affectedRows) + ", fieldCount=" + fieldCount + ", insertId="
-               + Arrays.toString(insertId) + ", message=" + message + ", serverStatus=" + serverStatus
-               + ", warningCount=" + warningCount + "]";
+                + Arrays.toString(insertId) + ", message=" + message + ", serverStatus=" + serverStatus
+                + ", warningCount=" + warningCount + "]";
     }
 
 }

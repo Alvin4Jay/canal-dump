@@ -8,7 +8,7 @@ import com.taobao.tddl.dbsync.binlog.JsonConversion.Json_enum_type;
 
 /**
  * 处理mysql8.0 parital json diff解析
- * 
+ *
  * @author agapple 2018年11月4日 下午3:53:46
  * @since 1.1.2
  */
@@ -18,19 +18,19 @@ public class JsonDiffConversion {
      * The JSON value in the given path is replaced with a new value. It has the
      * same effect as `JSON_REPLACE(col, path, value)`.
      */
-    public static final int DIFF_OPERATION_REPLACE    = 0;
+    public static final int DIFF_OPERATION_REPLACE = 0;
     /**
      * Add a new element at the given path. If the path specifies an array
      * element, it has the same effect as `JSON_ARRAY_INSERT(col, path, value)`.
      * If the path specifies an object member, it has the same effect as
      * `JSON_INSERT(col, path, value)`.
      */
-    public static final int DIFF_OPERATION_INSERT     = 1;
+    public static final int DIFF_OPERATION_INSERT = 1;
     /**
      * The JSON value at the given path is removed from an array or object. It
      * has the same effect as `JSON_REMOVE(col, path)`.
      */
-    public static final int DIFF_OPERATION_REMOVE     = 2;
+    public static final int DIFF_OPERATION_REMOVE = 2;
 
     public static final int JSON_DIFF_OPERATION_COUNT = 3;
 
@@ -109,9 +109,9 @@ public class JsonDiffConversion {
                 long value_length = buffer.getPackedLong();
 
                 Json_Value jsonValue = JsonConversion.parse_value(buffer.getUint8(),
-                    buffer,
-                    value_length - 1,
-                    charsetName);
+                        buffer,
+                        value_length - 1,
+                        charsetName);
                 buffer.forward((int) value_length - 1);
                 // Read value
                 if (jsonValue.m_type == Json_enum_type.ERROR) {

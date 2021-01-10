@@ -19,15 +19,15 @@ import com.google.common.collect.MigrateMap;
 
 /**
  * 内存版实现
- * 
+ *
  * @author zebin.xuzb @ 2012-7-2
  * @version 1.0.0
  */
 public class MemoryMetaManager extends AbstractCanalLifeCycle implements CanalMetaManager {
 
-    protected Map<String, List<ClientIdentity>>              destinations;
+    protected Map<String, List<ClientIdentity>> destinations;
     protected Map<ClientIdentity, MemoryClientIdentityBatch> batches;
-    protected Map<ClientIdentity, Position>                  cursors;
+    protected Map<ClientIdentity, Position> cursors;
 
     public void start() {
         super.start();
@@ -100,7 +100,7 @@ public class MemoryMetaManager extends AbstractCanalLifeCycle implements CanalMe
     }
 
     public void addBatch(ClientIdentity clientIdentity, PositionRange positionRange, Long batchId)
-                                                                                                  throws CanalMetaManagerException {
+            throws CanalMetaManagerException {
         batches.get(clientIdentity).addPositionRange(positionRange, batchId);// 添加记录到指定batchId
     }
 
@@ -132,19 +132,19 @@ public class MemoryMetaManager extends AbstractCanalLifeCycle implements CanalMe
 
     public static class MemoryClientIdentityBatch {
 
-        private ClientIdentity           clientIdentity;
-        private Map<Long, PositionRange> batches          = new MapMaker().makeMap();
-        private AtomicLong               atomicMaxBatchId = new AtomicLong(1);
+        private ClientIdentity clientIdentity;
+        private Map<Long, PositionRange> batches = new MapMaker().makeMap();
+        private AtomicLong atomicMaxBatchId = new AtomicLong(1);
 
         public static MemoryClientIdentityBatch create(ClientIdentity clientIdentity) {
             return new MemoryClientIdentityBatch(clientIdentity);
         }
 
-        public MemoryClientIdentityBatch(){
+        public MemoryClientIdentityBatch() {
 
         }
 
-        protected MemoryClientIdentityBatch(ClientIdentity clientIdentity){
+        protected MemoryClientIdentityBatch(ClientIdentity clientIdentity) {
             this.clientIdentity = clientIdentity;
         }
 
@@ -165,8 +165,8 @@ public class MemoryMetaManager extends AbstractCanalLifeCycle implements CanalMe
                 if (!minBatchId.equals(batchId)) {
                     // 检查一下提交的ack/rollback，必须按batchId分出去的顺序提交，否则容易出现丢数据
                     throw new CanalMetaManagerException(String.format("batchId:%d is not the firstly:%d",
-                        batchId,
-                        minBatchId));
+                            batchId,
+                            minBatchId));
                 }
                 return batches.remove(batchId);
             } else {

@@ -36,17 +36,17 @@ public class ByteArrayResource extends AbstractResource {
      *
      * @param byteArray the byte array to wrap
      */
-    public ByteArrayResource(byte[] byteArray){
+    public ByteArrayResource(byte[] byteArray) {
         this(byteArray, "resource loaded from byte array");
     }
 
     /**
      * Create a new {@code ByteArrayResource} with a description.
      *
-     * @param byteArray the byte array to wrap
+     * @param byteArray   the byte array to wrap
      * @param description where the byte array comes from
      */
-    public ByteArrayResource(byte[] byteArray, String description){
+    public ByteArrayResource(byte[] byteArray, String description) {
         Assert.notNull(byteArray, "Byte array must not be null");
         this.byteArray = byteArray;
         this.description = (description != null ? description : "");
@@ -103,7 +103,7 @@ public class ByteArrayResource extends AbstractResource {
     @Override
     public boolean equals(Object obj) {
         return (obj == this || (obj instanceof org.springframework.core.io.ByteArrayResource
-                                && Arrays.equals(((ByteArrayResource) obj).byteArray, this.byteArray)));
+                && Arrays.equals(((ByteArrayResource) obj).byteArray, this.byteArray)));
     }
 
     /**

@@ -14,11 +14,12 @@ import org.junit.Test;
 import com.alibaba.otter.canal.protocol.ClientIdentity;
 import com.alibaba.otter.canal.protocol.position.Position;
 import com.alibaba.otter.canal.protocol.position.PositionRange;
+
 @Ignore
 public class FileMixedMetaManagerTest extends AbstractMetaManagerTest {
 
-    private static final String tmp     = System.getProperty("java.io.tmpdir", "/tmp");
-    private static final File   dataDir = new File(tmp, "canal");
+    private static final String tmp = System.getProperty("java.io.tmpdir", "/tmp");
+    private static final File dataDir = new File(tmp, "canal");
 
     @Before
     public void setUp() {

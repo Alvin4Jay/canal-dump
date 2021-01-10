@@ -9,7 +9,7 @@ public class QueryCommandPacket extends CommandPacket {
 
     private String queryString;
 
-    public QueryCommandPacket(){
+    public QueryCommandPacket() {
         setCommand((byte) 0x03);
     }
 

@@ -20,13 +20,14 @@ import com.alibaba.otter.canal.protocol.CanalEntry.Entry;
 import com.alibaba.otter.canal.protocol.position.EntryPosition;
 import com.alibaba.otter.canal.protocol.position.LogPosition;
 import com.alibaba.otter.canal.sink.exception.CanalSinkException;
+
 @Ignore
 public class LocalBinlogEventParserTest {
 
     private static final String MYSQL_ADDRESS = "127.0.0.1";
-    private static final String USERNAME      = "canal";
-    private static final String PASSWORD      = "canal";
-    private String              directory;
+    private static final String USERNAME = "canal";
+    private static final String PASSWORD = "canal";
+    private String directory;
 
     @Before
     public void setUp() {
@@ -49,7 +50,7 @@ public class LocalBinlogEventParserTest {
         controller.setEventSink(new AbstractCanalEventSinkTest<List<Entry>>() {
 
             public boolean sink(List<Entry> entrys, InetSocketAddress remoteAddress, String destination)
-                                                                                                        throws CanalSinkException {
+                    throws CanalSinkException {
                 entryCount.incrementAndGet();
 
                 for (Entry entry : entrys) {
@@ -113,7 +114,7 @@ public class LocalBinlogEventParserTest {
 
             @Override
             public boolean sink(List<Entry> entrys, InetSocketAddress remoteAddress, String destination)
-                                                                                                        throws CanalSinkException {
+                    throws CanalSinkException {
                 for (Entry entry : entrys) {
                     entryCount.incrementAndGet();
 
@@ -166,8 +167,8 @@ public class LocalBinlogEventParserTest {
     public void test_no_position() throws InterruptedException {
         final TimeoutChecker timeoutChecker = new TimeoutChecker(3 * 1000);
         final EntryPosition defaultPosition = buildPosition("mysql-bin.000003",
-            null,
-            new Date().getTime() + 1000 * 1000L);
+                null,
+                new Date().getTime() + 1000 * 1000L);
         final AtomicLong entryCount = new AtomicLong(0);
         final EntryPosition entryPosition = new EntryPosition();
 
@@ -178,7 +179,7 @@ public class LocalBinlogEventParserTest {
         controller.setEventSink(new AbstractCanalEventSinkTest<List<Entry>>() {
 
             public boolean sink(List<Entry> entrys, InetSocketAddress remoteAddress, String destination)
-                                                                                                        throws CanalSinkException {
+                    throws CanalSinkException {
                 for (Entry entry : entrys) {
                     entryCount.incrementAndGet();
 
