@@ -117,20 +117,24 @@ public class ServerRunningTest extends AbstractZkTest {
         runningMonitor.setDestination(destination);
         runningMonitor.setListener(new ServerRunningListener() {
 
+            @Override
             public void processActiveEnter() {
                 System.out.println(String.format("cid:%s ip:%s:%s has start", ip, port));
                 countLatch.countDown();
             }
 
+            @Override
             public void processActiveExit() {
                 System.out.println(String.format("cid:%s ip:%s:%s has stop", ip, port));
                 countLatch.countDown();
             }
 
+            @Override
             public void processStart() {
                 System.out.println(String.format("cid:%s ip:%s:%s processStart", ip, port));
             }
 
+            @Override
             public void processStop() {
                 System.out.println(String.format("cid:%s ip:%s:%s processStop", ip, port));
             }

@@ -50,7 +50,8 @@ public class ServerRunningMonitor extends AbstractCanalLifeCycle {
     public ServerRunningMonitor() {
         // 创建父节点
         dataListener = new IZkDataListener() {
-
+            /** ！！！目前看来，好像并没有存在修改running节点数据的代码，为什么这个方法不是空实现？ */
+            @Override
             public void handleDataChange(String dataPath, Object data) throws Exception {
                 MDC.put("destination", destination);
                 ServerRunningData runningData = JsonUtils.unmarshalFromByte((byte[]) data, ServerRunningData.class);
@@ -62,9 +63,11 @@ public class ServerRunningMonitor extends AbstractCanalLifeCycle {
                     releaseRunning();// 彻底释放mainstem
                 }
 
-                activeData = (ServerRunningData) runningData;
+                activeData = runningData;
             }
 
+            /** 当其他canal instance出现异常，临时节点数据被删除时，会自动回调这个方法，此时当前canal instance要顶上去 */
+            @Override
             public void handleDataDeleted(String dataPath) throws Exception {
                 MDC.put("destination", destination);
                 mutex.set(false);
@@ -73,15 +76,10 @@ public class ServerRunningMonitor extends AbstractCanalLifeCycle {
                     initRunning();
                 } else {
                     // 否则就是等待delayTime，避免因网络瞬端或者zk异常，导致出现频繁的切换操作
-                    delayExector.schedule(new Runnable() {
-
-                        public void run() {
-                            initRunning();
-                        }
-                    }, delayTime, TimeUnit.SECONDS);
+                    // 尝试自己进入running状态
+                    delayExector.schedule(() -> initRunning(), delayTime, TimeUnit.SECONDS);
                 }
             }
-
         };
 
     }
@@ -90,14 +88,25 @@ public class ServerRunningMonitor extends AbstractCanalLifeCycle {
         processStart();
     }
 
+    @Override
     public synchronized void start() {
         super.start();
         try {
+            // 其内部会调用ServerRunningListener的processStart()方法
             processStart();
+            // 若存在zk，以HA方式启动CanalInstance
             if (zkClient != null) {
                 // 如果需要尽可能释放instance资源，不需要监听running节点，不然即使stop了这台机器，另一台机器立马会start
+
+                // zk路径为：/otter/canal/destinations/{0}/running
+                /*构建临时节点的路径：/otter/canal/destinations/{0}/running，其中占位符{0}会被destination替换。
+                在集群模式下，可能会有多个canal server共同处理同一个destination，
+                在某一时刻，只能由一个canal server进行处理，处理这个destination的canal server进入running状态，其他canal server进入standby状态。*/
                 String path = ZookeeperPathUtils.getDestinationServerRunning(destination);
-                zkClient.subscribeDataChanges(path, dataListener);
+
+                /*对destination对应的running节点进行监听，一旦发生了变化，则说明可能其他处理相同destination的canal server可能出现了异常，
+                此时需要尝试自己进入running状态。*/
+                zkClient.subscribeDataChanges(path, dataListener); // 监听节点数据变化
 
                 initRunning();
             } else {
@@ -121,6 +130,7 @@ public class ServerRunningMonitor extends AbstractCanalLifeCycle {
         }
     }
 
+    @Override
     public synchronized void stop() {
         super.stop();
 
@@ -140,24 +150,31 @@ public class ServerRunningMonitor extends AbstractCanalLifeCycle {
             return;
         }
 
+        // 临时节点zk路径为：/otter/canal/destinations/{0}/running，其中占位符{0}会被destination替换
         String path = ZookeeperPathUtils.getDestinationServerRunning(destination);
-        // 序列化
+        // 序列化，构建临时节点的数据，标记当前destination由哪一个canal server处理
         byte[] bytes = JsonUtils.marshalToByte(serverData);
         try {
             mutex.set(false);
+            // 尝试创建临时节点。如果节点已经存在，说明是其他的canal server已经启动了这个canal instance。
+            // 此时会抛出ZkNodeExistsException，进入catch代码块。
             zkClient.create(path, bytes, CreateMode.EPHEMERAL);
             activeData = serverData;
-            processActiveEnter();// 触发一下事件
+            processActiveEnter();// 触发一下事件，启动CanalInstance
             mutex.set(true);
             release = false;
         } catch (ZkNodeExistsException e) {
+            //创建节点失败，则根据path从zk中获取当前是哪一个canal server创建了当前canal instance的相关信息。
+            //第二个参数true，表示的是，如果这个path不存在，则返回null。
             bytes = zkClient.readData(path, true);
             if (bytes == null) {// 如果不存在节点，立即尝试一次
                 initRunning();
             } else {
+                //如果的确存在，则将创建该canal instance实例信息存入activeData中。
                 activeData = JsonUtils.unmarshalFromByte(bytes, ServerRunningData.class);
             }
         } catch (ZkNoNodeException e) {
+            // 如果/otter/canal/destinations/{0}/节点不存在，进行创建，其中占位符{0}会被destination替换
             zkClient.createPersistent(ZookeeperPathUtils.getDestinationPath(destination), true); // 尝试创建父节点
             initRunning();
         }

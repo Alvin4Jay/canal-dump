@@ -37,6 +37,7 @@ public class CanalLauncher {
             setGlobalUncaughtExceptionHandler();
 
             logger.info("## load canal configurations");
+            // 1、读取canal.properties文件中配置，默认读取classpath下的canal.properties
             String conf = System.getProperty("canal.conf", "classpath:canal.properties");
             Properties properties = new Properties();
             if (conf.startsWith(CLASSPATH_URL_PREFIX)) {
@@ -48,6 +49,7 @@ public class CanalLauncher {
 
             final CanalStarter canalStater = new CanalStarter(properties);
             String managerAddress = CanalController.getProperty(properties, CanalConstants.CANAL_ADMIN_MANAGER);
+            // admin相关的配置
             if (StringUtils.isNotEmpty(managerAddress)) {
                 String user = CanalController.getProperty(properties, CanalConstants.CANAL_ADMIN_USER);
                 String passwd = CanalController.getProperty(properties, CanalConstants.CANAL_ADMIN_PASSWD);
@@ -112,9 +114,10 @@ public class CanalLauncher {
                 canalStater.setProperties(properties);
             }
 
+            // 2.启动Canal
             canalStater.start();
-            runningLatch.await();
-            executor.shutdownNow();
+            runningLatch.await(); // hold住main线程
+            executor.shutdownNow(); // 立刻停止调度
         } catch (Throwable e) {
             logger.error("## Something goes wrong when starting up the canal Server:", e);
         }

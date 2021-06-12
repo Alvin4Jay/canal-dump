@@ -41,6 +41,12 @@ import com.google.common.collect.MigrateMap;
 /**
  * canal调度控制器
  *
+ *      instanceConfigMonitors:                           ServerRunningMonitors:
+ * Map<InstanceMode, SpringInstanceConfigMonitor>     Map<destination, ServerRunningMonitor>
+ *              |                                                  |
+ *              |                                                  |
+ * SpringInstanceConfigMonitor --> InstanceAction --> ServerRunningMonitor  --> ServerRunningListener
+ *
  * @author jianghang 2012-11-8 下午12:03:11
  * @version 1.0.0
  */
@@ -75,13 +81,14 @@ public class CanalController {
 
     public CanalController(final Properties properties) {
         managerClients = MigrateMap.makeComputingMap(new Function<String, PlainCanalConfigClient>() {
-
+            @Override
             public PlainCanalConfigClient apply(String managerAddress) {
                 return getManagerClient(managerAddress);
             }
         });
 
-        // 初始化全局参数设置
+        // 1.初始化参数设置
+        // 全局参数设置
         globalInstanceConfig = initGlobalConfig(properties);
         instanceConfigs = new MapMaker().makeMap();
         // 初始化instance config
@@ -103,12 +110,12 @@ public class CanalController {
             System.setProperty(CanalConstants.CANAL_ALIYUN_SECRETKEY, secretkey);
         }
 
-        // 准备canal server
+        // 2.准备canal server
         ip = getProperty(properties, CanalConstants.CANAL_IP);
         registerIp = getProperty(properties, CanalConstants.CANAL_REGISTER_IP);
         port = Integer.valueOf(getProperty(properties, CanalConstants.CANAL_PORT, "11111"));
         adminPort = Integer.valueOf(getProperty(properties, CanalConstants.CANAL_ADMIN_PORT, "11110"));
-        embededCanalServer = CanalServerWithEmbedded.instance();
+        embededCanalServer = CanalServerWithEmbedded.instance(); // 单例
         embededCanalServer.setCanalInstanceGenerator(instanceGenerator);// 设置自定义的instanceGenerator
         int metricsPort = Integer.valueOf(getProperty(properties, CanalConstants.CANAL_METRICS_PULL_PORT, "11112"));
         embededCanalServer.setMetricsPort(metricsPort);
@@ -118,16 +125,17 @@ public class CanalController {
         embededCanalServer.setUser(getProperty(properties, CanalConstants.CANAL_USER));
         embededCanalServer.setPasswd(getProperty(properties, CanalConstants.CANAL_PASSWD));
 
-        String canalWithoutNetty = getProperty(properties, CanalConstants.CANAL_WITHOUT_NETTY);
+        String canalWithoutNetty = getProperty(properties, CanalConstants.CANAL_WITHOUT_NETTY); // false
         if (canalWithoutNetty == null || "false".equals(canalWithoutNetty)) {
-            canalServer = CanalServerWithNetty.instance();
+            canalServer = CanalServerWithNetty.instance(); // 单例
             canalServer.setIp(ip);
             canalServer.setPort(port);
         }
 
+        // 3.初始化zk客户端的相关代码
         // 处理下ip为空，默认使用hostIp暴露到zk中
         if (StringUtils.isEmpty(ip) && StringUtils.isEmpty(registerIp)) {
-            ip = registerIp = AddressUtils.getHostIp();
+            ip = registerIp = AddressUtils.getHostIp(); // 网卡ip
         }
 
         if (StringUtils.isEmpty(ip)) {
@@ -137,102 +145,121 @@ public class CanalController {
         if (StringUtils.isEmpty(registerIp)) {
             registerIp = ip; // 兼容以前配置
         }
+        // 读取canal.properties中的配置项canal.zkServers，如果没有这个配置，则表示项目不使用zk
         final String zkServers = getProperty(properties, CanalConstants.CANAL_ZKSERVERS);
         if (StringUtils.isNotEmpty(zkServers)) {
+            // 创建zk客户端
             zkclientx = ZkClientx.getZkClient(zkServers);
-            // 初始化系统目录
+            // 初始化系统目录(持久化节点)
+            // destination列表，路径为/otter/canal/destinations
             zkclientx.createPersistent(ZookeeperPathUtils.DESTINATION_ROOT_NODE, true);
+            // 整个canal server的集群列表，路径为/otter/canal/cluster --> HA机制
             zkclientx.createPersistent(ZookeeperPathUtils.CANAL_CLUSTER_ROOT_NODE, true);
         }
 
+        // 4.CanalInstance运行状态监控
         final ServerRunningData serverData = new ServerRunningData(registerIp + ":" + port);
         ServerRunningMonitors.setServerData(serverData);
-        ServerRunningMonitors.setRunningMonitors(MigrateMap.makeComputingMap(new Function<String, ServerRunningMonitor>() {
+        ServerRunningMonitors.setRunningMonitors(MigrateMap.makeComputingMap((Function<String, ServerRunningMonitor>) destination -> {
+            ServerRunningMonitor runningMonitor = new ServerRunningMonitor(serverData);
+            runningMonitor.setDestination(destination);
+            runningMonitor.setListener(new ServerRunningListener() {
+                /** 处理存在zk的情况下，在CanalInstance启动之前，在zk中创建节点。
+                 路径为：/otter/canal/destinations/{0}/cluster/{1}，其中0会被destination替换，1会被ip:port替换。
+                 此方法会在processActiveEnter()之前被调用*/
+                @Override
+                public void processStart() {
+                    try {
+                        if (zkclientx != null) {
+                            final String path = ZookeeperPathUtils.getDestinationClusterNode(destination,
+                                    registerIp + ":" + port);
+                            initCid(path);
+                            zkclientx.subscribeStateChanges(new IZkStateListener() {
+                                /** 连接状态的改变，例如由未连接改变成连接上，连接上改为过期等 */
+                                @Override
+                                public void handleStateChanged(KeeperState state) throws Exception {
 
-            public ServerRunningMonitor apply(final String destination) {
-                ServerRunningMonitor runningMonitor = new ServerRunningMonitor(serverData);
-                runningMonitor.setDestination(destination);
-                runningMonitor.setListener(new ServerRunningListener() {
+                                }
 
-                    public void processActiveEnter() {
-                        try {
-                            MDC.put(CanalConstants.MDC_DESTINATION, String.valueOf(destination));
-                            embededCanalServer.start(destination);
-                            if (canalMQStarter != null) {
-                                canalMQStarter.startDestination(destination);
-                            }
-                        } finally {
-                            MDC.remove(CanalConstants.MDC_DESTINATION);
+                                /** 创建一个新的session（连接）， 通常是由于session失效然后新的session被建立时触发。一般此时需要开发者重新创建临时节点（Ephemeral Nodes）*/
+                                @Override
+                                public void handleNewSession() throws Exception {
+                                    initCid(path);
+                                }
+
+                                @Override
+                                public void handleSessionEstablishmentError(Throwable error) throws Exception {
+                                    logger.error("failed to connect to zookeeper", error);
+                                }
+                            });
                         }
+                    } finally {
+                        MDC.remove(CanalConstants.MDC_DESTINATION);
                     }
-
-                    public void processActiveExit() {
-                        try {
-                            MDC.put(CanalConstants.MDC_DESTINATION, String.valueOf(destination));
-                            if (canalMQStarter != null) {
-                                canalMQStarter.stopDestination(destination);
-                            }
-                            embededCanalServer.stop(destination);
-                        } finally {
-                            MDC.remove(CanalConstants.MDC_DESTINATION);
-                        }
-                    }
-
-                    public void processStart() {
-                        try {
-                            if (zkclientx != null) {
-                                final String path = ZookeeperPathUtils.getDestinationClusterNode(destination,
-                                        registerIp + ":" + port);
-                                initCid(path);
-                                zkclientx.subscribeStateChanges(new IZkStateListener() {
-
-                                    public void handleStateChanged(KeeperState state) throws Exception {
-
-                                    }
-
-                                    public void handleNewSession() throws Exception {
-                                        initCid(path);
-                                    }
-
-                                    @Override
-                                    public void handleSessionEstablishmentError(Throwable error) throws Exception {
-                                        logger.error("failed to connect to zookeeper", error);
-                                    }
-                                });
-                            }
-                        } finally {
-                            MDC.remove(CanalConstants.MDC_DESTINATION);
-                        }
-                    }
-
-                    public void processStop() {
-                        try {
-                            MDC.put(CanalConstants.MDC_DESTINATION, String.valueOf(destination));
-                            if (zkclientx != null) {
-                                final String path = ZookeeperPathUtils.getDestinationClusterNode(destination,
-                                        registerIp + ":" + port);
-                                releaseCid(path);
-                            }
-                        } finally {
-                            MDC.remove(CanalConstants.MDC_DESTINATION);
-                        }
-                    }
-
-                });
-                if (zkclientx != null) {
-                    runningMonitor.setZkClient(zkclientx);
                 }
-                // 触发创建一下cid节点
-                runningMonitor.init();
-                return runningMonitor;
+
+                /** 内部调用了embededCanalServer的start(destination)方法。
+                此处需要划重点，说明每个destination对应的CanalInstance是通过embededCanalServer的start方法启动的，
+                这与我们之前分析将instanceGenerator设置到embededCanalServer中可以对应上。
+                embededCanalServer负责调用instanceGenerator生成CanalInstance实例，并负责其启动。*/
+                @Override
+                public void processActiveEnter() {
+                    try {
+                        MDC.put(CanalConstants.MDC_DESTINATION, String.valueOf(destination));
+                        embededCanalServer.start(destination);
+                        if (canalMQStarter != null) {
+                            canalMQStarter.startDestination(destination);
+                        }
+                    } finally {
+                        MDC.remove(CanalConstants.MDC_DESTINATION);
+                    }
+                }
+
+                /** 内部调用embededCanalServer的stop(destination)方法。与上start方法类似，只不过是停止CanalInstance。 */
+                @Override
+                public void processActiveExit() {
+                    try {
+                        MDC.put(CanalConstants.MDC_DESTINATION, String.valueOf(destination));
+                        if (canalMQStarter != null) {
+                            canalMQStarter.stopDestination(destination);
+                        }
+                        embededCanalServer.stop(destination);
+                    } finally {
+                        MDC.remove(CanalConstants.MDC_DESTINATION);
+                    }
+                }
+
+                /** 处理存在zk的情况下，在CanalInstance停止后，释放zk节点，路径为/otter/canal/destinations/{0}/cluster/{1}，
+                 其中0会被destination替换，1会被ip:port替换。此方法会在processActiveExit()之后被调用 */
+                @Override
+                public void processStop() {
+                    try {
+                        MDC.put(CanalConstants.MDC_DESTINATION, String.valueOf(destination));
+                        if (zkclientx != null) {
+                            final String path = ZookeeperPathUtils.getDestinationClusterNode(destination,
+                                    registerIp + ":" + port);
+                            releaseCid(path);
+                        }
+                    } finally {
+                        MDC.remove(CanalConstants.MDC_DESTINATION);
+                    }
+                }
+
+            });
+
+            if (zkclientx != null) {
+                runningMonitor.setZkClient(zkclientx);
             }
+            // 触发创建一下cid节点(zk内)
+            runningMonitor.init();
+            return runningMonitor;
         }));
 
-        // 初始化monitor机制
-        autoScan = BooleanUtils.toBoolean(getProperty(properties, CanalConstants.CANAL_AUTO_SCAN));
+        // 5.初始化monitor机制(autoScan机制相关代码)
+        autoScan = BooleanUtils.toBoolean(getProperty(properties, CanalConstants.CANAL_AUTO_SCAN)); // true
         if (autoScan) {
             defaultAction = new InstanceAction() {
-
+                @Override
                 public void start(String destination) {
                     InstanceConfig config = instanceConfigs.get(destination);
                     if (config == null) {
@@ -252,6 +279,7 @@ public class CanalController {
                     logger.info("auto notify start {} successful.", destination);
                 }
 
+                @Override
                 public void stop(String destination) {
                     // 此处的stop，代表强制退出，非HA机制，所以需要退出HA的monitor和配置信息
                     InstanceConfig config = instanceConfigs.remove(destination);
@@ -266,6 +294,7 @@ public class CanalController {
                     logger.info("auto notify stop {} successful.", destination);
                 }
 
+                @Override
                 public void reload(String destination) {
                     // 目前任何配置变化，直接重启，简单处理
                     stop(destination);
@@ -303,40 +332,35 @@ public class CanalController {
                 }
             };
 
-            instanceConfigMonitors = MigrateMap.makeComputingMap(new Function<InstanceMode, InstanceConfigMonitor>() {
+            instanceConfigMonitors = MigrateMap.makeComputingMap(mode -> {
+                int scanInterval = Integer.valueOf(getProperty(properties, CanalConstants.CANAL_AUTO_SCAN_INTERVAL, "5"));
 
-                public InstanceConfigMonitor apply(InstanceMode mode) {
-                    int scanInterval = Integer.valueOf(getProperty(properties,
-                            CanalConstants.CANAL_AUTO_SCAN_INTERVAL,
-                            "5"));
-
-                    if (mode.isSpring()) {
-                        SpringInstanceConfigMonitor monitor = new SpringInstanceConfigMonitor();
-                        monitor.setScanIntervalInSecond(scanInterval);
-                        monitor.setDefaultAction(defaultAction);
-                        // 设置conf目录，默认是user.dir + conf目录组成
-                        String rootDir = getProperty(properties, CanalConstants.CANAL_CONF_DIR);
-                        if (StringUtils.isEmpty(rootDir)) {
-                            rootDir = "../conf";
-                        }
-
-                        if (StringUtils.equals("otter-canal", System.getProperty("appName"))) {
-                            monitor.setRootConf(rootDir);
-                        } else {
-                            // eclipse debug模式
-                            monitor.setRootConf("src/main/resources/");
-                        }
-                        return monitor;
-                    } else if (mode.isManager()) {
-                        ManagerInstanceConfigMonitor monitor = new ManagerInstanceConfigMonitor();
-                        monitor.setScanIntervalInSecond(scanInterval);
-                        monitor.setDefaultAction(defaultAction);
-                        String managerAddress = getProperty(properties, CanalConstants.CANAL_ADMIN_MANAGER);
-                        monitor.setConfigClient(getManagerClient(managerAddress));
-                        return monitor;
-                    } else {
-                        throw new UnsupportedOperationException("unknow mode :" + mode + " for monitor");
+                if (mode.isSpring()) {
+                    SpringInstanceConfigMonitor monitor = new SpringInstanceConfigMonitor();
+                    monitor.setScanIntervalInSecond(scanInterval);
+                    monitor.setDefaultAction(defaultAction);
+                    // 设置conf目录，默认是user.dir + conf目录组成
+                    String rootDir = getProperty(properties, CanalConstants.CANAL_CONF_DIR);
+                    if (StringUtils.isEmpty(rootDir)) {
+                        rootDir = "../conf";
                     }
+
+                    if (StringUtils.equals("otter-canal", System.getProperty("appName"))) { // true
+                        monitor.setRootConf(rootDir);
+                    } else {
+                        // eclipse debug模式
+                        monitor.setRootConf("src/main/resources/");
+                    }
+                    return monitor;
+                } else if (mode.isManager()) {
+                    ManagerInstanceConfigMonitor monitor = new ManagerInstanceConfigMonitor();
+                    monitor.setScanIntervalInSecond(scanInterval);
+                    monitor.setDefaultAction(defaultAction);
+                    String managerAddress = getProperty(properties, CanalConstants.CANAL_ADMIN_MANAGER);
+                    monitor.setConfigClient(getManagerClient(managerAddress));
+                    return monitor;
+                } else {
+                    throw new UnsupportedOperationException("unknow mode :" + mode + " for monitor");
                 }
             });
         }
@@ -345,19 +369,22 @@ public class CanalController {
     private InstanceConfig initGlobalConfig(Properties properties) {
         String adminManagerAddress = getProperty(properties, CanalConstants.CANAL_ADMIN_MANAGER);
         InstanceConfig globalConfig = new InstanceConfig();
-        String modeStr = getProperty(properties, CanalConstants.getInstanceModeKey(CanalConstants.GLOBAL_NAME));
+        // 读取canal.instance.global.mode
+        String modeStr = getProperty(properties, CanalConstants.getInstanceModeKey(CanalConstants.GLOBAL_NAME)); // spring
         if (StringUtils.isNotEmpty(adminManagerAddress)) {
             // 如果指定了manager地址,则强制适用manager
             globalConfig.setMode(InstanceMode.MANAGER);
         } else if (StringUtils.isNotEmpty(modeStr)) {
-            globalConfig.setMode(InstanceMode.valueOf(StringUtils.upperCase(modeStr)));
+            globalConfig.setMode(InstanceMode.valueOf(StringUtils.upperCase(modeStr))); // 将modelStr转成枚举InstanceMode
         }
 
-        String lazyStr = getProperty(properties, CanalConstants.getInstancLazyKey(CanalConstants.GLOBAL_NAME));
+        // 读取canal.instance.global.lazy
+        String lazyStr = getProperty(properties, CanalConstants.getInstancLazyKey(CanalConstants.GLOBAL_NAME)); // false
         if (StringUtils.isNotEmpty(lazyStr)) {
             globalConfig.setLazy(Boolean.valueOf(lazyStr));
         }
 
+        // 读取canal.instance.global.manager.address
         String managerAddress = getProperty(properties,
                 CanalConstants.getInstanceManagerAddressKey(CanalConstants.GLOBAL_NAME));
         if (StringUtils.isNotEmpty(managerAddress)) {
@@ -368,25 +395,29 @@ public class CanalController {
             globalConfig.setManagerAddress(managerAddress);
         }
 
+        // 读取canal.instance.global.spring.xml
         String springXml = getProperty(properties, CanalConstants.getInstancSpringXmlKey(CanalConstants.GLOBAL_NAME));
-        if (StringUtils.isNotEmpty(springXml)) {
+        if (StringUtils.isNotEmpty(springXml)) { // classpath:spring/file-instance.xml
             globalConfig.setSpringXml(springXml);
         }
 
+        // 构造CanalInstanceGenerator
         instanceGenerator = new CanalInstanceGenerator() {
-
             public CanalInstance generate(String destination) {
+                // 1.根据destination从instanceConfigs获取对应的InstanceConfig对象
                 InstanceConfig config = instanceConfigs.get(destination);
                 if (config == null) {
                     throw new CanalServerException("can't find destination:" + destination);
                 }
 
+                // 2.manager方式，使用PlainCanalInstanceGenerator
                 if (config.getMode().isManager()) {
                     PlainCanalInstanceGenerator instanceGenerator = new PlainCanalInstanceGenerator(properties);
                     instanceGenerator.setCanalConfigClient(managerClients.get(config.getManagerAddress()));
                     instanceGenerator.setSpringXml(config.getSpringXml());
                     return instanceGenerator.generate(destination);
                 } else if (config.getMode().isSpring()) {
+                    // 3.spring方式，使用SpringCanalInstanceGenerator
                     SpringCanalInstanceGenerator instanceGenerator = new SpringCanalInstanceGenerator();
                     instanceGenerator.setSpringXml(config.getSpringXml());
                     return instanceGenerator.generate(destination);
@@ -395,7 +426,6 @@ public class CanalController {
                 }
 
             }
-
         };
 
         return globalConfig;
@@ -406,11 +436,15 @@ public class CanalController {
     }
 
     private void initInstanceConfig(Properties properties) {
+        // 读取配置项canal.destinations
         String destinationStr = getProperty(properties, CanalConstants.CANAL_DESTINATIONS);
+        // 以","分割canal.destinations，得到一个数组形式的destination
         String[] destinations = StringUtils.split(destinationStr, CanalConstants.CANAL_DESTINATION_SPLIT);
 
         for (String destination : destinations) {
+            // 为每一个destination生成一个InstanceConfig实例
             InstanceConfig config = parseInstanceConfig(properties, destination);
+            // 将destination对应的InstanceConfig放入instanceConfigs中
             InstanceConfig oldConfig = instanceConfigs.put(destination, config);
 
             if (oldConfig != null) {
@@ -421,7 +455,9 @@ public class CanalController {
 
     private InstanceConfig parseInstanceConfig(Properties properties, String destination) {
         String adminManagerAddress = getProperty(properties, CanalConstants.CANAL_ADMIN_MANAGER);
+        // 每个destination对应的InstanceConfig都引用了全局的globalInstanceConfig
         InstanceConfig config = new InstanceConfig(globalInstanceConfig);
+        // 其他几个配置项与获取globalInstanceConfig类似，不再赘述，唯一注意的的是配置项的key部分中的global变成传递进来的destination
         String modeStr = getProperty(properties, CanalConstants.getInstanceModeKey(destination));
         if (StringUtils.isNotEmpty(adminManagerAddress)) {
             // 如果指定了manager地址,则强制适用manager
@@ -479,16 +515,17 @@ public class CanalController {
 
     public void start() throws Throwable {
         logger.info("## start the canal server[{}({}):{}]", ip, registerIp, port);
-        // 创建整个canal的工作节点
+        // 创建整个canal的工作节点，路径 /otter/canal/cluster/{0}
         final String path = ZookeeperPathUtils.getCanalClusterNode(registerIp + ":" + port);
         initCid(path);
         if (zkclientx != null) {
             this.zkclientx.subscribeStateChanges(new IZkStateListener() {
-
+                @Override
                 public void handleStateChanged(KeeperState state) throws Exception {
 
                 }
 
+                @Override
                 public void handleNewSession() throws Exception {
                     initCid(path);
                 }
@@ -502,13 +539,16 @@ public class CanalController {
         // 优先启动embeded服务
         embededCanalServer.start();
         // 尝试启动一下非lazy状态的通道
+        // 启动不是lazy模式的CanalInstance，通过迭代instanceConfigs，根据destination获取对应的ServerRunningMonitor，然后逐一启动
         for (Map.Entry<String, InstanceConfig> entry : instanceConfigs.entrySet()) {
             final String destination = entry.getKey();
             InstanceConfig config = entry.getValue();
             // 创建destination的工作节点
+            // 如果destination对应的CanalInstance没有启动，则进行启动
             if (!embededCanalServer.isStart(destination)) {
                 // HA机制启动
                 ServerRunningMonitor runningMonitor = ServerRunningMonitors.getRunningMonitor(destination);
+                // lazy模式需要等到第一次有客户端请求才会启动
                 if (!config.getLazy() && !runningMonitor.isStart()) {
                     runningMonitor.start();
                 }
@@ -520,6 +560,7 @@ public class CanalController {
         }
 
         if (autoScan) {
+            // 启动配置文件自动检测机制
             instanceConfigMonitors.get(globalInstanceConfig.getMode()).start();
             for (InstanceConfigMonitor monitor : instanceConfigMonitors.values()) {
                 if (!monitor.isStart()) {
@@ -528,7 +569,7 @@ public class CanalController {
             }
         }
 
-        // 启动网络接口
+        // 启动网络接口，监听客户端请求 CanalServerWithNetty
         if (canalServer != null) {
             canalServer.start();
         }
@@ -581,6 +622,7 @@ public class CanalController {
         // 初始化系统目录
         if (zkclientx != null) {
             try {
+                // 创建临时节点
                 zkclientx.createEphemeral(path);
             } catch (ZkNoNodeException e) {
                 // 如果父目录不存在，则创建
@@ -597,7 +639,7 @@ public class CanalController {
 
     private void releaseCid(String path) {
         // logger.info("## release the canalId = {}", cid);
-        // 初始化系统目录
+        // 删除cid
         if (zkclientx != null) {
             zkclientx.delete(path);
         }

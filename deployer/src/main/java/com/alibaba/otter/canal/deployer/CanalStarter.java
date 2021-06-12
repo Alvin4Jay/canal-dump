@@ -27,8 +27,8 @@ public class CanalStarter {
     private static final String CONNECTOR_STANDBY_SPI_DIR = "/canal/plugin";
 
     private CanalController controller = null;
-    private CanalMQProducer canalMQProducer = null;
     private Thread shutdownThread = null;
+    private CanalMQProducer canalMQProducer = null;
     private CanalMQStarter canalMQStarter = null;
     private volatile Properties properties;
     private volatile boolean running = false;
@@ -56,13 +56,13 @@ public class CanalStarter {
     }
 
     /**
-     * 启动方法
+     * Canal Server启动方法 同步
      *
      * @throws Throwable
      */
     public synchronized void start() throws Throwable {
-        String serverMode = CanalController.getProperty(properties, CanalConstants.CANAL_SERVER_MODE);
-        if (!"tcp".equalsIgnoreCase(serverMode)) {
+        String serverMode = CanalController.getProperty(properties, CanalConstants.CANAL_SERVER_MODE); // tcp, kafka, RocketMQ
+        if (!"tcp".equalsIgnoreCase(serverMode)) { // 可能是消息
             ExtensionLoader<CanalMQProducer> loader = ExtensionLoader.getExtensionLoader(CanalMQProducer.class);
             canalMQProducer = loader
                     .getExtension(serverMode.toLowerCase(), CONNECTOR_SPI_DIR, CONNECTOR_STANDBY_SPI_DIR);
@@ -86,23 +86,20 @@ public class CanalStarter {
 
         logger.info("## start the canal server.");
         controller = new CanalController(properties);
-        controller.start();
+        controller.start();  // Canal Server在这里启动
         logger.info("## the canal server is running now ......");
-        shutdownThread = new Thread() {
-
-            public void run() {
-                try {
-                    logger.info("## stop the canal server");
-                    controller.stop();
-                    CanalLauncher.runningLatch.countDown();
-                } catch (Throwable e) {
-                    logger.warn("##something goes wrong when stopping canal Server:", e);
-                } finally {
-                    logger.info("## canal server is down.");
-                }
+        // 通过添加JVM钩子，JVM停止前会回调run方法，其内部调用controller.stop()方法停止Canal Server
+        shutdownThread = new Thread(() -> {
+            try {
+                logger.info("## stop the canal server");
+                controller.stop(); // 停止Canal Server
+                CanalLauncher.runningLatch.countDown();
+            } catch (Throwable e) {
+                logger.warn("##something goes wrong when stopping canal Server:", e);
+            } finally {
+                logger.info("## canal server is down.");
             }
-
-        };
+        });
         Runtime.getRuntime().addShutdownHook(shutdownThread);
 
         if (canalMQProducer != null) {

@@ -72,6 +72,7 @@ public class CanalServerWithEmbedded extends AbstractCanalLifeCycle implements C
         return SingletonHolder.CANAL_SERVER_WITH_EMBEDDED;
     }
 
+    @Override
     public void start() {
         if (!isStart()) {
             super.start();
@@ -79,8 +80,9 @@ public class CanalServerWithEmbedded extends AbstractCanalLifeCycle implements C
             loadCanalMetrics();
             metrics.setServerPort(metricsPort);
             metrics.initialize();
+            // canalInstances初始化
             canalInstances = MigrateMap.makeComputingMap(new Function<String, CanalInstance>() {
-
+                @Override
                 public CanalInstance apply(String destination) {
                     return canalInstanceGenerator.generate(destination);
                 }
@@ -90,6 +92,7 @@ public class CanalServerWithEmbedded extends AbstractCanalLifeCycle implements C
         }
     }
 
+    @Override
     public void stop() {
         super.stop();
         for (Map.Entry<String, CanalInstance> entry : canalInstances.entrySet()) {
@@ -134,7 +137,7 @@ public class CanalServerWithEmbedded extends AbstractCanalLifeCycle implements C
     }
 
     public void start(final String destination) {
-        final CanalInstance canalInstance = canalInstances.get(destination);
+        final CanalInstance canalInstance = canalInstances.get(destination); // lazy generate CanalInstance
         if (!canalInstance.isStart()) {
             try {
                 MDC.put("destination", destination);
@@ -562,7 +565,7 @@ public class CanalServerWithEmbedded extends AbstractCanalLifeCycle implements C
 
     private void loadCanalMetrics() {
         ServiceLoader<CanalMetricsProvider> providers = ServiceLoader.load(CanalMetricsProvider.class);
-        List<CanalMetricsProvider> list = new ArrayList<CanalMetricsProvider>();
+        List<CanalMetricsProvider> list = new ArrayList<>();
         for (CanalMetricsProvider provider : providers) {
             list.add(provider);
         }

@@ -11,8 +11,7 @@ import java.util.Map;
 public class ServerRunningMonitors {
 
     private static ServerRunningData serverData;
-    private static Map runningMonitors; // <String,
-    // ServerRunningMonitor>
+    private static Map runningMonitors; // <String, ServerRunningMonitor>
 
     public static ServerRunningData getServerData() {
         return serverData;

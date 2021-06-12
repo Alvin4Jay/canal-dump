@@ -12,6 +12,7 @@ import com.alibaba.otter.canal.common.utils.CanalToStringStyle;
  */
 public class InstanceConfig {
 
+    /** 全局配置 */
     private InstanceConfig globalConfig;
     private InstanceMode mode;
     private Boolean lazy;
@@ -26,7 +27,7 @@ public class InstanceConfig {
         this.globalConfig = globalConfig;
     }
 
-    public static enum InstanceMode {
+    public enum InstanceMode {
         SPRING, MANAGER;
 
         public boolean isSpring() {
@@ -52,7 +53,7 @@ public class InstanceConfig {
 
     public InstanceMode getMode() {
         if (mode == null && globalConfig != null) {
-            return globalConfig.getMode();
+            return globalConfig.getMode(); // spring
         } else {
             return mode;
         }
